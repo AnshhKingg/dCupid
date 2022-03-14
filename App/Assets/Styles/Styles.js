@@ -83,14 +83,14 @@ const Styles = StyleSheet.create({
     marginLeft: 10,
   },
   buttonLook: {
-    backgroundColor: '#f33b6a',
-    height: 50,
+    backgroundColor: 'gray',
+    height: 60,
     margin: 20,
-    borderRadius: 5,
+    borderRadius: 30,
   },
   buttonText: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 18,
   },
   commonImage: {
     height: '90%',
@@ -117,7 +117,7 @@ const Styles = StyleSheet.create({
   },
   totalValue: {
     fontSize: 20,
-    color: 'grey',
+    color: 'blue',
   },
   gtotalTitle: {
     fontSize: 23,
@@ -157,14 +157,119 @@ const Styles = StyleSheet.create({
   height100p: {
     height: '100%',
   },
-  width10p: {
-    width: '10%',
+  width100p: {
+    width: '100%',
+  },
+  width50p: {
+    width: '50%',
+  },
+  width60p: {
+    width: '60%',
+  },
+  width40p: {
+    width: '40%',
   },
   width80p: {
     width: '80%',
   },
   width90p: {
     width: '90%',
+  },
+  padding5: {
+    padding: 5,
+  },
+  padding10: {
+    padding: 10,
+  },
+  paddingHorizonal5p: {
+    paddingHorizontal: 5,
+  },
+  paddingVertical5p: {
+    paddingVertical: 5,
+  },
+  paddingHorizonal10p: {
+    paddingHorizontal: 10,
+  },
+  paddingVertical10p: {
+    paddingVertical: 10,
+  },
+  textInput: {
+    width: '100%',
+    borderRadius: 4,
+    borderWidth: 0.6,
+    borderColor: 'lightgrey',
+    height: 55,
+  },
+  textInputLabelStyle: {
+    position: 'absolute',
+    top: -10,
+    left: 20,
+    backgroundColor: 'white',
+    fontSize: 16,
+    color: 'black',
+  },
+  inputContainer: {
+    borderRadius: 3,
+    marginVertical: 10,
+  },
+  textHeader: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: 'black',
+  },
+  textTitle: {
+    fontSize: 20,
+    color: 'black',
+  },
+  textBody: {
+    fontSize: 18,
+    color: 'black',
+  },
+  textBlack: {
+    color: 'black',
+  },
+  textCaption: {
+    fontSize: 16,
+    color: 'black',
+  },
+  textBold: {
+    fontWeight: 'bold',
+  },
+  spacingViewHorizontal: {
+    margin: '4%',
+    padding: 10,
+  },
+  flexStart: {
+    alignItems: 'flex-start',
+  },
+  flexEnd: {
+    alignItems: 'flex-end',
+  },
+  red: {
+    color: 'red',
+  },
+  blue: {
+    color: 'blue',
+  },
+  backgroundGray: {
+    backgroundColor: 'lightgrey',
+  },
+  backgroundRed: {
+    backgroundColor: 'red',
+  },
+  textInputButton: {
+    position: 'absolute',
+    right: -20,
+    bottom: -10,
+    borderRadius: 2,
+    width: 100,
+    height: 55,
+  },
+  alignCenter: {
+    alignItems: 'center',
+  },
+  justifyCenter: {
+    justifyContent: 'center',
   },
 });
 

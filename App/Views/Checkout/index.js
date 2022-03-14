@@ -15,13 +15,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {updateAdrss, resetAdrss} from '../../Redux/actions';
-import Toast from 'react-native-toast-message';
 
 const Checkout = ({navigation}) => {
   const [address, setAddress] = useState('4904 Goldner Ranch');
   var savedAddress = useSelector(state => state.appEnv.address);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     setAddress(savedAddress);
   }, [savedAddress]);

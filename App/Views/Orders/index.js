@@ -126,7 +126,7 @@ const Orders = ({navigation}) => {
             <TouchableOpacity
               style={[Theme.alignContentCenter, Theme.buttonLook]}
               onPress={() => {
-                navigation.navigate('checkout');
+                navigation.navigate('help');
               }}>
               <Text style={[Theme.buttonText]}>Checkout</Text>
             </TouchableOpacity>
