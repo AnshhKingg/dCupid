@@ -1,35 +1,43 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {Theme} from '../Assets/Styles';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text } from 'react-native';
+import { Theme } from '../Assets/Styles';
+import Icon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
+import { colors } from '../Assets/Colors';
 
-const HeaderBar = ({title}) => {
+const HeaderBar = ({ title, left, right }) => {
   return (
     <>
-      <LinearGradient colors={['#ce306b', '#951151']}>
+      <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
         <View
           style={[
             Theme.width100p,
-            Theme.mainHeadingView,
+            Theme.padding10,
             Theme.row,
             Theme.justifySpcBtw,
           ]}>
           <View style={[Theme.width60p, Theme.row, Theme.alignCenter]}>
-            <Icon
-              name="align-left"
-              size={30}
-              color="white"
-              onPress={() => {
-                console.log('yoo');
-              }}
-            />
-            <Text style={[Theme.mainHeading, Theme.paddingHorizonal10p]}>
+            {left ? (
+              <Icon
+                name={left}
+                size={30}
+                color="white"
+                onPress={() => {
+                  console.log('yoo');
+                }}
+              />
+            ) : null}
+
+            <Text
+              style={[Theme.textBody, Theme.white, Theme.paddingHorizonal10p]}>
               {title}
             </Text>
           </View>
           <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
-            <Icon name="home" size={30} color="white" />
+            {right ? (
+              <Icon name={right} size={30} color="white" />
+            ) : null}
+
           </View>
         </View>
       </LinearGradient>

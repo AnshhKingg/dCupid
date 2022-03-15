@@ -5,12 +5,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {Header, TextInput} from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
+import {colors} from '../../Assets/Colors';
 
 const Help = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        <Header title="Help" />
+        <Header title="Help" left="alignleft" />
         <ScrollView style={[]}>
           <View style={Theme.width100p}>
             <TouchableOpacity
@@ -18,7 +19,7 @@ const Help = ({navigation}) => {
               onPress={() => {
                 navigation.navigate('faq');
               }}>
-              <Text style={Theme.totalValue}>
+              <Text style={[Theme.textTitle, Theme.blue]}>
                 FAQS <Icon name="angle-right" size={20} color="black" />
               </Text>
             </TouchableOpacity>
@@ -29,13 +30,18 @@ const Help = ({navigation}) => {
               </Text>
             </View>
 
-            <View style={[Theme.totalView, Theme.alignContentCenter]}>
+            <View
+              style={[
+                Theme.totalView,
+                Theme.alignContentCenter,
+                Theme.padding5,
+              ]}>
               <TouchableOpacity
                 style={Theme.padding5}
                 onPress={() =>
                   Linking.openURL('mailto:support@dermacupid.com')
                 }>
-                <Text style={[Theme.textBody, Theme.padding5, Theme.blue]}>
+                <Text style={[Theme.textBody, Theme.blue]}>
                   support@dermacupid.com
                 </Text>
               </TouchableOpacity>
@@ -50,19 +56,19 @@ const Help = ({navigation}) => {
               <TextInput title="Subject*" />
               <TextInput title="Description*" />
               <View>
-                <TextInput title="Attach image*" />
+                <TextInput title="Attach image*" editable={false} />
                 <LinearGradient
                   style={[
                     Theme.alignContentCenter,
                     Theme.buttonLook,
                     Theme.textInputButton,
                   ]}
-                  colors={['#ce306b', '#951151']}>
+                  colors={[colors.purplelight, colors.purpledark]}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('help');
                     }}>
-                    <Text style={[Theme.buttonText]}>Browse</Text>
+                    <Text style={[Theme.textBody, Theme.white]}>Browse</Text>
                   </TouchableOpacity>
                 </LinearGradient>
               </View>
@@ -77,7 +83,7 @@ const Help = ({navigation}) => {
                     onPress={() => {
                       navigation.navigate('help');
                     }}>
-                    <Text style={[Theme.buttonText, Theme.textBlack]}>
+                    <Text style={[Theme.textBody, Theme.textBlack]}>
                       Cancel
                     </Text>
                   </TouchableOpacity>
@@ -85,12 +91,12 @@ const Help = ({navigation}) => {
                 <View style={Theme.width50p}>
                   <LinearGradient
                     style={[Theme.alignContentCenter, Theme.buttonLook]}
-                    colors={['#ce306b', '#951151']}>
+                    colors={[colors.purplelight, colors.purpledark]}>
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('help');
                       }}>
-                      <Text style={[Theme.buttonText]}>Submit</Text>
+                      <Text style={[Theme.textBody, Theme.white]}>Submit</Text>
                     </TouchableOpacity>
                   </LinearGradient>
                 </View>

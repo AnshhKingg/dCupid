@@ -6,13 +6,12 @@ const CustomTextInput = ({
   title,
   value,
   onChangeText,
-  placeholder,
   numberoflines,
   editable,
   maxLength,
   keyboardType,
-  errorflag,
   error,
+  placeholder,
 }) => {
   const [state, setstate] = useState(false);
   return (
@@ -21,14 +20,14 @@ const CustomTextInput = ({
         style={[
           Theme.textInput,
           {
-            borderColor: state ? 'blue' : 'black',
-            backgroundColor: editable === false ? 'lightgray' : 'white',
+            borderColor: state ? 'blue' : 'lightgrey',
           },
         ]}
         onChangeText={onChangeText}
         value={value}
         multiline={true}
         numberOfLines={numberoflines}
+        placeholder={placeholder}
         editable={editable}
         maxLength={maxLength}
         keyboardType={keyboardType}
