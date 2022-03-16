@@ -11,7 +11,7 @@ const Help = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        <Header title="Help" left="alignleft" />
+        <Header title="Help" left="menufold" />
         <ScrollView style={[]}>
           <View style={Theme.width100p}>
             <TouchableOpacity

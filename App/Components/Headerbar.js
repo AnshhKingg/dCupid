@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Theme } from '../Assets/Styles';
+import {View, Text} from 'react-native';
+import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
-import { colors } from '../Assets/Colors';
+import {colors} from '../Assets/Colors';
 
-const HeaderBar = ({ title, left, right }) => {
+const HeaderBar = ({title, left, right}) => {
   return (
     <>
       <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
@@ -34,10 +34,7 @@ const HeaderBar = ({ title, left, right }) => {
             </Text>
           </View>
           <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
-            {right ? (
-              <Icon name={right} size={30} color="white" />
-            ) : null}
-
+            {right ? <Icon name={right} size={30} color="white" /> : null}
           </View>
         </View>
       </LinearGradient>

@@ -1,7 +1,21 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '../Colors';
+import {StyleSheet, Dimensions} from 'react-native';
+import {colors} from '../Colors';
+const width = Dimensions.get('window').width;
+
 const Styles = StyleSheet.create({
   // Styles start
+  flex6: {
+    flex: 6,
+  },
+  flex4: {
+    flex: 4,
+  },
+  flex1: {
+    flex: 1,
+  },
+  flex5: {
+    flex: 5,
+  },
   height100p: {
     height: '100%',
   },
@@ -38,6 +52,9 @@ const Styles = StyleSheet.create({
   width10p: {
     width: '10%',
   },
+  margin30: {
+    margin: 30,
+  },
   marginTop10: {
     marginTop: 10,
   },
@@ -70,6 +87,12 @@ const Styles = StyleSheet.create({
   },
   paddingVertical20p: {
     paddingVertical: 20,
+  },
+  paddingHorizonal30p: {
+    paddingHorizontal: 30,
+  },
+  paddingVertical30p: {
+    paddingVertical: 30,
   },
   textInput: {
     width: '100%',
@@ -112,6 +135,12 @@ const Styles = StyleSheet.create({
   },
   textBold: {
     fontWeight: 'bold',
+  },
+  textCenter: {
+    textAlign: 'center',
+  },
+  textUnderLine: {
+    textDecorationLine: 'underline',
   },
   spacingViewHorizontal: {
     margin: '4%',
@@ -186,8 +215,15 @@ const Styles = StyleSheet.create({
   buttonLook: {
     backgroundColor: 'gray',
     height: 60,
-    margin: 20,
+    margin: 10,
     borderRadius: 30,
+  },
+  smallButtonLook: {
+    width: 30,
+    backgroundColor: 'gray',
+    height: 30,
+    margin: 5,
+    borderRadius: 15,
   },
   borderBox: {
     borderWidth: 0.5,
@@ -206,7 +242,7 @@ const Styles = StyleSheet.create({
     marginVertical: 5,
   },
   borderRadius10: {
-    borderRadius: 10
+    borderRadius: 10,
   },
 
   //colors
@@ -223,6 +259,9 @@ const Styles = StyleSheet.create({
   grey: {
     color: 'grey',
   },
+  blackFaded: {
+    backgroundColor: 'rgba(0,0,0,0.6)',
+  },
   backgroundGray: {
     backgroundColor: 'lightgrey',
   },
@@ -232,9 +271,43 @@ const Styles = StyleSheet.create({
   backgroundPurple: {
     backgroundColor: colors.purpledark,
   },
+  backgroundBlue: {
+    backgroundColor: colors.blue,
+  },
+  backgroundWhite: {
+    backgroundColor: 'white',
+  },
   purple: {
-    color: colors.purpledark
-  }
+    color: colors.purpledark,
+  },
+  Circlediv: {
+    position: 'absolute',
+    top: 10,
+    height: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  circle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 5,
+    backgroundColor: 'white',
+  },
+
+  //slider
+  sliderWidth: {
+    width: width * 4,
+  },
+  fullWidth: {
+    width: width,
+  },
+  width90: {
+    width: width * 0.9,
+  },
 });
 
 export default Styles;
