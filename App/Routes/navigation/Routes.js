@@ -1,5 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {screenOption} from './constants/options';
 import {
   OrdersContainer,
@@ -10,8 +11,9 @@ import {
   RegisterContainer2,
   HomepageContainer,
 } from '../../Views';
-
+import {DrawerView} from '../../Components';
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export const MainStack = () => {
   return (
@@ -24,5 +26,22 @@ export const MainStack = () => {
       <Stack.Screen name={'help'} component={HelpContainer} />
       <Stack.Screen name={'faq'} component={FaqContainer} />
     </Stack.Navigator>
+  );
+};
+
+export const DrawerStack = () => {
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerStyle: {
+          width: 300,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      }}
+      drawerContent={props => <DrawerView {...props} />}>
+      <Drawer.Screen name="Draw" component={MainStack} />
+    </Drawer.Navigator>
   );
 };

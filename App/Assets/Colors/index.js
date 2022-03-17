@@ -3,4 +3,5 @@ export const colors = {
   purpledark: '#951151',
   red: 'red',
   blue: '#007fff',
+  pink: '#fc46aa',
 };

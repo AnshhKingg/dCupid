@@ -37,6 +37,9 @@ const Styles = StyleSheet.create({
   width80p: {
     width: '80%',
   },
+  width20p: {
+    width: '20%',
+  },
   width90p: {
     width: '90%',
   },
@@ -183,6 +186,14 @@ const Styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+  drawerSeparator: {
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey',
+    marginVertical: 5,
+  },
+  drawerHeight: {
+    height: 60,
+  },
   totalView: {
     height: 'auto',
     backgroundColor: 'white',
@@ -218,12 +229,24 @@ const Styles = StyleSheet.create({
     margin: 10,
     borderRadius: 30,
   },
+  flatButton: {
+    backgroundColor: 'gray',
+    height: 60,
+    margin: 10,
+    borderRadius: 5,
+  },
   smallButtonLook: {
     width: 30,
     backgroundColor: 'gray',
     height: 30,
     margin: 5,
     borderRadius: 15,
+  },
+  profileIcon: {
+    width: 60,
+    height: 60,
+    margin: 5,
+    borderRadius: 30,
   },
   borderBox: {
     borderWidth: 0.5,
@@ -276,6 +299,9 @@ const Styles = StyleSheet.create({
   },
   backgroundWhite: {
     backgroundColor: 'white',
+  },
+  backgroundPink: {
+    backgroundColor: colors.pink,
   },
   purple: {
     color: colors.purpledark,
