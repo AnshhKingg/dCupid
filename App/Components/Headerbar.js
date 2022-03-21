@@ -29,7 +29,11 @@ const HeaderBar = ({title, left, right}) => {
             ) : null}
 
             <Text
-              style={[Theme.textBody, Theme.white, Theme.paddingHorizonal10p]}>
+              style={[
+                Theme.textHeader,
+                Theme.white,
+                Theme.paddingHorizonal10p,
+              ]}>
               {title}
             </Text>
           </View>

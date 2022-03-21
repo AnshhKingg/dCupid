@@ -55,6 +55,9 @@ const Styles = StyleSheet.create({
   width10p: {
     width: '10%',
   },
+  marginBottom0: {
+    marginBottom: 0,
+  },
   margin30: {
     margin: 30,
   },
@@ -235,12 +238,26 @@ const Styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
   },
-  smallButtonLook: {
+  notificationLook: {
     width: 30,
-    backgroundColor: 'gray',
     height: 30,
     margin: 5,
     borderRadius: 15,
+    position: 'absolute',
+    top: -10,
+    right: -20,
+  },
+  smallButtonLook: {
+    width: 40,
+    height: 40,
+    margin: 5,
+    borderRadius: 20,
+  },
+  mediumButtonLook: {
+    width: 50,
+    height: 50,
+    margin: 5,
+    borderRadius: 25,
   },
   profileIcon: {
     width: 60,
@@ -333,6 +350,27 @@ const Styles = StyleSheet.create({
   },
   width90: {
     width: width * 0.9,
+  },
+
+  //Circular bar
+  circularBackground: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 15,
+    borderColor: 'lightgrey',
+  },
+  circularForeground: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderWidth: 15,
+    borderColor: 'lightgrey',
   },
 });
 
