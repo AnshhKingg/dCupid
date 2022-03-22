@@ -9,6 +9,8 @@ import {
   RegisterContainer2,
   HomepageContainer,
   DashboardContainer,
+  OtpContainer,
+  Otp2Container,
 } from '../../Views';
 import {DrawerView} from '../../Components';
 const Stack = createStackNavigator();
@@ -19,12 +21,21 @@ export const MainStack = () => {
     <Stack.Navigator
       initialRouteName={'dashboard'}
       screenOptions={screenOption}>
-      <Stack.Screen name={'dashboard'} component={DashboardContainer} />
-      <Stack.Screen name={'homepage'} component={HomepageContainer} />
       <Stack.Screen name={'register2'} component={RegisterContainer2} />
       <Stack.Screen name={'register'} component={RegisterContainer} />
+      <Stack.Screen name={'dashboard'} component={DashboardContainer} />
       <Stack.Screen name={'help'} component={HelpContainer} />
       <Stack.Screen name={'faq'} component={FaqContainer} />
+    </Stack.Navigator>
+  );
+};
+
+export const AuthStack = () => {
+  return (
+    <Stack.Navigator initialRouteName={'homepage'} screenOptions={screenOption}>
+      <Stack.Screen name={'homepage'} component={HomepageContainer} />
+      <Stack.Screen name={'otp'} component={OtpContainer} />
+      <Stack.Screen name={'otp2'} component={Otp2Container} />
     </Stack.Navigator>
   );
 };

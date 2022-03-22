@@ -34,7 +34,8 @@ const CustomDateTimeInput = ({title, error}) => {
           />
         </View>
       </TouchableOpacity>
-      <Text style={Theme.textInputLabelStyle}> {title} </Text>
+      {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}
+
       {show && (
         <DateTimePicker
           testID="dateTimePicker"

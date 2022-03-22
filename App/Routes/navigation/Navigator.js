@@ -1,11 +1,12 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {DrawerStack} from './Routes';
+import {DrawerStack, AuthStack} from './Routes';
 
 const Navigator = () => {
+  const autherized = false;
   return (
     <NavigationContainer>
-      <DrawerStack />
+      {autherized ? <DrawerStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };

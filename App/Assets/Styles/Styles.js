@@ -4,6 +4,9 @@ const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
   // Styles start
+  flex2: {
+    flex: 2,
+  },
   flex6: {
     flex: 6,
   },
@@ -119,6 +122,11 @@ const Styles = StyleSheet.create({
     borderRadius: 3,
     marginVertical: 10,
   },
+  textXl: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: 'black',
+  },
   textHeader: {
     fontSize: 24,
     fontWeight: '700',
@@ -144,6 +152,9 @@ const Styles = StyleSheet.create({
   },
   textCenter: {
     textAlign: 'center',
+  },
+  textFontWeight0: {
+    fontWeight: 'normal',
   },
   textUnderLine: {
     textDecorationLine: 'underline',
@@ -171,6 +182,9 @@ const Styles = StyleSheet.create({
   },
   justifyCenter: {
     justifyContent: 'center',
+  },
+  justifySpcArnd: {
+    justifyContent: 'space-around',
   },
   row: {
     flexDirection: 'row',
@@ -226,6 +240,7 @@ const Styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+
   buttonLook: {
     backgroundColor: 'gray',
     height: 60,
@@ -371,6 +386,16 @@ const Styles = StyleSheet.create({
     borderRadius: 75,
     borderWidth: 15,
     borderColor: 'lightgrey',
+  },
+  //Otp Styles
+  underlineStyleBase: {
+    width: (width - 20 - (width * 8) / 100) / 6,
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 20,
+    height: 60,
+    borderWidth: 1,
+    borderColor: 'grey',
   },
 });
 

@@ -207,7 +207,7 @@ const Homepage = ({navigation}) => {
           <View
             style={[Theme.flex5, Theme.width100p, Theme.alignContentCenter]}>
             <View style={[Theme.width90p, Theme.alignContentCenter]}>
-              <View
+              {/* <View
                 style={[Theme.width90p, Theme.alignContentCenter, Theme.row]}>
                 <TouchableOpacity
                   style={[
@@ -256,7 +256,7 @@ const Homepage = ({navigation}) => {
                     }}
                   />
                 </TouchableOpacity>
-              </View>
+              </View> */}
               <View
                 style={[Theme.width90p, Theme.alignContentCenter, Theme.row]}>
                 <TouchableOpacity
@@ -268,16 +268,9 @@ const Homepage = ({navigation}) => {
                     Theme.backgroundBlue,
                   ]}
                   onPress={() => {
-                    // navigation.navigate('help'); mobile-phone
+                    navigation.navigate('otp');
                   }}>
-                  <Icon
-                    name={'mobile-phone'}
-                    size={30}
-                    color="white"
-                    onPress={() => {
-                      console.log('yoo');
-                    }}
-                  />
+                  <Icon name={'mobile-phone'} size={30} color="white" />
                   <Text
                     style={[
                       Theme.textCaption,

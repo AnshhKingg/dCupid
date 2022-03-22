@@ -17,7 +17,8 @@ const CustomPickerInput = ({title, error}) => {
         <Picker.Item label="Java" value="java" />
         <Picker.Item label="JavaScript" value="js" />
       </Picker>
-      <Text style={Theme.textInputLabelStyle}> {title} </Text>
+      {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}
+
       {error ? <Text style={Theme.red}>{error}</Text> : null}
     </View>
   );

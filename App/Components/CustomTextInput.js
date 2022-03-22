@@ -34,7 +34,8 @@ const CustomTextInput = ({
         onFocus={() => setstate(!state)}
         onBlur={() => setstate(!state)}
       />
-      <Text style={Theme.textInputLabelStyle}> {title} </Text>
+      {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}
+
       {error ? <Text style={Theme.red}>{error}</Text> : null}
     </View>
   );
