@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors} from '../Assets/Colors';
 
-const HeaderBar = ({title, left, right}) => {
+const HeaderBar = ({title, left, right, navigation}) => {
   return (
     <>
       <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
@@ -23,7 +23,7 @@ const HeaderBar = ({title, left, right}) => {
                 size={30}
                 color="white"
                 onPress={() => {
-                  console.log('yoo');
+                  navigation.openDrawer();
                 }}
               />
             ) : null}

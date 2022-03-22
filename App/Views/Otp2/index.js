@@ -52,7 +52,10 @@ const Otp2 = ({navigation}) => {
                   ]}
                   colors={[colors.purplelight, colors.purpledark]}>
                   <TouchableOpacity
-                    style={[Theme.width100p, Theme.alignContentCenter]}>
+                    style={[Theme.width100p, Theme.alignContentCenter]}
+                    onPress={() => {
+                      navigation.replace('DashB');
+                    }}>
                     <Text style={[Theme.textBody, Theme.white]}>Submit</Text>
                   </TouchableOpacity>
                 </LinearGradient>

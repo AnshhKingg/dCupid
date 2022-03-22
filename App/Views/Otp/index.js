@@ -36,13 +36,18 @@ const Otp = ({navigation}) => {
                 <PickerInput />
               </View>
               <View style={[Theme.width80p]}>
-                <TextInput multiline={false} keyboardType="numeric" maxLength={20}/>
+                <TextInput
+                  multiline={false}
+                  keyboardType="numeric"
+                  maxLength={20}
+                />
               </View>
             </View>
             {/* </View> */}
             <View style={[Theme.alignCenter]}>
-              <TouchableOpacity style={[Theme.width100p, Theme.alignContentCenter]} 
-              onPress={() => navigation.navigate('otp2')}>
+              <TouchableOpacity
+                style={[Theme.width100p, Theme.alignContentCenter]}
+                onPress={() => navigation.navigate('otp2')}>
                 <LinearGradient
                   style={[
                     Theme.width60p,
@@ -50,8 +55,7 @@ const Otp = ({navigation}) => {
                     Theme.alignContentCenter,
                   ]}
                   colors={[colors.purplelight, colors.purpledark]}>
-                  <View
-                    style={[Theme.width100p, Theme.alignContentCenter]}>
+                  <View style={[Theme.width100p, Theme.alignContentCenter]}>
                     <Text style={[Theme.textBody, Theme.white]}>Submit</Text>
                   </View>
                 </LinearGradient>

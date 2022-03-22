@@ -138,12 +138,7 @@ const Drawer = props => {
       <View
         style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
         <LinearGradient
-          style={[
-            Theme.width100p,
-            ,
-            Theme.buttonLook,
-            Theme.alignContentCenter,
-          ]}
+          style={[Theme.width100p, Theme.buttonLook, Theme.alignContentCenter]}
           colors={[colors.purplelight, colors.purpledark]}>
           <TouchableOpacity style={[Theme.width100p, Theme.alignContentCenter]}>
             <Text style={[Theme.textBody, Theme.white]}>Trust score 40%</Text>

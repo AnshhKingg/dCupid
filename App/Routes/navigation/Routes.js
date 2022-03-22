@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {screenOption} from './constants/options';
 import {
@@ -13,7 +13,7 @@ import {
   Otp2Container,
 } from '../../Views';
 import {DrawerView} from '../../Components';
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export const MainStack = () => {
@@ -36,6 +36,7 @@ export const AuthStack = () => {
       <Stack.Screen name={'homepage'} component={HomepageContainer} />
       <Stack.Screen name={'otp'} component={OtpContainer} />
       <Stack.Screen name={'otp2'} component={Otp2Container} />
+      <Stack.Screen name={'DashB'} component={DrawerStack} />
     </Stack.Navigator>
   );
 };

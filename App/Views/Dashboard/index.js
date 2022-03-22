@@ -24,7 +24,12 @@ const Dashboard = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        <Header left="menuunfold" right="home" title="Dashboard" />
+        <Header
+          left="menuunfold"
+          right="home"
+          title="Dashboard"
+          navigation={navigation}
+        />
         <ScrollView contentContainerStyle={[Theme.alignContentCenter]}>
           <View style={[Theme.width100p, Theme.separator]}>
             <View style={[Theme.width100p, Theme.row]}>

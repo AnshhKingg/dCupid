@@ -179,10 +179,12 @@ const Slider = () => {
           return (
             <View
               key={data}
-              style={{
-                ...Theme.circle,
-                opacity: data - 1 === selectedIndex ? 1 : 0.5,
-              }}
+              style={[
+                Theme.circle,
+                data - 1 === selectedIndex
+                  ? Theme.opacityFull
+                  : Theme.opacityHalf,
+              ]}
             />
           );
         })}

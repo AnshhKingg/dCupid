@@ -338,6 +338,12 @@ const Styles = StyleSheet.create({
   purple: {
     color: colors.purpledark,
   },
+  borderBlue: {
+    borderColor: 'blue',
+  },
+  borderLightGrey: {
+    borderColor: 'lightgrey',
+  },
   Circlediv: {
     position: 'absolute',
     top: 10,
@@ -396,6 +402,12 @@ const Styles = StyleSheet.create({
     height: 60,
     borderWidth: 1,
     borderColor: 'grey',
+  },
+  opacityFull: {
+    opacity: 1,
+  },
+  opacityHalf: {
+    opacity: 0.5,
   },
 });
 

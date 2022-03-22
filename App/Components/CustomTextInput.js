@@ -12,7 +12,7 @@ const CustomTextInput = ({
   keyboardType,
   error,
   placeholder,
-  multiline
+  multiline,
 }) => {
   const [state, setstate] = useState(false);
   return (
@@ -20,9 +20,7 @@ const CustomTextInput = ({
       <TextInput
         style={[
           Theme.textInput,
-          {
-            borderColor: state ? 'blue' : 'lightgrey',
-          },
+          state ? Theme.borderBlue : Theme.borderLightGrey,
         ]}
         onChangeText={onChangeText}
         value={value}
