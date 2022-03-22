@@ -17,7 +17,7 @@ const Otp = ({navigation}) => {
             </Text>
             <View
               style={[
-                Theme.flex1,
+                // Theme.flex1,
                 Theme.justifySpcArnd,
                 Theme.paddingVertical30p,
               ]}>
@@ -30,18 +30,19 @@ const Otp = ({navigation}) => {
               </Text>
             </View>
 
-            <View style={[Theme.flex1]}>
-              <View style={[Theme.width100p, Theme.row]}>
-                <View style={[Theme.width20p]}>
-                  <PickerInput />
-                </View>
-                <View style={[Theme.width80p]}>
-                  <TextInput />
-                </View>
+            {/* <View style={[Theme.flex1]}> */}
+            <View style={[Theme.width100p, Theme.row]}>
+              <View style={[Theme.width20p]}>
+                <PickerInput />
+              </View>
+              <View style={[Theme.width80p]}>
+                <TextInput multiline={false} keyboardType="numeric" maxLength={20}/>
               </View>
             </View>
-            <View style={[Theme.flex4, Theme.alignCenter]}>
-              <View style={[Theme.width100p, Theme.alignContentCenter]}>
+            {/* </View> */}
+            <View style={[Theme.alignCenter]}>
+              <TouchableOpacity style={[Theme.width100p, Theme.alignContentCenter]} 
+              onPress={() => navigation.navigate('otp2')}>
                 <LinearGradient
                   style={[
                     Theme.width60p,
@@ -49,13 +50,12 @@ const Otp = ({navigation}) => {
                     Theme.alignContentCenter,
                   ]}
                   colors={[colors.purplelight, colors.purpledark]}>
-                  <TouchableOpacity
-                    style={[Theme.width100p, Theme.alignContentCenter]}
-                    onPress={() => navigation.navigate('otp2')}>
+                  <View
+                    style={[Theme.width100p, Theme.alignContentCenter]}>
                     <Text style={[Theme.textBody, Theme.white]}>Submit</Text>
-                  </TouchableOpacity>
+                  </View>
                 </LinearGradient>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>

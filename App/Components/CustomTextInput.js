@@ -12,6 +12,7 @@ const CustomTextInput = ({
   keyboardType,
   error,
   placeholder,
+  multiline
 }) => {
   const [state, setstate] = useState(false);
   return (
@@ -25,7 +26,7 @@ const CustomTextInput = ({
         ]}
         onChangeText={onChangeText}
         value={value}
-        multiline={true}
+        multiline={multiline}
         numberOfLines={numberoflines}
         placeholder={placeholder}
         editable={editable}
