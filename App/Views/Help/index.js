@@ -3,9 +3,7 @@ import {View, Text, ScrollView, TouchableOpacity, Linking} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import {Header, TextInput} from '../../Components';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../../Assets/Colors';
+import {Header, TextInput, LinearGradient} from '../../Components';
 
 const Help = ({navigation}) => {
   return (
@@ -62,8 +60,7 @@ const Help = ({navigation}) => {
                     Theme.alignContentCenter,
                     Theme.buttonLook,
                     Theme.textInputButton,
-                  ]}
-                  colors={[colors.purplelight, colors.purpledark]}>
+                  ]}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('help');
@@ -90,8 +87,7 @@ const Help = ({navigation}) => {
                 </View>
                 <View style={Theme.width50p}>
                   <LinearGradient
-                    style={[Theme.alignContentCenter, Theme.buttonLook]}
-                    colors={[colors.purplelight, colors.purpledark]}>
+                    style={[Theme.alignContentCenter, Theme.buttonLook]}>
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('help');

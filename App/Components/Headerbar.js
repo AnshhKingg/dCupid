@@ -2,13 +2,12 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../Assets/Colors';
+import LinearGradient from './LinearGradient';
 
 const HeaderBar = ({title, left, right, navigation}) => {
   return (
     <>
-      <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
+      <LinearGradient>
         <View
           style={[
             Theme.width100p,

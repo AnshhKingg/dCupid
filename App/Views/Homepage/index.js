@@ -3,15 +3,14 @@ import {View, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../../Assets/Colors';
+import {LinearGradient} from '../../Components';
 
 const FaceBookQuestionMarkModal = ({state, setState}) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <View style={[Theme.flex1, Theme.alignContentCenter, Theme.blackFaded]}>
         <View style={[Theme.width90]}>
-          <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
+          <LinearGradient>
             <Text style={[Theme.padding10, Theme.textBody, Theme.white]}>
               Help
             </Text>
@@ -34,8 +33,7 @@ const FaceBookQuestionMarkModal = ({state, setState}) => {
                 Theme.alignContentCenter,
                 Theme.buttonLook,
                 Theme.paddingHorizonal20p,
-              ]}
-              colors={[colors.purplelight, colors.purpledark]}>
+              ]}>
               <TouchableOpacity
                 style={[Theme.width100p, Theme.alignContentCenter]}
                 onPress={setState}>
@@ -113,7 +111,6 @@ const Slider = () => {
           <View
             style={[
               Theme.fullWidth,
-              Theme.alignCenter,
               Theme.paddingHorizonal30p,
               Theme.paddingVertical30p,
             ]}>
@@ -201,7 +198,7 @@ const Homepage = ({navigation}) => {
         state={modal}
         setState={() => setModal(!modal)}
       />
-      <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
+      <LinearGradient>
         <SafeAreaView style={[Theme.height100p]}>
           <View style={[Theme.flex5, Theme.width100p]}>
             <Slider />

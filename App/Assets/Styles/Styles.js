@@ -19,6 +19,13 @@ const Styles = StyleSheet.create({
   flex5: {
     flex: 5,
   },
+  flexGrow: {
+    flexGrow: 1,
+  },
+  OtpContainer: {
+    width: '100%',
+    height: 80,
+  },
   height100p: {
     height: '100%',
   },
@@ -128,23 +135,23 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
   textHeader: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '700',
     color: 'black',
   },
   textTitle: {
-    fontSize: 20,
+    fontSize: 22,
     color: 'black',
   },
   textBody: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'black',
   },
   textBlack: {
     color: 'black',
   },
   textCaption: {
-    fontSize: 16,
+    fontSize: 18,
     color: 'black',
   },
   textBold: {
@@ -180,6 +187,9 @@ const Styles = StyleSheet.create({
   alignCenter: {
     alignItems: 'center',
   },
+  selfAlignCenter: {
+    alignSelf: 'center',
+  },
   justifyCenter: {
     justifyContent: 'center',
   },
@@ -199,7 +209,7 @@ const Styles = StyleSheet.create({
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
-    marginBottom: 10,
+    marginBottom: 5,
     marginLeft: 5,
     marginRight: 5,
   },
@@ -254,13 +264,22 @@ const Styles = StyleSheet.create({
     borderRadius: 5,
   },
   notificationLook: {
+    width: 25,
+    height: 25,
+    margin: 0,
+    borderRadius: 12.5,
+    position: 'absolute',
+    top: -0,
+    right: -10,
+  },
+  profileIconNotification: {
     width: 30,
     height: 30,
-    margin: 5,
+    margin: 0,
     borderRadius: 15,
     position: 'absolute',
-    top: -10,
-    right: -20,
+    bottom: -0,
+    right: -10,
   },
   smallButtonLook: {
     width: 40,
@@ -275,10 +294,10 @@ const Styles = StyleSheet.create({
     borderRadius: 25,
   },
   profileIcon: {
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
     margin: 5,
-    borderRadius: 30,
+    borderRadius: 35,
   },
   borderBox: {
     borderWidth: 0.5,

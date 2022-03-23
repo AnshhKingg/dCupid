@@ -4,8 +4,8 @@ import {DrawerContentScrollView} from '@react-navigation/drawer';
 import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import {colors} from '../Assets/Colors';
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from './LinearGradient';
+import LinearGradientButton from './LinearGradientButton';
 
 const DrawerComponent = ({text, onPress, seperator}) => {
   const style =
@@ -27,7 +27,6 @@ const DrawerComponent = ({text, onPress, seperator}) => {
       ]}
       onPress={onPress}>
       <LinearGradient
-        colors={[colors.purplelight, colors.purpledark]}
         style={[
           Theme.width10p,
           Theme.alignContentCenter,
@@ -69,14 +68,10 @@ const DrawerExtendedComponent = ({text, onPress, seperator}) => {
         Theme.alignContentCenter,
       ]}
       onPress={onPress}>
-      <View
-        colors={[colors.purplelight, colors.purpledark]}
-        style={[Theme.smallButtonLook, Theme.backgroundWhite]}
-      />
+      <View style={[Theme.smallButtonLook, Theme.backgroundWhite]} />
       <View style={style}>
         <Text style={[Theme.textBody]}>{text}</Text>
         <View
-          colors={[colors.purplelight, colors.purpledark]}
           style={[
             Theme.smallButtonLook,
             Theme.alignContentCenter,
@@ -93,7 +88,6 @@ const Drawer = props => {
   return (
     <View style={[Theme.flex1, Theme.alignContentCenter, Theme.width100p]}>
       <LinearGradient
-        colors={[colors.purplelight, colors.purpledark]}
         style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
         <View
           style={[
@@ -110,7 +104,6 @@ const Drawer = props => {
               Theme.row,
             ]}>
             <View
-              colors={[colors.purplelight, colors.purpledark]}
               style={[
                 Theme.alignContentCenter,
                 Theme.profileIcon,
@@ -123,7 +116,6 @@ const Drawer = props => {
             </Text>
           </View>
           <View
-            colors={[colors.purplelight, colors.purpledark]}
             style={[
               Theme.width10p,
               Theme.alignContentCenter,
@@ -137,15 +129,11 @@ const Drawer = props => {
 
       <View
         style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
-        <LinearGradient
-          style={[Theme.width100p, Theme.buttonLook, Theme.alignContentCenter]}
-          colors={[colors.purplelight, colors.purpledark]}>
-          <TouchableOpacity style={[Theme.width100p, Theme.alignContentCenter]}>
-            <Text style={[Theme.textBody, Theme.white]}>Trust score 40%</Text>
-          </TouchableOpacity>
-        </LinearGradient>
+        <LinearGradientButton title="Trust score 40%" />
       </View>
+
       <DrawerContentScrollView
+        showsVerticalScrollIndicator={false}
         {...props}
         contentContainerStyle={[Theme.width100p]}>
         <View style={[Theme.drawerSeparator]} />

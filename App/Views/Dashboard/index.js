@@ -1,14 +1,11 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import {Header} from '../../Components';
+import {Header, LinearButton, LinearGradient} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../../Assets/Colors';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const CircularProgressBar = () => {
   return (
@@ -33,9 +30,12 @@ const Dashboard = ({navigation}) => {
         <ScrollView contentContainerStyle={[Theme.alignContentCenter]}>
           <View style={[Theme.width100p, Theme.separator]}>
             <View style={[Theme.width100p, Theme.row]}>
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+              <TouchableOpacity
+                style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+                onPress={() => {
+                  navigation.navigate('profile');
+                }}>
                 <LinearGradient
-                  colors={[colors.purplelight, colors.purpledark]}
                   style={[
                     Theme.mediumButtonLook,
                     Theme.alignContentCenter,
@@ -44,9 +44,9 @@ const Dashboard = ({navigation}) => {
                   <Icon name="user" size={30} color="white" />
                 </LinearGradient>
                 <Text style={[Theme.textBody]}>Profile</Text>
-              </View>
+              </TouchableOpacity>
 
-              <View
+              <TouchableOpacity
                 style={[
                   Theme.flex1,
                   Theme.padding10,
@@ -55,7 +55,6 @@ const Dashboard = ({navigation}) => {
                   Theme.borderLeft,
                 ]}>
                 <LinearGradient
-                  colors={[colors.purplelight, colors.purpledark]}
                   style={[
                     Theme.mediumButtonLook,
                     Theme.alignContentCenter,
@@ -64,11 +63,11 @@ const Dashboard = ({navigation}) => {
                   <Icon name="photo" size={30} color="white" />
                 </LinearGradient>
                 <Text style={[Theme.textBody]}>Photos</Text>
-              </View>
+              </TouchableOpacity>
 
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+              <TouchableOpacity
+                style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
                 <LinearGradient
-                  colors={[colors.purplelight, colors.purpledark]}
                   style={[
                     Theme.mediumButtonLook,
                     Theme.alignContentCenter,
@@ -79,7 +78,7 @@ const Dashboard = ({navigation}) => {
                 <Text style={[Theme.textBody, Theme.textCenter]}>
                   Partner preference
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -156,9 +155,8 @@ const Dashboard = ({navigation}) => {
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.alignCenter, Theme.padding5]}>
                 <View>
-                  <Icon name="heart-o" size={70} color="grey" />
+                  <Icon name="heart-o" size={50} color="grey" />
                   <View
-                    colors={[colors.purplelight, colors.purpledark]}
                     style={[
                       Theme.notificationLook,
                       Theme.alignContentCenter,
@@ -179,7 +177,7 @@ const Dashboard = ({navigation}) => {
                   Theme.borderRight,
                 ]}>
                 <View>
-                  <IconFeather name="message-square" size={70} color="grey" />
+                  <IconFeather name="message-square" size={50} color="grey" />
                 </View>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>
                   Messages
@@ -190,7 +188,7 @@ const Dashboard = ({navigation}) => {
                 <View>
                   <IconMaterial
                     name="message-text-outline"
-                    size={70}
+                    size={50}
                     color="grey"
                   />
                 </View>
@@ -205,7 +203,6 @@ const Dashboard = ({navigation}) => {
             <View style={[Theme.width100p, Theme.padding10]}>
               <View style={[Theme.row, Theme.alignCenter]}>
                 <LinearGradient
-                  colors={[colors.purplelight, colors.purpledark]}
                   style={[
                     Theme.smallButtonLook,
                     Theme.alignContentCenter,
@@ -220,26 +217,9 @@ const Dashboard = ({navigation}) => {
               <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
                 View all profiles who matches your partner preferences.{' '}
               </Text>
-              <View
-                style={[
-                  Theme.width100p,
-                  Theme.alignContentCenter,
-                  Theme.padding10,
-                ]}>
-                <LinearGradient
-                  style={[
-                    Theme.width100p,
-                    Theme.buttonLook,
-                    Theme.alignContentCenter,
-                  ]}
-                  colors={[colors.purplelight, colors.purpledark]}>
-                  <TouchableOpacity
-                    style={[Theme.width100p, Theme.alignContentCenter]}>
-                    <Text style={[Theme.textBody, Theme.white]}>
-                      View matching profiles
-                    </Text>
-                  </TouchableOpacity>
-                </LinearGradient>
+
+              <View style={[Theme.padding10]}>
+                <LinearButton title="View matching profiles" />
               </View>
             </View>
           </View>
@@ -248,7 +228,6 @@ const Dashboard = ({navigation}) => {
             <View style={[Theme.width100p, Theme.padding10]}>
               <View style={[Theme.row, Theme.alignCenter]}>
                 <LinearGradient
-                  colors={[colors.purplelight, colors.purpledark]}
                   style={[
                     Theme.smallButtonLook,
                     Theme.alignContentCenter,
@@ -263,26 +242,8 @@ const Dashboard = ({navigation}) => {
               <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
                 View all profiles who matches your partner preferences.{' '}
               </Text>
-              <View
-                style={[
-                  Theme.width100p,
-                  Theme.alignContentCenter,
-                  Theme.padding10,
-                ]}>
-                <LinearGradient
-                  style={[
-                    Theme.width100p,
-                    Theme.buttonLook,
-                    Theme.alignContentCenter,
-                  ]}
-                  colors={[colors.purplelight, colors.purpledark]}>
-                  <TouchableOpacity
-                    style={[Theme.width100p, Theme.alignContentCenter]}>
-                    <Text style={[Theme.textBody, Theme.white]}>
-                      Search now
-                    </Text>
-                  </TouchableOpacity>
-                </LinearGradient>
+              <View style={[Theme.padding10]}>
+                <LinearButton title="Search" />
               </View>
             </View>
           </View>

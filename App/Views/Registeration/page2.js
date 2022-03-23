@@ -1,12 +1,10 @@
 import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import {Header, PickerInput} from '../../Components';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../../Assets/Colors';
+import {Header, PickerInput, LinearButton} from '../../Components';
 
-const Register = ({navigation}) => {
+const Register2 = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -83,19 +81,13 @@ const Register = ({navigation}) => {
               <PickerInput title="Religion" />
 
               <View style={[Theme.width100p, Theme.alignContentCenter]}>
-                <View style={Theme.width80p}>
-                  <LinearGradient
-                    style={[Theme.alignContentCenter, Theme.buttonLook]}
-                    colors={[colors.purplelight, colors.purpledark]}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('help');
-                      }}>
-                      <Text style={[Theme.textBody, Theme.white]}>
-                        Continue
-                      </Text>
-                    </TouchableOpacity>
-                  </LinearGradient>
+                <View style={Theme.width60p}>
+                  <LinearButton
+                    title="Continue"
+                    onPress={() => {
+                      navigation.navigate('dashboard');
+                    }}
+                  />
                 </View>
               </View>
             </View>
@@ -106,4 +98,4 @@ const Register = ({navigation}) => {
   );
 };
 
-export default Register;
+export default Register2;
