@@ -1,7 +1,7 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {screenOption} from './constants/options';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { screenOption } from './constants/options';
 import {
   HelpContainer,
   FaqContainer,
@@ -12,8 +12,16 @@ import {
   OtpContainer,
   Otp2Container,
   ProfileContainer,
+  AgeContainer,
+  ReligionContainer,
+  LocationContainer,
+  AboutMeContainer,
+  NameContainer,
+  CountryContainer,
+  EducationContainer,
+  DrinkContainer
 } from '../../Views';
-import {DrawerView} from '../../Components';
+import { DrawerView } from '../../Components';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -24,6 +32,14 @@ export const MainStack = () => {
       <Stack.Screen name={'register2'} component={RegisterContainer2} />
       <Stack.Screen name={'dashboard'} component={DashboardContainer} />
       <Stack.Screen name={'profile'} component={ProfileContainer} />
+      <Stack.Screen name={'age'} component={AgeContainer} />
+      <Stack.Screen name={'location'} component={LocationContainer} />
+      <Stack.Screen name={'religion'} component={ReligionContainer} />
+      <Stack.Screen name={'aboutme'} component={AboutMeContainer} />
+      <Stack.Screen name={'name'} component={NameContainer} />
+      <Stack.Screen name={'country'} component={CountryContainer} />
+      <Stack.Screen name={'education'} component={EducationContainer} />
+      <Stack.Screen name={'drink'} component={DrinkContainer} />
       <Stack.Screen name={'help'} component={HelpContainer} />
       <Stack.Screen name={'faq'} component={FaqContainer} />
     </Stack.Navigator>
@@ -34,7 +50,6 @@ export const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName={'homepage'} screenOptions={screenOption}>
       <Stack.Screen name={'homepage'} component={HomepageContainer} />
-
       <Stack.Screen name={'otp'} component={OtpContainer} />
       <Stack.Screen name={'otp2'} component={Otp2Container} />
       <Stack.Screen name={'DashB'} component={DrawerStack} />

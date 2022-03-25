@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {LinearGradient} from '../../Components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearGradient } from '../../Components';
 
-const FaceBookQuestionMarkModal = ({state, setState}) => {
+const FaceBookQuestionMarkModal = ({ state, setState }) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <View style={[Theme.flex1, Theme.alignContentCenter, Theme.blackFaded]}>
@@ -47,7 +47,7 @@ const FaceBookQuestionMarkModal = ({state, setState}) => {
   );
 };
 
-const Tiles = ({text}) => {
+const Tiles = ({ text }) => {
   return (
     <View
       style={[
@@ -190,7 +190,7 @@ const Slider = () => {
   );
 };
 
-const Homepage = ({navigation}) => {
+const Homepage = ({ navigation }) => {
   const [modal, setModal] = useState(false);
   return (
     <>
@@ -257,7 +257,7 @@ const Homepage = ({navigation}) => {
                 </TouchableOpacity>
               </View> */}
               <View
-                style={[Theme.width90p, Theme.alignContentCenter, Theme.row]}>
+                style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>
                 <TouchableOpacity
                   style={[
                     Theme.width100p,
@@ -265,16 +265,17 @@ const Homepage = ({navigation}) => {
                     Theme.buttonLook,
                     Theme.row,
                     Theme.backgroundBlue,
+                    Theme.paddingHorizonal5p
                   ]}
                   onPress={() => {
                     navigation.navigate('otp');
                   }}>
-                  <Icon name={'mobile-phone'} size={30} color="white" />
+                  <Icon name={'mobile-phone'} size={25} color="white" />
                   <Text
                     style={[
                       Theme.textCaption,
                       Theme.white,
-                      Theme.paddingHorizonal10p,
+                      Theme.paddingHorizonal10p
                     ]}>
                     CONTINUE WITH PHONE NUMBER
                   </Text>

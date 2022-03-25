@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   DateTimeInput,
   Header,
@@ -11,11 +11,11 @@ import {
   LinearButton,
 } from '../../Components';
 
-const Register = ({navigation}) => {
+const Register = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        <Header title="Registeration" left="arrowleft" />
+        <Header title="Registeration" />
         <ScrollView style={[]}>
           <View style={[Theme.width100p, Theme.paddingHorizonal20p]}>
             <Text

@@ -1,23 +1,15 @@
 import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton, LinearGradient} from '../../Components';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { CircularBar, Header, LinearButton, LinearGradient } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CircularProgressBar = () => {
-  return (
-    <View style={Theme.circularBackground}>
-      <View style={Theme.circularForeground}>
-        <Icon name="user" size={50} color="black" />
-      </View>
-    </View>
-  );
-};
 
-const Dashboard = ({navigation}) => {
+
+const Dashboard = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -25,7 +17,9 @@ const Dashboard = ({navigation}) => {
           left="menuunfold"
           right="home"
           title="Dashboard"
-          navigation={navigation}
+          leftnav={() => {
+            navigation.openDrawer()
+          }}
         />
         <ScrollView contentContainerStyle={[Theme.alignContentCenter]}>
           <View style={[Theme.width100p, Theme.separator]}>
@@ -85,7 +79,7 @@ const Dashboard = ({navigation}) => {
           <View style={[Theme.width100p, Theme.separator]}>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <CircularProgressBar />
+                <CircularBar percent={70} />
               </View>
 
               <View

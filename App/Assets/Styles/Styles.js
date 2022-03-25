@@ -1,5 +1,5 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {colors} from '../Colors';
+import { StyleSheet, Dimensions } from 'react-native';
+import { colors } from '../Colors';
 const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
@@ -46,6 +46,12 @@ const Styles = StyleSheet.create({
   },
   width80p: {
     width: '80%',
+  },
+  width70p: {
+    width: '70%',
+  },
+  width30p: {
+    width: '30%',
   },
   width20p: {
     width: '20%',
@@ -109,6 +115,9 @@ const Styles = StyleSheet.create({
   },
   paddingVertical30p: {
     paddingVertical: 30,
+  },
+  heightAuto: {
+    height: 'auto'
   },
   textInput: {
     width: '100%',
@@ -393,24 +402,50 @@ const Styles = StyleSheet.create({
   },
 
   //Circular bar
-  circularBackground: {
+  container: {
     width: 150,
     height: 150,
-    borderRadius: 75,
-    alignItems: 'center',
-    justifyContent: 'center',
     borderWidth: 15,
+    borderRadius: 75,
     borderColor: 'lightgrey',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  circularForeground: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
+  firstProgressLayer: {
     width: 150,
     height: 150,
-    borderRadius: 75,
     borderWidth: 15,
-    borderColor: 'lightgrey',
+    borderRadius: 75,
+    position: 'absolute',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: '#3498db',
+    borderTopColor: '#3498db',
+    transform: [{ rotateZ: '-135deg' }]
+  },
+  secondProgressLayer: {
+    width: 150,
+    height: 150,
+    borderWidth: 15,
+    borderRadius: 75,
+    position: 'absolute',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: '#3498db',
+    borderTopColor: '#3498db',
+    transform: [{ rotateZ: '45deg' }]
+  },
+  offsetLayer: {
+    width: 150,
+    height: 150,
+    borderWidth: 15,
+    borderRadius: 75,
+    position: 'absolute',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: 'lightgrey',
+    borderTopColor: 'lightgrey',
+    transform: [{ rotateZ: '-135deg' }]
   },
   //Otp Styles
   underlineStyleBase: {

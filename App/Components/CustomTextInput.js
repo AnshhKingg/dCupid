@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {View, TextInput, Text} from 'react-native';
-import {Theme} from '../Assets/Styles';
+import React, { useState } from 'react';
+import { View, TextInput, Text } from 'react-native';
+import { Theme } from '../Assets/Styles';
 
 const CustomTextInput = ({
   title,
@@ -21,6 +21,7 @@ const CustomTextInput = ({
         style={[
           Theme.textInput,
           state ? Theme.borderBlue : Theme.borderLightGrey,
+          multiline ? Theme.heightAuto : null
         ]}
         onChangeText={onChangeText}
         value={value}

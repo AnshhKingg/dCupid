@@ -1,22 +1,14 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton, LinearGradient} from '../../Components';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { Header, LinearButton, LinearGradient, CircularBar } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {colors} from '../../Assets/Colors';
+import { colors } from '../../Assets/Colors';
 
-const CircularProgressBar = () => {
-  return (
-    <View style={Theme.circularBackground}>
-      <View style={Theme.circularForeground}>
-        <Icon name="user" size={50} color="black" />
-      </View>
-    </View>
-  );
-};
 
-const Tiles = ({text}) => {
+
+const Tiles = ({ text }) => {
   return (
     <View style={[Theme.alignContentCenter, Theme.row]}>
       <Icon name="user" size={20} color={colors.purpledark} />
@@ -33,7 +25,7 @@ const Tiles = ({text}) => {
   );
 };
 
-const Profile = ({navigation}) => {
+const Profile = ({ navigation }) => {
   const [toggle, setToggle] = useState(false);
   return (
     <>
@@ -42,11 +34,11 @@ const Profile = ({navigation}) => {
           left="menuunfold"
           right="home"
           title="Profile"
-          navigation={navigation}
+          leftnav={() => navigation.openDrawer()}
         />
-        <ScrollView contentContainerStyle={[Theme.alignContentCenter]}>
+        <ScrollView contentContainerStyle={[]}>
           <View style={[Theme.width100p]}>
-            <View style={[Theme.width100p, Theme.row]}>
+            <View style={[Theme.width100p, Theme.alignContentCenter]}>
               <TouchableOpacity
                 style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => {
@@ -68,11 +60,11 @@ const Profile = ({navigation}) => {
                     <Icon name="camera" size={20} color="white" />
                   </View>
                 </LinearGradient>
-                <Text style={[Theme.textHeader, Theme.textFontWeight0]}>
-                  Username
-                </Text>
-                <Text style={[Theme.textCaption]}>40 yrs</Text>
               </TouchableOpacity>
+              <Text style={[Theme.textHeader, Theme.textFontWeight0]}>
+                Username
+              </Text>
+              <Text style={[Theme.textCaption]}>40 yrs</Text>
             </View>
           </View>
 
@@ -108,7 +100,7 @@ const Profile = ({navigation}) => {
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <CircularProgressBar />
+                <CircularBar percent='20' />
               </View>
             </View>
           </View>
@@ -250,9 +242,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('age')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -275,9 +267,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('location')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -300,9 +292,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('religion')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           ) : (
@@ -324,9 +316,9 @@ const Profile = ({navigation}) => {
                 <View style={[Theme.flexStart]}>
                   <Text style={[Theme.textBody]}>About me</Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('aboutme')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -397,9 +389,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('name')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -442,34 +434,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('country')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
-              </View>
-
-              <View
-                style={[
-                  Theme.width100p,
-                  Theme.justifySpcBtw,
-                  Theme.row,
-                  Theme.padding5,
-                  Theme.separator,
-                  Theme.paddingVertical20p,
-                ]}>
-                <View style={[Theme.flexStart]}>
-                  <Text style={[Theme.textBody]}>Religion</Text>
-                  <Text
-                    style={[
-                      Theme.textCaption,
-                      Theme.grey,
-                      Theme.paddingVertical5p,
-                    ]}>
-                    abcd
-                  </Text>
-                </View>
-                <View>
-                  <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -516,9 +483,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('education')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -541,9 +508,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('interest')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -576,9 +543,9 @@ const Profile = ({navigation}) => {
                     abcd
                   </Text>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => navigation.navigate('drink')}>
                   <Icon name="pencil" size={25} color="orange" />
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           )}
