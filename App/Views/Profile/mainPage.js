@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { Header, LinearButton, LinearGradient, CircularBar } from '../../Components';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {
+  Header,
+  LinearButton,
+  LinearGradient,
+  CircularBar,
+} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { colors } from '../../Assets/Colors';
+import {colors} from '../../Assets/Colors';
 
-
-
-const Tiles = ({ text }) => {
+const Tiles = ({text}) => {
   return (
     <View style={[Theme.alignContentCenter, Theme.row]}>
       <Icon name="user" size={20} color={colors.purpledark} />
@@ -25,7 +28,7 @@ const Tiles = ({ text }) => {
   );
 };
 
-const Profile = ({ navigation }) => {
+const Profile = ({navigation}) => {
   const [toggle, setToggle] = useState(false);
   return (
     <>
@@ -42,7 +45,7 @@ const Profile = ({ navigation }) => {
               <TouchableOpacity
                 style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => {
-                  navigation.navigate('profile');
+                  navigation.navigate('photo');
                 }}>
                 <LinearGradient
                   style={[
@@ -100,7 +103,7 @@ const Profile = ({ navigation }) => {
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <CircularBar percent='20' />
+                <CircularBar percent="20" />
               </View>
             </View>
           </View>
@@ -267,7 +270,8 @@ const Profile = ({ navigation }) => {
                     abcd
                   </Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('location')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('location')}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
               </View>
@@ -292,7 +296,8 @@ const Profile = ({ navigation }) => {
                     abcd
                   </Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('religion')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('religion')}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
               </View>
@@ -316,7 +321,8 @@ const Profile = ({ navigation }) => {
                 <View style={[Theme.flexStart]}>
                   <Text style={[Theme.textBody]}>About me</Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('aboutme')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('aboutme')}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
               </View>
@@ -434,7 +440,8 @@ const Profile = ({ navigation }) => {
                     abcd
                   </Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('country')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('country')}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
               </View>
@@ -483,7 +490,8 @@ const Profile = ({ navigation }) => {
                     abcd
                   </Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('education')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('education')}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
               </View>
@@ -508,7 +516,8 @@ const Profile = ({ navigation }) => {
                     abcd
                   </Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('interest')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('interest')}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
               </View>

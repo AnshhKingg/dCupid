@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import {
-  TextInput,
-  LinearButton,
-  LinearGradient,
-} from '../../Components';
-import CountryPicker from 'react-native-country-picker-modal'
+import React, {useState} from 'react';
+import {View, Text, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {TextInput, LinearButton, LinearGradient} from '../../Components';
+import CountryPicker from 'react-native-country-picker-modal';
 
-
-const Otp = ({ navigation }) => {
-  const [country, setcountry] = useState('IN')
+const Otp = ({navigation}) => {
+  const [country, setcountry] = useState('IN');
   return (
     <>
       <LinearGradient>
@@ -31,7 +26,8 @@ const Otp = ({ navigation }) => {
                 </Text>
               </View>
 
-              <View style={[Theme.width100p, Theme.row, Theme.alignContentCenter]}>
+              <View
+                style={[Theme.width100p, Theme.row, Theme.alignContentCenter]}>
                 <View style={[Theme.width30p, Theme.borderBox]}>
                   <View style={[Theme.textInput, Theme.alignContentCenter]}>
                     <CountryPicker
@@ -52,10 +48,8 @@ const Otp = ({ navigation }) => {
                       withEmoji
                       withFlag
                       withCallingCode
-                      onSelect={(text) => setcountry(text.cca2)}
-                      containerButtonStyle={{ opacity: 1 }}
+                      onSelect={text => setcountry(text.cca2)}
                     />
-
                   </View>
                 </View>
                 <View style={[Theme.width70p]}>

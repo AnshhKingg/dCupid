@@ -1,15 +1,18 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { CircularBar, Header, LinearButton, LinearGradient } from '../../Components';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {
+  CircularBar,
+  Header,
+  LinearButton,
+  LinearGradient,
+} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
-
-const Dashboard = ({ navigation }) => {
+const Dashboard = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -18,7 +21,7 @@ const Dashboard = ({ navigation }) => {
           right="home"
           title="Dashboard"
           leftnav={() => {
-            navigation.openDrawer()
+            navigation.openDrawer();
           }}
         />
         <ScrollView contentContainerStyle={[Theme.alignContentCenter]}>

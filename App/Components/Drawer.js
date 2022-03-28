@@ -1,22 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
-import { Theme } from '../Assets/Styles';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from './LinearGradient';
 import LinearGradientButton from './LinearGradientButton';
 
-const DrawerComponent = ({ text, onPress, seperator }) => {
+const DrawerComponent = ({text, onPress, seperator}) => {
   const style =
     seperator === false
       ? [Theme.width90p, Theme.paddingVertical5p, Theme.flexStart]
       : [
-        Theme.width90p,
-        Theme.paddingVertical5p,
-        Theme.flexStart,
-        Theme.drawerSeparator,
-      ];
+          Theme.width90p,
+          Theme.paddingVertical5p,
+          Theme.flexStart,
+          Theme.drawerSeparator,
+        ];
   return (
     <TouchableOpacity
       style={[
@@ -41,24 +40,24 @@ const DrawerComponent = ({ text, onPress, seperator }) => {
   );
 };
 
-const DrawerExtendedComponent = ({ text, onPress, seperator }) => {
+const DrawerExtendedComponent = ({text, onPress, seperator}) => {
   const style =
     seperator === false
       ? [
-        Theme.width90p,
-        Theme.alignCenter,
-        Theme.padding5,
-        Theme.row,
-        Theme.justifySpcBtw,
-      ]
+          Theme.width90p,
+          Theme.alignCenter,
+          Theme.padding5,
+          Theme.row,
+          Theme.justifySpcBtw,
+        ]
       : [
-        Theme.width90p,
-        Theme.alignCenter,
-        Theme.padding5,
-        Theme.row,
-        Theme.drawerSeparator,
-        Theme.justifySpcBtw,
-      ];
+          Theme.width90p,
+          Theme.alignCenter,
+          Theme.padding5,
+          Theme.row,
+          Theme.drawerSeparator,
+          Theme.justifySpcBtw,
+        ];
   return (
     <TouchableOpacity
       style={[
@@ -132,7 +131,7 @@ const Drawer = props => {
         <LinearGradientButton title="Trust score 40%" />
       </View>
 
-      <DrawerContentScrollView
+      <ScrollView
         showsVerticalScrollIndicator={false}
         {...props}
         contentContainerStyle={[Theme.width100p]}>
@@ -150,7 +149,7 @@ const Drawer = props => {
           <DrawerComponent text="Likes Sent" />
           <DrawerComponent text="Declined Profiles" />
         </View>
-      </DrawerContentScrollView>
+      </ScrollView>
       <View
         style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
         <TouchableOpacity

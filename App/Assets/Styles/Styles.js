@@ -1,5 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { colors } from '../Colors';
+import {StyleSheet, Dimensions} from 'react-native';
+import {colors} from '../Colors';
 const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
@@ -71,6 +71,9 @@ const Styles = StyleSheet.create({
   width10p: {
     width: '10%',
   },
+  heightImage: {
+    height: 300,
+  },
   marginBottom0: {
     marginBottom: 0,
   },
@@ -117,7 +120,7 @@ const Styles = StyleSheet.create({
     paddingVertical: 30,
   },
   heightAuto: {
-    height: 'auto'
+    height: 'auto',
   },
   textInput: {
     width: '100%',
@@ -327,6 +330,18 @@ const Styles = StyleSheet.create({
   borderRadius10: {
     borderRadius: 10,
   },
+  trashPos: {
+    position: 'absolute',
+    top: 10,
+    right: 20,
+  },
+  pendingButtonPos: {
+    position: 'absolute',
+    bottom: 10,
+  },
+  absolutePos: {
+    position: 'absolute',
+  },
 
   //colors
 
@@ -409,7 +424,7 @@ const Styles = StyleSheet.create({
     borderRadius: 75,
     borderColor: 'lightgrey',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   firstProgressLayer: {
     width: 150,
@@ -421,7 +436,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: '#3498db',
     borderTopColor: '#3498db',
-    transform: [{ rotateZ: '-135deg' }]
+    transform: [{rotateZ: '-135deg'}],
   },
   secondProgressLayer: {
     width: 150,
@@ -433,7 +448,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: '#3498db',
     borderTopColor: '#3498db',
-    transform: [{ rotateZ: '45deg' }]
+    transform: [{rotateZ: '45deg'}],
   },
   offsetLayer: {
     width: 150,
@@ -445,7 +460,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: 'lightgrey',
     borderTopColor: 'lightgrey',
-    transform: [{ rotateZ: '-135deg' }]
+    transform: [{rotateZ: '-135deg'}],
   },
   //Otp Styles
   underlineStyleBase: {

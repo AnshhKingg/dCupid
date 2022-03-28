@@ -4,7 +4,7 @@ import {Theme} from '../Assets/Styles';
 import PropTypes from 'prop-types';
 import LinearGradient from './LinearGradient';
 
-const LinearGradientButton = ({title, onPress, noGradient, color}) => {
+const LinearGradientButton = ({title, onPress, noGradient, color, flat}) => {
   return (
     <TouchableOpacity
       style={[Theme.width100p, Theme.alignContentCenter]}
@@ -13,7 +13,7 @@ const LinearGradientButton = ({title, onPress, noGradient, color}) => {
         <View
           style={[
             Theme.width100p,
-            Theme.buttonLook,
+            flat ? Theme.flatButton : Theme.buttonLook,
             Theme.alignContentCenter,
             Theme.textBold,
             {backgroundColor: color},
@@ -26,7 +26,7 @@ const LinearGradientButton = ({title, onPress, noGradient, color}) => {
         <LinearGradient
           style={[
             Theme.width100p,
-            Theme.buttonLook,
+            flat ? Theme.flatButton : Theme.buttonLook,
             Theme.alignContentCenter,
             Theme.textBold,
           ]}>

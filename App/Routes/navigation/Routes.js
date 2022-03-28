@@ -1,7 +1,7 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { screenOption } from './constants/options';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {screenOption} from './constants/options';
 import {
   HelpContainer,
   FaqContainer,
@@ -19,9 +19,10 @@ import {
   NameContainer,
   CountryContainer,
   EducationContainer,
-  DrinkContainer
+  DrinkContainer,
+  PhotosContainer,
 } from '../../Views';
-import { DrawerView } from '../../Components';
+import {DrawerView} from '../../Components';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -42,6 +43,7 @@ export const MainStack = () => {
       <Stack.Screen name={'drink'} component={DrinkContainer} />
       <Stack.Screen name={'help'} component={HelpContainer} />
       <Stack.Screen name={'faq'} component={FaqContainer} />
+      <Stack.Screen name={'photo'} component={PhotosContainer} />
     </Stack.Navigator>
   );
 };

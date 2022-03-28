@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { LinearGradient } from '../../Components';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {LinearGradient} from '../../Components';
 
-const FaceBookQuestionMarkModal = ({ state, setState }) => {
+const FaceBookQuestionMarkModal = ({state, setState}) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <View style={[Theme.flex1, Theme.alignContentCenter, Theme.blackFaded]}>
@@ -47,7 +47,7 @@ const FaceBookQuestionMarkModal = ({ state, setState }) => {
   );
 };
 
-const Tiles = ({ text }) => {
+const Tiles = ({text}) => {
   return (
     <View
       style={[
@@ -190,7 +190,7 @@ const Slider = () => {
   );
 };
 
-const Homepage = ({ navigation }) => {
+const Homepage = ({navigation}) => {
   const [modal, setModal] = useState(false);
   return (
     <>
@@ -265,7 +265,7 @@ const Homepage = ({ navigation }) => {
                     Theme.buttonLook,
                     Theme.row,
                     Theme.backgroundBlue,
-                    Theme.paddingHorizonal5p
+                    Theme.paddingHorizonal5p,
                   ]}
                   onPress={() => {
                     navigation.navigate('otp');
@@ -275,7 +275,7 @@ const Homepage = ({ navigation }) => {
                     style={[
                       Theme.textCaption,
                       Theme.white,
-                      Theme.paddingHorizonal10p
+                      Theme.paddingHorizonal10p,
                     ]}>
                     CONTINUE WITH PHONE NUMBER
                   </Text>

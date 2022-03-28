@@ -1,14 +1,18 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { Header, PickerInput, LinearButton } from '../../Components';
+import {View, Text, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {Header, PickerInput, LinearButton} from '../../Components';
 
-const Register2 = ({ navigation }) => {
+const Register2 = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        <Header title="Registeration" left="arrowleft" leftnav={() => navigation.goBack()} />
+        <Header
+          title="Registeration"
+          left="arrowleft"
+          leftnav={() => navigation.goBack()}
+        />
         <ScrollView style={[]}>
           <View style={[Theme.width100p, Theme.paddingHorizonal20p]}>
             <Text

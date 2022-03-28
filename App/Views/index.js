@@ -2,9 +2,20 @@ import Help from './Help';
 import Faqs from './Faq';
 import Homepage from './Homepage';
 import Dashboard from './Dashboard';
-import { Otp, Otp2 } from './Otp';
-import { Register, Register2 } from './Registeration';
-import { Profile, Age, Location, Religion, AboutMe, Name, Country, Education, Drink } from './Profile';
+import Photos from './Photos';
+import {Otp, Otp2} from './Otp';
+import {Register, Register2} from './Registeration';
+import {
+  Profile,
+  Age,
+  Location,
+  Religion,
+  AboutMe,
+  Name,
+  Country,
+  Education,
+  Drink,
+} from './Profile';
 
 export const FaqContainer = Faqs;
 export const HelpContainer = Help;
@@ -14,6 +25,7 @@ export const HomepageContainer = Homepage;
 export const DashboardContainer = Dashboard;
 export const OtpContainer = Otp;
 export const Otp2Container = Otp2;
+export const PhotosContainer = Photos;
 
 //Profile
 export const ProfileContainer = Profile;
