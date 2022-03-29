@@ -21,6 +21,8 @@ import {
   EducationContainer,
   DrinkContainer,
   PhotosContainer,
+  MatchingProfileContainer,
+  ChatContainer,
 } from '../../Views';
 import {DrawerView} from '../../Components';
 const Stack = createNativeStackNavigator();
@@ -44,6 +46,11 @@ export const MainStack = () => {
       <Stack.Screen name={'help'} component={HelpContainer} />
       <Stack.Screen name={'faq'} component={FaqContainer} />
       <Stack.Screen name={'photo'} component={PhotosContainer} />
+      <Stack.Screen
+        name={'matchingprofile'}
+        component={MatchingProfileContainer}
+      />
+      <Stack.Screen name={'chat'} component={ChatContainer} />
     </Stack.Navigator>
   );
 };

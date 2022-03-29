@@ -32,6 +32,15 @@ const Styles = StyleSheet.create({
   height3p: {
     height: 3,
   },
+  maxWidth80: {
+    maxWidth: '80%',
+  },
+  maxWidth70: {
+    maxWidth: '70%',
+  },
+  maxWidth20: {
+    maxWidth: '20%',
+  },
   width100p: {
     width: '100%',
   },
@@ -86,6 +95,18 @@ const Styles = StyleSheet.create({
   marginBottom10: {
     marginBottom: 10,
   },
+  marginHorizontal10: {
+    marginHorizontal: 10,
+  },
+  marginHorizontal5: {
+    marginHorizontal: 5,
+  },
+  marginVertical10: {
+    marginVertical: 10,
+  },
+  marginVertical5: {
+    marginVertical: 5,
+  },
   padding5: {
     padding: 5,
   },
@@ -119,6 +140,12 @@ const Styles = StyleSheet.create({
   paddingVertical30p: {
     paddingVertical: 30,
   },
+  paddingLeft: {
+    paddingLeft: 10,
+  },
+  paddingRight: {
+    paddingRight: 10,
+  },
   heightAuto: {
     height: 'auto',
   },
@@ -140,6 +167,15 @@ const Styles = StyleSheet.create({
   inputContainer: {
     borderRadius: 3,
     marginVertical: 10,
+  },
+  chatTextInputStyle: {
+    width: '100%',
+    height: 60,
+    paddingHorizontal: 20,
+    borderWidth: 1.5,
+    borderColor: 'orange',
+    borderRadius: 40,
+    fontSize: 18,
   },
   textXl: {
     fontSize: 30,
@@ -202,8 +238,17 @@ const Styles = StyleSheet.create({
   selfAlignCenter: {
     alignSelf: 'center',
   },
+  selfAlignStart: {
+    alignSelf: 'flex-start',
+  },
+  selfAlignEnd: {
+    alignSelf: 'flex-end',
+  },
   justifyCenter: {
     justifyContent: 'center',
+  },
+  justifyEnd: {
+    justifyContent: 'flex-end',
   },
   justifySpcArnd: {
     justifyContent: 'space-around',
@@ -305,6 +350,12 @@ const Styles = StyleSheet.create({
     margin: 5,
     borderRadius: 25,
   },
+  largeButtonLook: {
+    width: 60,
+    height: 60,
+    margin: 5,
+    borderRadius: 30,
+  },
   profileIcon: {
     width: 70,
     height: 70,
@@ -329,6 +380,7 @@ const Styles = StyleSheet.create({
   },
   borderRadius10: {
     borderRadius: 10,
+    overflow: 'hidden',
   },
   trashPos: {
     position: 'absolute',
@@ -397,12 +449,23 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  CircledivDown: {
+    position: 'absolute',
+    bottom: 10,
+    height: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    zIndex: 10,
+  },
   circle: {
     width: 10,
     height: 10,
     borderRadius: 5,
     margin: 5,
-    backgroundColor: 'white',
+    backgroundColor: colors.purpledark,
   },
 
   //slider
@@ -411,6 +474,24 @@ const Styles = StyleSheet.create({
   },
   fullWidth: {
     width: width,
+  },
+  imageMatchingProfileWidth: {
+    width: width - 20,
+    height: 300,
+  },
+  imageMatchingVerticalComponent: {
+    width: 60,
+    height: 90,
+    position: 'absolute',
+    top: 0,
+    left: 20,
+  },
+  imageMatchingHorizontalComponent: {
+    width: 150,
+    height: 40,
+    position: 'absolute',
+    bottom: 40,
+    left: 0,
   },
   width90: {
     width: width * 0.9,

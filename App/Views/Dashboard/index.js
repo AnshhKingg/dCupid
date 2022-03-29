@@ -50,7 +50,10 @@ const Dashboard = ({navigation}) => {
                   Theme.alignCenter,
                   Theme.borderRight,
                   Theme.borderLeft,
-                ]}>
+                ]}
+                onPress={() => {
+                  navigation.navigate('photo');
+                }}>
                 <LinearGradient
                   style={[
                     Theme.mediumButtonLook,
@@ -216,7 +219,12 @@ const Dashboard = ({navigation}) => {
               </Text>
 
               <View style={[Theme.padding10]}>
-                <LinearButton title="View matching profiles" />
+                <LinearButton
+                  title="View matching profiles"
+                  onPress={() => {
+                    navigation.navigate('matchingprofile');
+                  }}
+                />
               </View>
             </View>
           </View>

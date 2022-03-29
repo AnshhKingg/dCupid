@@ -3,6 +3,8 @@ import Faqs from './Faq';
 import Homepage from './Homepage';
 import Dashboard from './Dashboard';
 import Photos from './Photos';
+import MatchingProfile from './MatchingProfile';
+import Chat from './Chat';
 import {Otp, Otp2} from './Otp';
 import {Register, Register2} from './Registeration';
 import {
@@ -37,3 +39,6 @@ export const NameContainer = Name;
 export const CountryContainer = Country;
 export const EducationContainer = Education;
 export const DrinkContainer = Drink;
+
+export const MatchingProfileContainer = MatchingProfile;
+export const ChatContainer = Chat;
