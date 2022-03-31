@@ -23,6 +23,10 @@ import {
   PhotosContainer,
   MatchingProfileContainer,
   ChatContainer,
+  MessagesContainer,
+  MembershipContainer,
+  TrustScoreContainer,
+  SettingsContainer,
 } from '../../Views';
 import {DrawerView} from '../../Components';
 const Stack = createNativeStackNavigator();
@@ -51,6 +55,10 @@ export const MainStack = () => {
         component={MatchingProfileContainer}
       />
       <Stack.Screen name={'chat'} component={ChatContainer} />
+      <Stack.Screen name={'message'} component={MessagesContainer} />
+      <Stack.Screen name={'trustscore'} component={TrustScoreContainer} />
+      <Stack.Screen name={'membership'} component={MembershipContainer} />
+      <Stack.Screen name={'settings'} component={SettingsContainer} />
     </Stack.Navigator>
   );
 };

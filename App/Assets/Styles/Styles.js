@@ -146,6 +146,15 @@ const Styles = StyleSheet.create({
   paddingRight: {
     paddingRight: 10,
   },
+  paddingBottom30: {
+    paddingBottom: 30,
+  },
+  paddingBottom20: {
+    paddingBottom: 20,
+  },
+  paddingBottom10: {
+    paddingBottom: 10,
+  },
   heightAuto: {
     height: 'auto',
   },
@@ -267,8 +276,6 @@ const Styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
     marginBottom: 5,
-    marginLeft: 5,
-    marginRight: 5,
   },
   drawerSeparator: {
     borderBottomWidth: 2,
@@ -337,6 +344,11 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     bottom: -0,
     right: -10,
+  },
+  vsmallButtonLook: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
   smallButtonLook: {
     width: 40,

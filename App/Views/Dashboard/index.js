@@ -154,7 +154,7 @@ const Dashboard = ({navigation}) => {
           <View style={[Theme.width100p, Theme.separator]}>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.alignCenter, Theme.padding5]}>
-                <View>
+                <TouchableOpacity>
                   <Icon name="heart-o" size={50} color="grey" />
                   <View
                     style={[
@@ -164,7 +164,7 @@ const Dashboard = ({navigation}) => {
                     ]}>
                     <Text style={[Theme.textCaption, Theme.white]}>9</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>Likes</Text>
               </View>
 
@@ -176,22 +176,39 @@ const Dashboard = ({navigation}) => {
                   Theme.borderLeft,
                   Theme.borderRight,
                 ]}>
-                <View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('message')}>
                   <IconFeather name="message-square" size={50} color="grey" />
-                </View>
+                  <View
+                    style={[
+                      Theme.notificationLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundBlue,
+                    ]}>
+                    <Text style={[Theme.textCaption, Theme.white]}>9</Text>
+                  </View>
+                </TouchableOpacity>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>
                   Messages
                 </Text>
               </View>
 
               <View style={[Theme.flex1, Theme.alignCenter, Theme.padding5]}>
-                <View>
+                <TouchableOpacity>
                   <IconMaterial
                     name="message-text-outline"
                     size={50}
                     color="grey"
                   />
-                </View>
+                  <View
+                    style={[
+                      Theme.notificationLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundBlue,
+                    ]}>
+                    <Text style={[Theme.textCaption, Theme.white]}>9</Text>
+                  </View>
+                </TouchableOpacity>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>
                   Chat requests
                 </Text>

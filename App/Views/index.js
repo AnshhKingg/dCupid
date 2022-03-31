@@ -5,6 +5,10 @@ import Dashboard from './Dashboard';
 import Photos from './Photos';
 import MatchingProfile from './MatchingProfile';
 import Chat from './Chat';
+import Messages from './Messages';
+import TrustScore from './TrustScore';
+import Membership from './Membership';
+import Settings from './Settings';
 import {Otp, Otp2} from './Otp';
 import {Register, Register2} from './Registeration';
 import {
@@ -42,3 +46,7 @@ export const DrinkContainer = Drink;
 
 export const MatchingProfileContainer = MatchingProfile;
 export const ChatContainer = Chat;
+export const MessagesContainer = Messages;
+export const TrustScoreContainer = TrustScore;
+export const MembershipContainer = Membership;
+export const SettingsContainer = Settings;

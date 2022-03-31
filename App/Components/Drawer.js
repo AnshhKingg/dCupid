@@ -85,56 +85,68 @@ const DrawerExtendedComponent = ({text, onPress, seperator}) => {
 
 const Drawer = props => {
   return (
-    <View style={[Theme.flex1, Theme.alignContentCenter, Theme.width100p]}>
-      <LinearGradient
-        style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
-        <View
-          style={[
-            Theme.width100p,
-            Theme.drawerHeight,
-            Theme.row,
-            Theme.alignContentCenter,
-          ]}>
-          <View
-            style={[
-              Theme.width90p,
-              Theme.alignCenter,
-              Theme.padding5,
-              Theme.row,
-            ]}>
-            <View
-              style={[
-                Theme.alignContentCenter,
-                Theme.profileIcon,
-                Theme.backgroundWhite,
-              ]}>
-              <Icon name={'user-friends'} size={25} color="white" />
-            </View>
-            <Text style={[Theme.textBody, Theme.textHeader, Theme.white]}>
-              Nothing
-            </Text>
-          </View>
-          <View
-            style={[
-              Theme.width10p,
-              Theme.alignContentCenter,
-              Theme.smallButtonLook,
-              Theme.backgroundWhite,
-            ]}>
-            <AntIcon name={'setting'} size={25} color="purple" />
-          </View>
-        </View>
-      </LinearGradient>
-
-      <View
-        style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
-        <LinearGradientButton title="Trust score 40%" />
-      </View>
-
+    <View style={[Theme.flex1]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         {...props}
-        contentContainerStyle={[Theme.width100p]}>
+        contentContainerStyle={[Theme.flexGrow, Theme.width100p]}>
+        <LinearGradient
+          style={[
+            Theme.width100p,
+            Theme.alignContentCenter,
+            Theme.paddingHorizonal20p,
+            Theme.padding10,
+          ]}>
+          <View
+            style={[
+              Theme.width100p,
+              Theme.drawerHeight,
+              Theme.row,
+              Theme.alignContentCenter,
+            ]}>
+            <View
+              style={[
+                Theme.width90p,
+                Theme.alignCenter,
+                Theme.padding5,
+                Theme.row,
+              ]}>
+              <View
+                style={[
+                  Theme.alignContentCenter,
+                  Theme.profileIcon,
+                  Theme.backgroundWhite,
+                ]}>
+                <Icon name={'user-friends'} size={25} color="white" />
+              </View>
+              <Text style={[Theme.textBody, Theme.textHeader, Theme.white]}>
+                Nothing
+              </Text>
+            </View>
+            <View
+              style={[
+                Theme.width10p,
+                Theme.alignContentCenter,
+                Theme.smallButtonLook,
+                Theme.backgroundWhite,
+              ]}>
+              <AntIcon
+                name={'setting'}
+                size={25}
+                color="purple"
+                onPress={() => props.navigation.navigate('settings')}
+              />
+            </View>
+          </View>
+        </LinearGradient>
+
+        <View
+          style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
+          <LinearGradientButton
+            title="Trust score 40%"
+            onPress={() => props.navigation.navigate('trustscore')}
+          />
+        </View>
         <View style={[Theme.drawerSeparator]} />
         <View style={[Theme.flex1, Theme.width100p, Theme.paddingHorizonal20p]}>
           <DrawerComponent text="My Matches" />
@@ -145,7 +157,10 @@ const Drawer = props => {
           <DrawerComponent text="Chat Request" seperator={false} />
           <DrawerExtendedComponent text="Regular" seperator={false} />
           <DrawerExtendedComponent text="Filtered out" />
-          <DrawerComponent text="Messages" />
+          <DrawerComponent
+            text="Messages"
+            onPress={() => props.navigation.navigate('message')}
+          />
           <DrawerComponent text="Likes Sent" />
           <DrawerComponent text="Declined Profiles" />
         </View>
@@ -158,7 +173,8 @@ const Drawer = props => {
             Theme.flatButton,
             Theme.backgroundPink,
             Theme.alignContentCenter,
-          ]}>
+          ]}
+          onPress={() => props.navigation.navigate('membership')}>
           <Text style={[Theme.textBody, Theme.white]}>Membership</Text>
         </TouchableOpacity>
       </View>

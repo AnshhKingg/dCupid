@@ -6,7 +6,7 @@ import {
   Header,
   LinearButton,
   LinearGradient,
-  CircularBar,
+  SemiCircularBar,
 } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../Assets/Colors';
@@ -103,7 +103,14 @@ const Profile = ({navigation}) => {
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <CircularBar percent="20" />
+                <SemiCircularBar
+                  progressWidth={20}
+                  percentage={70}
+                  interiorCircleColor="#f2f2f2"
+                  progressColor="purple"
+                  progressShadowColor="grey">
+                  <Text style={[Theme.textHeader]}>40%</Text>
+                </SemiCircularBar>
               </View>
             </View>
           </View>

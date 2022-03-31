@@ -7,6 +7,7 @@ import Drawer from './Drawer';
 import LinearGradientButton from './LinearGradientButton';
 import LinearGradientWrapper from './LinearGradient';
 import CircularProgressBar from './CircularProgressBar';
+import SemiCircularProgressBar from './SemicircularProgressBar';
 
 export const TextInput = Input;
 export const Header = HeaderBar;
@@ -17,3 +18,4 @@ export const DrawerView = Drawer;
 export const LinearButton = LinearGradientButton;
 export const LinearGradient = LinearGradientWrapper;
 export const CircularBar = CircularProgressBar;
+export const SemiCircularBar = SemiCircularProgressBar;
