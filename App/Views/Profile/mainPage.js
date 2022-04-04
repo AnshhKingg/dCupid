@@ -187,7 +187,7 @@ const Profile = ({navigation}) => {
                   title="My Profile"
                   noGradient={toggle ? true : false}
                   color="lightgrey"
-                  onPress={() => setToggle(!toggle)}
+                  onPress={() => setToggle(false)}
                 />
               </View>
               <View style={[Theme.width60p, Theme.padding5, Theme.flexStart]}>
@@ -195,7 +195,7 @@ const Profile = ({navigation}) => {
                   title="Partner Preference"
                   noGradient={!toggle ? true : false}
                   color="lightgrey"
-                  onPress={() => setToggle(!toggle)}
+                  onPress={() => setToggle(true)}
                 />
               </View>
             </View>

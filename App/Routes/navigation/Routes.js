@@ -27,6 +27,11 @@ import {
   MembershipContainer,
   TrustScoreContainer,
   SettingsContainer,
+  DeleteContainer,
+  OtherUsersProfileContainer,
+  SearchMenuContainer,
+  LikesSentContainer,
+  LikesReceivedContainer,
 } from '../../Views';
 import {DrawerView} from '../../Components';
 const Stack = createNativeStackNavigator();
@@ -59,6 +64,14 @@ export const MainStack = () => {
       <Stack.Screen name={'trustscore'} component={TrustScoreContainer} />
       <Stack.Screen name={'membership'} component={MembershipContainer} />
       <Stack.Screen name={'settings'} component={SettingsContainer} />
+      <Stack.Screen name={'delete'} component={DeleteContainer} />
+      <Stack.Screen
+        name={'otherprofile'}
+        component={OtherUsersProfileContainer}
+      />
+      <Stack.Screen name={'searchmenu'} component={SearchMenuContainer} />
+      <Stack.Screen name={'likes'} component={LikesSentContainer} />
+      <Stack.Screen name={'likesreceived'} component={LikesReceivedContainer} />
     </Stack.Navigator>
   );
 };

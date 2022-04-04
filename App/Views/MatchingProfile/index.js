@@ -7,7 +7,7 @@ import {Theme} from '../../Assets/Styles';
 import {Header, LinearGradient} from '../../Components';
 import {colors} from '../../Assets/Colors';
 
-const Slider = ({onPress}) => {
+const Slider = ({onPress, onPressProfile}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const setIndex = event => {
     const contentOffset = event.nativeEvent.contentOffset;
@@ -65,51 +65,53 @@ const Slider = ({onPress}) => {
       </ScrollView>
       <LinearGradient
         style={[Theme.width100p, Theme.padding10, Theme.alignContentCenter]}>
-        <Text style={[Theme.textTitle, Theme.white]}>Vikaram 26</Text>
-        <Text style={[Theme.textTitle, Theme.white]}>
-          Psorisis Never married Athesit
-        </Text>
-        <View style={[Theme.width100p, Theme.row, Theme.alignContentCenter]}>
-          <View
-            style={[
-              Theme.width50p,
-              Theme.paddingHorizonal10p,
-              Theme.alignCenter,
-            ]}>
-            <TouchableOpacity
+        <TouchableOpacity onPress={onPressProfile}>
+          <Text style={[Theme.textTitle, Theme.white]}>Vikaram 26</Text>
+          <Text style={[Theme.textTitle, Theme.white]}>
+            Psorisis Never married Athesit
+          </Text>
+          <View style={[Theme.width100p, Theme.row, Theme.alignContentCenter]}>
+            <View
               style={[
-                Theme.width100p,
-                Theme.buttonLook,
-                Theme.alignContentCenter,
-                Theme.textBold,
-                Theme.backgroundWhite,
+                Theme.width50p,
+                Theme.paddingHorizonal10p,
+                Theme.alignCenter,
               ]}>
-              <Icon name={'heart'} size={30} color={colors.purpledark} />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={[
-              Theme.width50p,
-              Theme.paddingHorizonal10p,
-              Theme.alignCenter,
-            ]}>
-            <TouchableOpacity
+              <TouchableOpacity
+                style={[
+                  Theme.width100p,
+                  Theme.buttonLook,
+                  Theme.alignContentCenter,
+                  Theme.textBold,
+                  Theme.backgroundWhite,
+                ]}>
+                <Icon name={'heart'} size={30} color={colors.purpledark} />
+              </TouchableOpacity>
+            </View>
+            <View
               style={[
-                Theme.width100p,
-                Theme.buttonLook,
-                Theme.alignContentCenter,
-                Theme.textBold,
-                Theme.backgroundWhite,
-              ]}
-              onPress={onPress}>
-              <IconMat
-                name={'message-processing'}
-                size={30}
-                color={colors.purpledark}
-              />
-            </TouchableOpacity>
+                Theme.width50p,
+                Theme.paddingHorizonal10p,
+                Theme.alignCenter,
+              ]}>
+              <TouchableOpacity
+                style={[
+                  Theme.width100p,
+                  Theme.buttonLook,
+                  Theme.alignContentCenter,
+                  Theme.textBold,
+                  Theme.backgroundWhite,
+                ]}
+                onPress={onPress}>
+                <IconMat
+                  name={'message-processing'}
+                  size={30}
+                  color={colors.purpledark}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </LinearGradient>
     </View>
   );
@@ -127,7 +129,10 @@ const MatchingProfile = ({navigation}) => {
           }}
         />
         <View style={[Theme.width100p, Theme.padding10]}>
-          <Slider onPress={() => navigation.navigate('chat')} />
+          <Slider
+            onPress={() => navigation.navigate('chat')}
+            onPressProfile={() => navigation.navigate('otherprofile')}
+          />
         </View>
       </SafeAreaView>
     </>

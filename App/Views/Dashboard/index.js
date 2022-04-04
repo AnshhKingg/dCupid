@@ -265,7 +265,12 @@ const Dashboard = ({navigation}) => {
                 View all profiles who matches your partner preferences.{' '}
               </Text>
               <View style={[Theme.padding10]}>
-                <LinearButton title="Search" />
+                <LinearButton
+                  title="Search"
+                  onPress={() => {
+                    navigation.navigate('searchmenu');
+                  }}
+                />
               </View>
             </View>
           </View>

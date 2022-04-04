@@ -151,7 +151,11 @@ const Drawer = props => {
         <View style={[Theme.flex1, Theme.width100p, Theme.paddingHorizonal20p]}>
           <DrawerComponent text="My Matches" />
           <DrawerComponent text="Search" />
-          <DrawerComponent text="Likes" seperator={false} />
+          <DrawerComponent
+            text="Likes "
+            seperator={false}
+            onPress={() => props.navigation.navigate('likesreceived')}
+          />
           <DrawerExtendedComponent text="Regular" seperator={false} />
           <DrawerExtendedComponent text="Filtered out" />
           <DrawerComponent text="Chat Request" seperator={false} />
@@ -161,7 +165,10 @@ const Drawer = props => {
             text="Messages"
             onPress={() => props.navigation.navigate('message')}
           />
-          <DrawerComponent text="Likes Sent" />
+          <DrawerComponent
+            text="Likes Sent"
+            onPress={() => props.navigation.navigate('likes')}
+          />
           <DrawerComponent text="Declined Profiles" />
         </View>
       </ScrollView>

@@ -8,6 +8,7 @@ import IconF from 'react-native-vector-icons/Feather';
 import IconFoundation from 'react-native-vector-icons/Foundation';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconE from 'react-native-vector-icons/Entypo';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Component = ({title, icon}) => {
   return (
@@ -146,7 +147,8 @@ const Settings = ({navigation}) => {
               ]}>
               <LinearButton title="LOG OUT" />
             </View>
-            <View
+            <TouchableOpacity
+              onPress={() => navigation.navigate('delete')}
               style={[
                 Theme.width60p,
                 Theme.selfAlignCenter,
@@ -156,7 +158,7 @@ const Settings = ({navigation}) => {
               <Text style={[Theme.textBody, Theme.textUnderLine, Theme.blue]}>
                 Delete Profile
               </Text>
-            </View>
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </SafeAreaView>
