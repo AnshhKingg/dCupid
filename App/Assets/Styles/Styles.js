@@ -1,5 +1,5 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {colors} from '../Colors';
+import { StyleSheet, Dimensions } from 'react-native';
+import { colors } from '../Colors';
 const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
@@ -21,6 +21,9 @@ const Styles = StyleSheet.create({
   },
   flexGrow: {
     flexGrow: 1,
+  },
+  flexWrap: {
+    flexWrap: 'wrap'
   },
   OtpContainer: {
     width: '100%',
@@ -314,7 +317,12 @@ const Styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-
+  modalButton: {
+    backgroundColor: 'gray',
+    height: 40,
+    margin: 10,
+    borderRadius: 20,
+  },
   buttonLook: {
     backgroundColor: 'gray',
     height: 60,
@@ -529,7 +537,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: '#3498db',
     borderTopColor: '#3498db',
-    transform: [{rotateZ: '-135deg'}],
+    transform: [{ rotateZ: '-135deg' }],
   },
   secondProgressLayer: {
     width: 150,
@@ -541,7 +549,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: '#3498db',
     borderTopColor: '#3498db',
-    transform: [{rotateZ: '45deg'}],
+    transform: [{ rotateZ: '45deg' }],
   },
   offsetLayer: {
     width: 150,
@@ -553,7 +561,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: 'lightgrey',
     borderTopColor: 'lightgrey',
-    transform: [{rotateZ: '-135deg'}],
+    transform: [{ rotateZ: '-135deg' }],
   },
   //Otp Styles
   underlineStyleBase: {

@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton, TextInput} from '../../Components';
+import { View, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { Header, LinearButton, TextInput } from '../../Components';
 
-const AboutMe = ({navigation}) => {
+const AboutMe = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -42,7 +42,7 @@ const AboutMe = ({navigation}) => {
                 style={[
                   Theme.textBody,
                   Theme.paddingHorizonal10p,
-                  Theme.purple,
+                  Theme.purple
                 ]}>
                 Keep it clean. Do not mention your contact details , social
                 media profile , web links here.

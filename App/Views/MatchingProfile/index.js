@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconMat from 'react-native-vector-icons/MaterialCommunityIcons';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearGradient} from '../../Components';
-import {colors} from '../../Assets/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearGradient, Header } from '../../Components';
+import { colors } from '../../Assets/Colors';
 
-const Slider = ({onPress, onPressProfile}) => {
+
+const Slider = ({ onPress, onPressProfile }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const setIndex = event => {
     const contentOffset = event.nativeEvent.contentOffset;
@@ -117,17 +118,19 @@ const Slider = ({onPress, onPressProfile}) => {
   );
 };
 
-const MatchingProfile = ({navigation}) => {
+const MatchingProfile = ({ navigation }) => {
+
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
         <Header
           left="arrowleft"
-          title="Matching Profile"
+          title="Member Profile"
           leftnav={() => {
             navigation.goBack();
           }}
         />
+
         <View style={[Theme.width100p, Theme.padding10]}>
           <Slider
             onPress={() => navigation.navigate('chat')}

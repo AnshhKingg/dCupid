@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconMat from 'react-native-vector-icons/MaterialCommunityIcons';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearGradient, SemiCircularBar} from '../../Components';
-import {colors} from '../../Assets/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearGradient, SemiCircularBar } from '../../Components';
+import { colors } from '../../Assets/Colors';
+import { Menu, MenuItem } from 'react-native-material-menu';
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
-const Profile = ({onPress}) => {
+const Profile = ({ onPress }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const setIndex = event => {
     const contentOffset = event.nativeEvent.contentOffset;
@@ -115,17 +118,47 @@ const Profile = ({onPress}) => {
   );
 };
 
-const OtherUsersProfile = ({navigation}) => {
+const OtherUsersProfile = ({ navigation }) => {
+  const [visible, setVisible] = useState(false);
+
+  const hideMenu = () => setVisible(false);
+
+  const showMenu = () => setVisible(true);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        <Header
-          left="arrowleft"
-          title="Member Profile"
-          leftnav={() => {
-            navigation.goBack();
-          }}
-        />
+
+        <LinearGradient>
+          <View
+            style={[
+              Theme.width100p,
+              Theme.padding10,
+              Theme.row,
+              Theme.justifySpcBtw,
+            ]}>
+            <View style={[Theme.width60p, Theme.row, Theme.alignCenter]}>
+              <IconAnt name='arrowleft' size={30} color="white" onPress={() => navigation.goBack()} />
+              <Text
+                style={[
+                  Theme.textHeader,
+                  Theme.white,
+                  Theme.paddingHorizonal10p,
+                ]}>
+                Matching Profile
+              </Text>
+            </View>
+            <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
+              <Menu
+                visible={visible}
+                anchor={<IconMaterial name='do-not-disturb' onPress={showMenu} size={30} color="white" />}
+                onRequestClose={hideMenu}
+              >
+                <MenuItem style={[Theme.textBold, Theme.textBody]} onPress={hideMenu}>Block</MenuItem>
+                <MenuItem style={[Theme.textBold, Theme.textBody]} onPress={hideMenu}>Report</MenuItem>
+              </Menu>
+            </View>
+          </View>
+        </LinearGradient>
         <ScrollView>
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.padding10, Theme.alignCenter]}>
@@ -272,7 +305,7 @@ const OtherUsersProfile = ({navigation}) => {
                 Theme.textBold,
                 Theme.backgroundWhite,
               ]}
-              onPress={() => {}}>
+              onPress={() => { }}>
               <IconMat
                 name={'message-processing'}
                 size={30}

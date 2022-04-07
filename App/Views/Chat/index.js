@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -6,14 +6,17 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {LinearButton, LinearGradient} from '../../Components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearButton, LinearGradient } from '../../Components';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import IconIon from 'react-native-vector-icons/Ionicons';
+import { Menu, MenuItem } from 'react-native-material-menu';
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
-const UserMsg = ({toggle}) => {
+const UserMsg = ({ toggle }) => {
   return (
     <View style={Theme.width100p}>
       <View style={toggle ? Theme.selfAlignEnd : Theme.selfAlignStart}>
@@ -44,11 +47,17 @@ const UserMsg = ({toggle}) => {
   );
 };
 
-const Chat = ({navigation}) => {
+const Chat = ({ navigation }) => {
   const bottom = useRef(null);
   useEffect(() => {
-    bottom.current.scrollToEnd({animated: true});
+    bottom.current.scrollToEnd({ animated: true });
   }, []);
+
+  const [visible, setVisible] = useState(false);
+
+  const hideMenu = () => setVisible(false);
+
+  const showMenu = () => setVisible(true);
 
   return (
     <>
@@ -79,6 +88,16 @@ const Chat = ({navigation}) => {
               <Text style={[Theme.textHeader, Theme.white, Theme.padding5]}>
                 Name
               </Text>
+            </View>
+            <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
+              <Menu
+                visible={visible}
+                anchor={<IconMaterial name='do-not-disturb' onPress={showMenu} size={30} color="white" />}
+                onRequestClose={hideMenu}
+              >
+                <MenuItem style={[Theme.textBold, Theme.textBody]} onPress={hideMenu}>Block</MenuItem>
+                <MenuItem style={[Theme.textBold, Theme.textBody]} onPress={hideMenu}>Report</MenuItem>
+              </Menu>
             </View>
           </View>
         </LinearGradient>

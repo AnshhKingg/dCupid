@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Modal } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   Header,
   LinearButton,
@@ -9,9 +9,11 @@ import {
   SemiCircularBar,
 } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {colors} from '../../Assets/Colors';
+import IconM from 'react-native-vector-icons/MaterialIcons';
+import { colors } from '../../Assets/Colors';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
-const Tiles = ({text}) => {
+const Tiles = ({ text }) => {
   return (
     <View style={[Theme.alignContentCenter, Theme.row]}>
       <Icon name="user" size={20} color={colors.purpledark} />
@@ -28,8 +30,65 @@ const Tiles = ({text}) => {
   );
 };
 
-const Profile = ({navigation}) => {
+const InterestModal = ({ state, onPress, onPressCancel, array }) => {
+  const arr = []
+  return (
+    <Modal visible={state} animationType="fade" transparent={true}>
+      <TouchableOpacity
+        style={[Theme.flex1, Theme.alignContentCenter, Theme.blackFaded, Theme.padding10]}
+        onPress={onPressCancel}>
+        <ScrollView contentContainerStyle={[Theme.flexGrow, Theme.backgroundWhite]}>
+          <TouchableWithoutFeedback>
+            <View style={[Theme.flex1, Theme.width100p, Theme.backgroundWhite]}>
+              <View style={[Theme.width100p, Theme.row]}>
+                <LinearGradient style={[Theme.width100p]}>
+                  <Text
+                    style={[
+                      Theme.textTitle,
+                      Theme.textBold,
+                      Theme.white,
+                      Theme.padding10,
+                    ]}>
+                    Interest
+                  </Text>
+                </LinearGradient>
+              </View>
+
+              <View style={[Theme.width100p, Theme.row, Theme.alignCenter, Theme.flexWrap, Theme.padding10]}>
+                <TouchableOpacity style={[Theme.modalButton, Theme.row, { borderWidth: 1, borderColor: 'red' },
+                Theme.alignContentCenter, Theme.backgroundGray, Theme.paddingHorizonal10p]}>
+                  <Text style={[Theme.textCaption, Theme.paddingHorizonal10p]}>aadadasdasd</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                  <LinearGradient style={[{ borderWidth: 1, borderColor: 'red' }, Theme.modalButton, Theme.alignContentCenter, Theme.width100p]}>
+                    <View style={[Theme.width100p, Theme.alignContentCenter]}>
+                      <Text style={[Theme.textBody, Theme.white, Theme.paddingHorizonal10p]}>title</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+              </View>
+
+            </View>
+          </TouchableWithoutFeedback>
+        </ScrollView>
+        <View style={[Theme.width100p, Theme.row, Theme.backgroundWhite]}>
+          <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
+            <LinearButton title="Cancel" noGradient={true} color='lightgrey' onPress={onPressCancel} />
+          </View>
+          <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
+            <LinearButton title="Save" onPress={onPress} />
+          </View>
+        </View>
+      </TouchableOpacity>
+    </Modal>
+  )
+}
+
+const Profile = ({ navigation }) => {
   const [toggle, setToggle] = useState(false);
+  const [interestModal, setInterestModal] = useState(false);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -39,6 +98,7 @@ const Profile = ({navigation}) => {
           title="Profile"
           leftnav={() => navigation.openDrawer()}
         />
+        <InterestModal state={interestModal} onPressCancel={() => setInterestModal(!interestModal)} />
         <ScrollView contentContainerStyle={[]}>
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.alignContentCenter]}>
@@ -524,7 +584,7 @@ const Profile = ({navigation}) => {
                   </Text>
                 </View>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('interest')}>
+                  onPress={() => setInterestModal(!interestModal)}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
               </View>
