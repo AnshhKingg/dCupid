@@ -3,6 +3,7 @@ import {View, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {Header, PickerInput, LinearButton} from '../../Components';
+import {RegisterData} from '../../../data';
 
 const Drinks = ({navigation}) => {
   return (
@@ -16,9 +17,9 @@ const Drinks = ({navigation}) => {
         <ScrollView style={[]}>
           <View style={[Theme.width100p]}>
             <View style={[Theme.selectedItems, Theme.padding10]}>
-              <PickerInput title="Drink" />
-              <PickerInput title="Smoke" />
-              <PickerInput title="Diet" />
+              <PickerInput title="Drink" items={RegisterData.drink} />
+              <PickerInput title="Smoke" items={RegisterData.smoke} />
+              <PickerInput title="Diet" items={RegisterData.diet} />
 
               <View
                 style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>

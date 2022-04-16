@@ -1,8 +1,9 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import appEnv from './appEnv';
+import auth from './auth'
 
 const appReducer = combineReducers({
-  appEnv,
+  appEnv, auth
 });
 
 const rootReducer = (state, action) => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   CircularBar,
   Header,
@@ -12,7 +12,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Dashboard = ({navigation}) => {
+const Dashboard = ({ navigation }) => {
+
+
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -30,7 +32,9 @@ const Dashboard = ({navigation}) => {
               <TouchableOpacity
                 style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => {
-                  navigation.navigate('profile');
+                  navigation.navigate('profile', {
+                    change: false
+                  });
                 }}>
                 <LinearGradient
                   style={[
@@ -66,7 +70,13 @@ const Dashboard = ({navigation}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+                onPress={() => {
+                  navigation.navigate('profile', {
+                    change: true
+                  });
+                }}
+              >
                 <LinearGradient
                   style={[
                     Theme.mediumButtonLook,
@@ -107,7 +117,8 @@ const Dashboard = ({navigation}) => {
 
           <View style={[Theme.width100p, Theme.separator, Theme.marginBottom0]}>
             <View style={[Theme.width100p, Theme.row]}>
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+              <TouchableOpacity style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+                onPress={() => navigation.navigate('trustscore')}>
                 <View
                   style={[
                     Theme.smallButtonLook,
@@ -119,9 +130,10 @@ const Dashboard = ({navigation}) => {
                 <Text style={[Theme.textBody, Theme.textCenter]}>
                   Verify Email 20%
                 </Text>
-              </View>
+              </TouchableOpacity>
 
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+              <TouchableOpacity style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+                onPress={() => navigation.navigate('trustscore')}>
                 <View
                   style={[
                     Theme.smallButtonLook,
@@ -133,9 +145,10 @@ const Dashboard = ({navigation}) => {
                 <Text style={[Theme.textBody, Theme.textCenter]}>
                   Verify mobile 20%
                 </Text>
-              </View>
+              </TouchableOpacity>
 
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+              <TouchableOpacity style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+                onPress={() => navigation.navigate('trustscore')}>
                 <View
                   style={[
                     Theme.smallButtonLook,
@@ -147,14 +160,14 @@ const Dashboard = ({navigation}) => {
                 <Text style={[Theme.textBody, Theme.textCenter]}>
                   Verify Photo ID 20%
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
 
           <View style={[Theme.width100p, Theme.separator]}>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.alignCenter, Theme.padding5]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('likes')}>
                   <Icon name="heart-o" size={50} color="grey" />
                   <View
                     style={[

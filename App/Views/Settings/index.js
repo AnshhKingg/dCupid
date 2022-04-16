@@ -1,16 +1,20 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton} from '../../Components';
+import { View, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { Header, LinearButton } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconF from 'react-native-vector-icons/Feather';
 import IconFoundation from 'react-native-vector-icons/Foundation';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconE from 'react-native-vector-icons/Entypo';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../Redux/actions/auth'
 
-const Component = ({title, icon}) => {
+const Component = ({ title, icon }) => {
+
+
   return (
     <View
       style={[
@@ -34,7 +38,8 @@ const Component = ({title, icon}) => {
   );
 };
 
-const Settings = ({navigation}) => {
+const Settings = ({ navigation }) => {
+  const dis = useDispatch()
   return (
     <>
       <SafeAreaView style={[Theme.height100p, Theme.alignCenter]}>
@@ -145,7 +150,7 @@ const Settings = ({navigation}) => {
                 Theme.selfAlignCenter,
                 Theme.paddingBottom20,
               ]}>
-              <LinearButton title="LOG OUT" />
+              <LinearButton title="LOG OUT" onPress={() => dis(logout())} />
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('delete')}

@@ -1,21 +1,21 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
-import {Theme} from '../Assets/Styles';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { Theme } from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from './LinearGradient';
 import LinearGradientButton from './LinearGradientButton';
 
-const DrawerComponent = ({text, onPress, seperator}) => {
+const DrawerComponent = ({ text, onPress, seperator }) => {
   const style =
     seperator === false
       ? [Theme.width90p, Theme.paddingVertical5p, Theme.flexStart]
       : [
-          Theme.width90p,
-          Theme.paddingVertical5p,
-          Theme.flexStart,
-          Theme.drawerSeparator,
-        ];
+        Theme.width90p,
+        Theme.paddingVertical5p,
+        Theme.flexStart,
+        Theme.drawerSeparator,
+      ];
   return (
     <TouchableOpacity
       style={[
@@ -40,24 +40,24 @@ const DrawerComponent = ({text, onPress, seperator}) => {
   );
 };
 
-const DrawerExtendedComponent = ({text, onPress, seperator}) => {
+const DrawerExtendedComponent = ({ text, onPress, seperator }) => {
   const style =
     seperator === false
       ? [
-          Theme.width90p,
-          Theme.alignCenter,
-          Theme.padding5,
-          Theme.row,
-          Theme.justifySpcBtw,
-        ]
+        Theme.width90p,
+        Theme.alignCenter,
+        Theme.padding5,
+        Theme.row,
+        Theme.justifySpcBtw,
+      ]
       : [
-          Theme.width90p,
-          Theme.alignCenter,
-          Theme.padding5,
-          Theme.row,
-          Theme.drawerSeparator,
-          Theme.justifySpcBtw,
-        ];
+        Theme.width90p,
+        Theme.alignCenter,
+        Theme.padding5,
+        Theme.row,
+        Theme.drawerSeparator,
+        Theme.justifySpcBtw,
+      ];
   return (
     <TouchableOpacity
       style={[
@@ -149,8 +149,8 @@ const Drawer = props => {
         </View>
         <View style={[Theme.drawerSeparator]} />
         <View style={[Theme.flex1, Theme.width100p, Theme.paddingHorizonal20p]}>
-          <DrawerComponent text="My Matches" />
-          <DrawerComponent text="Search" />
+          <DrawerComponent text="My Matches" onPress={() => props.navigation.navigate('matchingprofile')} />
+          <DrawerComponent text="Search" onPress={() => props.navigation.navigate('search')} />
           <DrawerComponent
             text="Likes "
             seperator={false}

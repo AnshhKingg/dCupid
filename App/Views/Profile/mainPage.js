@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Modal } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Modal,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../../Assets/Styles';
 import {
@@ -12,6 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../../Assets/Colors';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { RegisterData } from '../../../data';
 
 const Tiles = ({ text }) => {
   return (
@@ -31,13 +39,19 @@ const Tiles = ({ text }) => {
 };
 
 const InterestModal = ({ state, onPress, onPressCancel, array }) => {
-  const arr = []
+  const arr = [];
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
-        style={[Theme.flex1, Theme.alignContentCenter, Theme.blackFaded, Theme.padding10]}
+        style={[
+          Theme.flex1,
+          Theme.alignContentCenter,
+          Theme.blackFaded,
+          Theme.padding10,
+        ]}
         onPress={onPressCancel}>
-        <ScrollView contentContainerStyle={[Theme.flexGrow, Theme.backgroundWhite]}>
+        <ScrollView
+          contentContainerStyle={[Theme.flexGrow, Theme.backgroundWhite]}>
           <TouchableWithoutFeedback>
             <View style={[Theme.flex1, Theme.width100p, Theme.backgroundWhite]}>
               <View style={[Theme.width100p, Theme.row]}>
@@ -54,28 +68,56 @@ const InterestModal = ({ state, onPress, onPressCancel, array }) => {
                 </LinearGradient>
               </View>
 
-              <View style={[Theme.width100p, Theme.row, Theme.alignCenter, Theme.flexWrap, Theme.padding10]}>
-                <TouchableOpacity style={[Theme.modalButton, Theme.row, { borderWidth: 1, borderColor: 'red' },
+              <View
+                style={[
+                  Theme.width100p,
+                  Theme.row,
+                  Theme.alignCenter,
+                  Theme.flexWrap,
+                  Theme.padding10,
+                ]}>
+                {/* <TouchableOpacity style={[Theme.modalButton, Theme.row, { borderWidth: 1, borderColor: 'red' },
                 Theme.alignContentCenter, Theme.backgroundGray, Theme.paddingHorizonal10p]}>
                   <Text style={[Theme.textCaption, Theme.paddingHorizonal10p]}>aadadasdasd</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
-                <TouchableOpacity>
-                  <LinearGradient style={[{ borderWidth: 1, borderColor: 'red' }, Theme.modalButton, Theme.alignContentCenter, Theme.width100p]}>
-                    <View style={[Theme.width100p, Theme.alignContentCenter]}>
-                      <Text style={[Theme.textBody, Theme.white, Theme.paddingHorizonal10p]}>title</Text>
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
-
+                {RegisterData.interests.map(data => {
+                  return (
+                    <TouchableOpacity style={Theme.paddingHorizonal5p}>
+                      <LinearGradient
+                        style={[
+                          { borderWidth: 1, borderColor: 'red' },
+                          Theme.modalButton,
+                          Theme.alignContentCenter,
+                          Theme.width100p,
+                        ]}>
+                        <View
+                          style={[Theme.width100p, Theme.alignContentCenter]}>
+                          <Text
+                            style={[
+                              Theme.textBody,
+                              Theme.white,
+                              Theme.paddingHorizonal10p,
+                            ]}>
+                            {data}
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
-
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
         <View style={[Theme.width100p, Theme.row, Theme.backgroundWhite]}>
           <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
-            <LinearButton title="Cancel" noGradient={true} color='lightgrey' onPress={onPressCancel} />
+            <LinearButton
+              title="Cancel"
+              noGradient={true}
+              color="lightgrey"
+              onPress={onPressCancel}
+            />
           </View>
           <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
             <LinearButton title="Save" onPress={onPress} />
@@ -83,12 +125,22 @@ const InterestModal = ({ state, onPress, onPressCancel, array }) => {
         </View>
       </TouchableOpacity>
     </Modal>
-  )
-}
+  );
+};
 
-const Profile = ({ navigation }) => {
+const Profile = ({ navigation, route }) => {
   const [toggle, setToggle] = useState(false);
   const [interestModal, setInterestModal] = useState(false);
+  const bottom = useRef(null)
+
+  useEffect(() => {
+    if (route.params.change) {
+      setToggle(true)
+      bottom.current.scrollToEnd({ animated: true });
+    }
+  }, [])
+
+
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -98,8 +150,11 @@ const Profile = ({ navigation }) => {
           title="Profile"
           leftnav={() => navigation.openDrawer()}
         />
-        <InterestModal state={interestModal} onPressCancel={() => setInterestModal(!interestModal)} />
-        <ScrollView contentContainerStyle={[]}>
+        <InterestModal
+          state={interestModal}
+          onPressCancel={() => setInterestModal(!interestModal)}
+        />
+        <ScrollView ref={bottom}>
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.alignContentCenter]}>
               <TouchableOpacity

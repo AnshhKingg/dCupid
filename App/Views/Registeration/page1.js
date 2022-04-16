@@ -1,8 +1,8 @@
-import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   DateTimeInput,
   Header,
@@ -10,8 +10,39 @@ import {
   PickerInput,
   LinearButton,
 } from '../../Components';
+import { RegisterData } from '../../../data';
 
-const Register = ({navigation}) => {
+const Register = ({ navigation }) => {
+
+  const [name, setName] = useState();
+
+  const [email, setEmail] = useState();
+
+
+  // As soon as user registers(Submit a phone number)
+  //   1. If user does not exists in the DB so new user will be created  with inactive status.
+  //     a.OTP -> fill and verify API -> User Active -> response profile null[bool] -> Redirect -> registration
+  //   2. If user already exists in the DB so this will return user with profile information
+  //   a.profile information == null => registration screen
+  // b.profile information !== null => Dashboard 
+
+  // const isValidEmail = () => {
+  //   if()
+  //   return true
+
+  //   return false
+  // }
+
+  // const emptyValidationCheck = ()=>{
+
+  // }
+
+  // const sumbitForm =() =>{
+  //   if(isValidEmail() && emptyValidationCheck()){
+
+  //   }
+  // }
+
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -117,10 +148,13 @@ const Register = ({navigation}) => {
                 </View>
               </View>
               <DateTimeInput title="Date of birth" />
-              <PickerInput title="Skin condition" />
-              <TextInput title="Name*" />
-              <PickerInput title="Privacy setting for name" />
-              <TextInput title="Email*" />
+              <PickerInput title="Skin condition" items={RegisterData.skin} />
+              <TextInput title="Name*" onChangeText={(name) => setName(name)} />
+              <PickerInput
+                title="Privacy setting for name"
+                items={RegisterData.privacy}
+              />
+              <TextInput title="Email*" onChangeText={(value) => setEmail(value)} />
 
               <View style={[Theme.width100p, Theme.alignContentCenter]}>
                 <View style={Theme.width60p}>

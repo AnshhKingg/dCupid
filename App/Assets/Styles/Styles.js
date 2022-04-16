@@ -23,7 +23,7 @@ const Styles = StyleSheet.create({
     flexGrow: 1,
   },
   flexWrap: {
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   OtpContainer: {
     width: '100%',

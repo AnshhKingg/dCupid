@@ -3,6 +3,7 @@ import {View, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {Header, PickerInput, LinearButton, TextInput} from '../../Components';
+import {RegisterData} from '../../../data';
 
 const Name = ({navigation}) => {
   return (
@@ -16,12 +17,18 @@ const Name = ({navigation}) => {
         <ScrollView style={[]}>
           <View style={[Theme.width100p]}>
             <View style={[Theme.selectedItems, Theme.padding10]}>
-              <TextInput title="Name" />
-              <PickerInput title="Privacy Setting For Name" />
-              <PickerInput title="Date of Birth" />
-              <PickerInput title="Maritial Status" />
-              <PickerInput title="Skin Condition" />
-              <PickerInput title="Do you have childrens?" />
+              <TextInput title="Name" editable={false} />
+              <PickerInput
+                title="Privacy Setting For Name"
+                items={RegisterData.privacy}
+              />
+              <PickerInput title="Date of Birth" enabled={false} />
+              <PickerInput title="Maritial Status" enabled={false} />
+              <PickerInput title="Skin Condition" enabled={false} />
+              <PickerInput
+                title="Do you have childrens?"
+                items={RegisterData.children}
+              />
               <View
                 style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>
                 <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,18 +7,18 @@ import {
   Modal,
   Image,
   PermissionsAndroid,
-  Alert, TouchableWithoutFeedback
+  Alert,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { Header, LinearButton, LinearGradient } from '../../Components';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {Header, LinearButton, LinearGradient} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconCircle from 'react-native-vector-icons/Feather';
-import { colors } from '../../Assets/Colors';
+import {colors} from '../../Assets/Colors';
 import ImagePicker from 'react-native-image-crop-picker';
 
-
-const GuidelinesModal = ({ state, setState }) => {
+const GuidelinesModal = ({state, setState}) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -64,7 +64,7 @@ const GuidelinesModal = ({ state, setState }) => {
   );
 };
 
-const PhotoModal = ({ state, setState, setPath }) => {
+const PhotoModal = ({state, setState, setPath}) => {
   return (
     <Modal visible={state} animationType="slide" transparent={true}>
       <TouchableOpacity
@@ -163,7 +163,7 @@ const PhotoModal = ({ state, setState, setPath }) => {
   );
 };
 
-const Photos = ({ navigation }) => {
+const Photos = ({navigation}) => {
   const [guideline, setGuideline] = useState(false);
   const [photo, setPhoto] = useState(false);
   const [path, setPath] = useState('');
@@ -279,7 +279,7 @@ const Photos = ({ navigation }) => {
             <View style={[Theme.width80p, Theme.alignCenter]}>
               <Image
                 style={[Theme.width100p, Theme.heightImage]}
-                source={{ uri: path }}
+                source={{uri: path}}
               />
               <View style={Theme.trashPos}>
                 <IconCircle

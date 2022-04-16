@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Keyboard
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../../Assets/Styles';
@@ -49,8 +50,18 @@ const UserMsg = ({ toggle }) => {
 
 const Chat = ({ navigation }) => {
   const bottom = useRef(null);
+  const pos = useRef(false);
+  const [scroll, setScroll] = useState(false)
   useEffect(() => {
     bottom.current.scrollToEnd({ animated: true });
+    Keyboard.addListener('keyboardDidShow', () => {
+      if (pos.current) {
+        bottom.current.scrollToEnd({ animated: true })
+      }
+    })
+    return () => {
+      Keyboard.removeAllListeners('keyboardDidShow')
+    }
   }, []);
 
   const [visible, setVisible] = useState(false);
@@ -92,11 +103,25 @@ const Chat = ({ navigation }) => {
             <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
               <Menu
                 visible={visible}
-                anchor={<IconMaterial name='do-not-disturb' onPress={showMenu} size={30} color="white" />}
-                onRequestClose={hideMenu}
-              >
-                <MenuItem style={[Theme.textBold, Theme.textBody]} onPress={hideMenu}>Block</MenuItem>
-                <MenuItem style={[Theme.textBold, Theme.textBody]} onPress={hideMenu}>Report</MenuItem>
+                anchor={
+                  <IconMaterial
+                    name="do-not-disturb"
+                    onPress={showMenu}
+                    size={30}
+                    color="white"
+                  />
+                }
+                onRequestClose={hideMenu}>
+                <MenuItem
+                  style={[Theme.textBold, Theme.textBody]}
+                  onPress={hideMenu}>
+                  Block
+                </MenuItem>
+                <MenuItem
+                  style={[Theme.textBold, Theme.textBody]}
+                  onPress={hideMenu}>
+                  Report
+                </MenuItem>
               </Menu>
             </View>
           </View>
@@ -109,7 +134,17 @@ const Chat = ({ navigation }) => {
             Theme.flexGrow,
             Theme.width100p,
             Theme.justifyEnd,
-          ]}>
+          ]}
+          onScrollEndDrag={(e) => {
+            if ((e.nativeEvent.contentSize.height - e.nativeEvent.layoutMeasurement.height)
+              - (e.nativeEvent.contentOffset.y) < 90) {
+              pos.current = true
+            } else {
+              pos.current = false
+            }
+
+          }}
+        >
           <View style={[Theme.width100p, Theme.padding5]}>
             <UserMsg />
 

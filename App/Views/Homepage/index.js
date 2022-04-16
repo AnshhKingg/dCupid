@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {LinearGradient} from '../../Components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearGradient } from '../../Components';
 
-const FaceBookQuestionMarkModal = ({state, setState}) => {
+const FaceBookQuestionMarkModal = ({ state, setState }) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <View style={[Theme.flex1, Theme.alignContentCenter, Theme.blackFaded]}>
@@ -47,7 +47,7 @@ const FaceBookQuestionMarkModal = ({state, setState}) => {
   );
 };
 
-const Tiles = ({text}) => {
+const Tiles = ({ text }) => {
   return (
     <View
       style={[
@@ -190,7 +190,7 @@ const Slider = () => {
   );
 };
 
-const Homepage = ({navigation}) => {
+const Homepage = ({ navigation }) => {
   const [modal, setModal] = useState(false);
   return (
     <>
@@ -200,11 +200,11 @@ const Homepage = ({navigation}) => {
       />
       <LinearGradient>
         <SafeAreaView style={[Theme.height100p]}>
-          <View style={[Theme.flex5, Theme.width100p]}>
+          <View style={[Theme.flex2, Theme.width100p]}>
             <Slider />
           </View>
           <View
-            style={[Theme.flex5, Theme.width100p, Theme.alignContentCenter]}>
+            style={[Theme.flex1, Theme.width100p, Theme.alignContentCenter]}>
             <View style={[Theme.width90p, Theme.alignContentCenter]}>
               {/* <View
                 style={[Theme.width90p, Theme.alignContentCenter, Theme.row]}>
