@@ -3,19 +3,39 @@ import {View, Text} from 'react-native';
 import {Theme} from '../Assets/Styles';
 import {Picker} from '@react-native-picker/picker';
 
-const CustomPickerInput = ({title, error}) => {
+const CustomPickerInput = ({
+  title,
+  error,
+  items,
+  onValueChange,
+  enabled,
+  selectedValue,
+}) => {
   const [selectedLanguage, setSelectedLanguage] = useState();
   return (
-    <View style={[Theme.textInput, Theme.inputContainer]}>
+    <View
+      style={[
+        Theme.textInput,
+        Theme.inputContainer,
+        enabled === false ? Theme.backgroundGray : Theme.backgroundWhite,
+      ]}>
       <Picker
         selectedValue={selectedLanguage}
         mode="dropdown"
-        onValueChange={(itemValue, itemIndex) =>
-          setSelectedLanguage(itemValue)
-        }>
-        <Picker.Item label="Select" value="" style={Theme.textBody} />
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
+        onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+        enabled={enabled}>
+        <Picker.Item label={'Select'} value={''} style={Theme.textBody} />
+        {items
+          ? items.map(data => {
+              return (
+                <Picker.Item
+                  label={data.label}
+                  value={data.value}
+                  style={Theme.textBody}
+                />
+              );
+            })
+          : null}
       </Picker>
       {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}
 

@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../../Assets/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearGradient } from '../../Components';
 
-const FaceBookQuestionMarkModal = ({state, setState}) => {
+const FaceBookQuestionMarkModal = ({ state, setState }) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <View style={[Theme.flex1, Theme.alignContentCenter, Theme.blackFaded]}>
         <View style={[Theme.width90]}>
-          <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
+          <LinearGradient>
             <Text style={[Theme.padding10, Theme.textBody, Theme.white]}>
               Help
             </Text>
@@ -34,8 +33,7 @@ const FaceBookQuestionMarkModal = ({state, setState}) => {
                 Theme.alignContentCenter,
                 Theme.buttonLook,
                 Theme.paddingHorizonal20p,
-              ]}
-              colors={[colors.purplelight, colors.purpledark]}>
+              ]}>
               <TouchableOpacity
                 style={[Theme.width100p, Theme.alignContentCenter]}
                 onPress={setState}>
@@ -49,7 +47,7 @@ const FaceBookQuestionMarkModal = ({state, setState}) => {
   );
 };
 
-const Tiles = ({text}) => {
+const Tiles = ({ text }) => {
   return (
     <View
       style={[
@@ -113,7 +111,6 @@ const Slider = () => {
           <View
             style={[
               Theme.fullWidth,
-              Theme.alignCenter,
               Theme.paddingHorizonal30p,
               Theme.paddingVertical30p,
             ]}>
@@ -193,7 +190,7 @@ const Slider = () => {
   );
 };
 
-const Homepage = ({navigation}) => {
+const Homepage = ({ navigation }) => {
   const [modal, setModal] = useState(false);
   return (
     <>
@@ -201,13 +198,13 @@ const Homepage = ({navigation}) => {
         state={modal}
         setState={() => setModal(!modal)}
       />
-      <LinearGradient colors={[colors.purplelight, colors.purpledark]}>
+      <LinearGradient>
         <SafeAreaView style={[Theme.height100p]}>
-          <View style={[Theme.flex5, Theme.width100p]}>
+          <View style={[Theme.flex2, Theme.width100p]}>
             <Slider />
           </View>
           <View
-            style={[Theme.flex5, Theme.width100p, Theme.alignContentCenter]}>
+            style={[Theme.flex1, Theme.width100p, Theme.alignContentCenter]}>
             <View style={[Theme.width90p, Theme.alignContentCenter]}>
               {/* <View
                 style={[Theme.width90p, Theme.alignContentCenter, Theme.row]}>
@@ -260,7 +257,7 @@ const Homepage = ({navigation}) => {
                 </TouchableOpacity>
               </View> */}
               <View
-                style={[Theme.width90p, Theme.alignContentCenter, Theme.row]}>
+                style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>
                 <TouchableOpacity
                   style={[
                     Theme.width100p,
@@ -268,11 +265,12 @@ const Homepage = ({navigation}) => {
                     Theme.buttonLook,
                     Theme.row,
                     Theme.backgroundBlue,
+                    Theme.paddingHorizonal5p,
                   ]}
                   onPress={() => {
                     navigation.navigate('otp');
                   }}>
-                  <Icon name={'mobile-phone'} size={30} color="white" />
+                  <Icon name={'mobile-phone'} size={25} color="white" />
                   <Text
                     style={[
                       Theme.textCaption,

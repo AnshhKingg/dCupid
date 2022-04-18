@@ -1,5 +1,5 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {colors} from '../Colors';
+import { StyleSheet, Dimensions } from 'react-native';
+import { colors } from '../Colors';
 const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
@@ -19,11 +19,30 @@ const Styles = StyleSheet.create({
   flex5: {
     flex: 5,
   },
+  flexGrow: {
+    flexGrow: 1,
+  },
+  flexWrap: {
+    flexWrap: 'wrap',
+  },
+  OtpContainer: {
+    width: '100%',
+    height: 80,
+  },
   height100p: {
     height: '100%',
   },
   height3p: {
     height: 3,
+  },
+  maxWidth80: {
+    maxWidth: '80%',
+  },
+  maxWidth70: {
+    maxWidth: '70%',
+  },
+  maxWidth20: {
+    maxWidth: '20%',
   },
   width100p: {
     width: '100%',
@@ -39,6 +58,12 @@ const Styles = StyleSheet.create({
   },
   width80p: {
     width: '80%',
+  },
+  width70p: {
+    width: '70%',
+  },
+  width30p: {
+    width: '30%',
   },
   width20p: {
     width: '20%',
@@ -58,6 +83,9 @@ const Styles = StyleSheet.create({
   width10p: {
     width: '10%',
   },
+  heightImage: {
+    height: 300,
+  },
   marginBottom0: {
     marginBottom: 0,
   },
@@ -69,6 +97,18 @@ const Styles = StyleSheet.create({
   },
   marginBottom10: {
     marginBottom: 10,
+  },
+  marginHorizontal10: {
+    marginHorizontal: 10,
+  },
+  marginHorizontal5: {
+    marginHorizontal: 5,
+  },
+  marginVertical10: {
+    marginVertical: 10,
+  },
+  marginVertical5: {
+    marginVertical: 5,
   },
   padding5: {
     padding: 5,
@@ -103,6 +143,24 @@ const Styles = StyleSheet.create({
   paddingVertical30p: {
     paddingVertical: 30,
   },
+  paddingLeft: {
+    paddingLeft: 10,
+  },
+  paddingRight: {
+    paddingRight: 10,
+  },
+  paddingBottom30: {
+    paddingBottom: 30,
+  },
+  paddingBottom20: {
+    paddingBottom: 20,
+  },
+  paddingBottom10: {
+    paddingBottom: 10,
+  },
+  heightAuto: {
+    height: 'auto',
+  },
   textInput: {
     width: '100%',
     borderRadius: 4,
@@ -122,29 +180,38 @@ const Styles = StyleSheet.create({
     borderRadius: 3,
     marginVertical: 10,
   },
+  chatTextInputStyle: {
+    width: '100%',
+    height: 60,
+    paddingHorizontal: 20,
+    borderWidth: 1.5,
+    borderColor: 'orange',
+    borderRadius: 40,
+    fontSize: 18,
+  },
   textXl: {
     fontSize: 30,
     fontWeight: '700',
     color: 'black',
   },
   textHeader: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '700',
     color: 'black',
   },
   textTitle: {
-    fontSize: 20,
+    fontSize: 22,
     color: 'black',
   },
   textBody: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'black',
   },
   textBlack: {
     color: 'black',
   },
   textCaption: {
-    fontSize: 16,
+    fontSize: 18,
     color: 'black',
   },
   textBold: {
@@ -180,8 +247,20 @@ const Styles = StyleSheet.create({
   alignCenter: {
     alignItems: 'center',
   },
+  selfAlignCenter: {
+    alignSelf: 'center',
+  },
+  selfAlignStart: {
+    alignSelf: 'flex-start',
+  },
+  selfAlignEnd: {
+    alignSelf: 'flex-end',
+  },
   justifyCenter: {
     justifyContent: 'center',
+  },
+  justifyEnd: {
+    justifyContent: 'flex-end',
   },
   justifySpcArnd: {
     justifyContent: 'space-around',
@@ -199,9 +278,7 @@ const Styles = StyleSheet.create({
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
-    marginBottom: 10,
-    marginLeft: 5,
-    marginRight: 5,
+    marginBottom: 5,
   },
   drawerSeparator: {
     borderBottomWidth: 2,
@@ -240,7 +317,12 @@ const Styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-
+  modalButton: {
+    backgroundColor: 'gray',
+    height: 40,
+    margin: 10,
+    borderRadius: 20,
+  },
   buttonLook: {
     backgroundColor: 'gray',
     height: 60,
@@ -254,13 +336,27 @@ const Styles = StyleSheet.create({
     borderRadius: 5,
   },
   notificationLook: {
+    width: 25,
+    height: 25,
+    margin: 0,
+    borderRadius: 12.5,
+    position: 'absolute',
+    top: -0,
+    right: -10,
+  },
+  profileIconNotification: {
     width: 30,
     height: 30,
-    margin: 5,
+    margin: 0,
     borderRadius: 15,
     position: 'absolute',
-    top: -10,
-    right: -20,
+    bottom: -0,
+    right: -10,
+  },
+  vsmallButtonLook: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
   smallButtonLook: {
     width: 40,
@@ -274,11 +370,17 @@ const Styles = StyleSheet.create({
     margin: 5,
     borderRadius: 25,
   },
-  profileIcon: {
+  largeButtonLook: {
     width: 60,
     height: 60,
     margin: 5,
     borderRadius: 30,
+  },
+  profileIcon: {
+    width: 70,
+    height: 70,
+    margin: 5,
+    borderRadius: 35,
   },
   borderBox: {
     borderWidth: 0.5,
@@ -298,6 +400,19 @@ const Styles = StyleSheet.create({
   },
   borderRadius10: {
     borderRadius: 10,
+    overflow: 'hidden',
+  },
+  trashPos: {
+    position: 'absolute',
+    top: 10,
+    right: 20,
+  },
+  pendingButtonPos: {
+    position: 'absolute',
+    bottom: 10,
+  },
+  absolutePos: {
+    position: 'absolute',
   },
 
   //colors
@@ -354,12 +469,23 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  CircledivDown: {
+    position: 'absolute',
+    bottom: 10,
+    height: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    zIndex: 10,
+  },
   circle: {
     width: 10,
     height: 10,
     borderRadius: 5,
     margin: 5,
-    backgroundColor: 'white',
+    backgroundColor: colors.purpledark,
   },
 
   //slider
@@ -369,29 +495,73 @@ const Styles = StyleSheet.create({
   fullWidth: {
     width: width,
   },
+  imageMatchingProfileWidth: {
+    width: width - 20,
+    height: 300,
+  },
+  imageMatchingVerticalComponent: {
+    width: 60,
+    height: 90,
+    position: 'absolute',
+    top: 0,
+    left: 20,
+  },
+  imageMatchingHorizontalComponent: {
+    width: 150,
+    height: 40,
+    position: 'absolute',
+    bottom: 40,
+    left: 0,
+  },
   width90: {
     width: width * 0.9,
   },
 
   //Circular bar
-  circularBackground: {
+  container: {
     width: 150,
     height: 150,
-    borderRadius: 75,
-    alignItems: 'center',
-    justifyContent: 'center',
     borderWidth: 15,
+    borderRadius: 75,
     borderColor: 'lightgrey',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  circularForeground: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
+  firstProgressLayer: {
     width: 150,
     height: 150,
-    borderRadius: 75,
     borderWidth: 15,
-    borderColor: 'lightgrey',
+    borderRadius: 75,
+    position: 'absolute',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: '#3498db',
+    borderTopColor: '#3498db',
+    transform: [{ rotateZ: '-135deg' }],
+  },
+  secondProgressLayer: {
+    width: 150,
+    height: 150,
+    borderWidth: 15,
+    borderRadius: 75,
+    position: 'absolute',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: '#3498db',
+    borderTopColor: '#3498db',
+    transform: [{ rotateZ: '45deg' }],
+  },
+  offsetLayer: {
+    width: 150,
+    height: 150,
+    borderWidth: 15,
+    borderRadius: 75,
+    position: 'absolute',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: 'lightgrey',
+    borderTopColor: 'lightgrey',
+    transform: [{ rotateZ: '-135deg' }],
   },
   //Otp Styles
   underlineStyleBase: {
