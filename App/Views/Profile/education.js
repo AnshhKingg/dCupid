@@ -19,7 +19,6 @@ import {
 } from '../../Components';
 
 const EduModal = ({state, onPress, onPressCancel, array}) => {
-  const arr = [];
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity

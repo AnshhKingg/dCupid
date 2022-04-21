@@ -1,11 +1,11 @@
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { DrawerStack, AuthStack } from './Routes';
-
+import {useSelector} from 'react-redux';
+import {DrawerStack, AuthStack} from './Routes';
 
 const Navigator = () => {
-  const state = useSelector(state => state.auth.key)
+  const state = useSelector(data => data.auth.key);
+
   return (
     <NavigationContainer>
       {state ? <DrawerStack /> : <AuthStack />}

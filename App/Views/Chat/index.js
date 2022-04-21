@@ -1,23 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Keyboard
+  Keyboard,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { LinearButton, LinearGradient } from '../../Components';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {LinearButton, LinearGradient} from '../../Components';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import IconIon from 'react-native-vector-icons/Ionicons';
-import { Menu, MenuItem } from 'react-native-material-menu';
-import IconAnt from 'react-native-vector-icons/AntDesign';
+import {Menu, MenuItem} from 'react-native-material-menu';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
-const UserMsg = ({ toggle }) => {
+const UserMsg = ({toggle}) => {
   return (
     <View style={Theme.width100p}>
       <View style={toggle ? Theme.selfAlignEnd : Theme.selfAlignStart}>
@@ -48,20 +47,20 @@ const UserMsg = ({ toggle }) => {
   );
 };
 
-const Chat = ({ navigation }) => {
+const Chat = ({navigation}) => {
   const bottom = useRef(null);
   const pos = useRef(false);
-  const [scroll, setScroll] = useState(false)
+
   useEffect(() => {
-    bottom.current.scrollToEnd({ animated: true });
+    bottom.current.scrollToEnd({animated: true});
     Keyboard.addListener('keyboardDidShow', () => {
       if (pos.current) {
-        bottom.current.scrollToEnd({ animated: true })
+        bottom.current.scrollToEnd({animated: true});
       }
-    })
+    });
     return () => {
-      Keyboard.removeAllListeners('keyboardDidShow')
-    }
+      Keyboard.removeAllListeners('keyboardDidShow');
+    };
   }, []);
 
   const [visible, setVisible] = useState(false);
@@ -135,16 +134,18 @@ const Chat = ({ navigation }) => {
             Theme.width100p,
             Theme.justifyEnd,
           ]}
-          onScrollEndDrag={(e) => {
-            if ((e.nativeEvent.contentSize.height - e.nativeEvent.layoutMeasurement.height)
-              - (e.nativeEvent.contentOffset.y) < 90) {
-              pos.current = true
+          onScrollEndDrag={e => {
+            if (
+              e.nativeEvent.contentSize.height -
+                e.nativeEvent.layoutMeasurement.height -
+                e.nativeEvent.contentOffset.y <
+              90
+            ) {
+              pos.current = true;
             } else {
-              pos.current = false
+              pos.current = false;
             }
-
-          }}
-        >
+          }}>
           <View style={[Theme.width100p, Theme.padding5]}>
             <UserMsg />
 

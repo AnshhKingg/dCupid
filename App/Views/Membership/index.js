@@ -1,18 +1,13 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { Header, LinearButton, LinearGradient } from '../../Components';
+import {View, Text, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {Header, LinearButton, LinearGradient} from '../../Components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Component = ({ title, icon }) => {
+const Component = ({title, icon}) => {
   return (
-    <View
-      style={[
-        Theme.row,
-        Theme.selfAlignStart,
-        Theme.alignContentCenter,
-      ]}>
+    <View style={[Theme.row, Theme.selfAlignStart, Theme.alignContentCenter]}>
       <LinearGradient
         style={[
           Theme.width20p,
@@ -21,15 +16,14 @@ const Component = ({ title, icon }) => {
         ]}>
         <Icon name={icon} size={20} color="white" />
       </LinearGradient>
-      <View style={[
-        Theme.width80p,]}>
+      <View style={[Theme.width80p]}>
         <Text style={[Theme.textBody, Theme.textBold]}>{title}</Text>
       </View>
     </View>
   );
 };
 
-const Membership = ({ navigation }) => {
+const Membership = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p, Theme.alignCenter]}>
@@ -39,7 +33,13 @@ const Membership = ({ navigation }) => {
           leftnav={() => navigation.openDrawer()}
         />
 
-        <View style={[Theme.flex1, Theme.alignContentCenter, Theme.totalView, Theme.row]}>
+        <View
+          style={[
+            Theme.flex1,
+            Theme.alignContentCenter,
+            Theme.totalView,
+            Theme.row,
+          ]}>
           <ScrollView contentContainerStyle={[Theme.flexGrow]}>
             <View style={[Theme.flex1, Theme.width100p, Theme.justifySpcBtw]}>
               <View style={[Theme.alignContentCenter, Theme.width100p]}>
@@ -50,8 +50,8 @@ const Membership = ({ navigation }) => {
                     Theme.textCenter,
                     Theme.paddingBottom30,
                   ]}>
-                  Become a premium member to chat , send messages and connect with
-                  interesting profiles instantly
+                  Become a premium member to chat , send messages and connect
+                  with interesting profiles instantly
                 </Text>
               </View>
               <View
@@ -60,7 +60,8 @@ const Membership = ({ navigation }) => {
                   Theme.width100p,
                   Theme.paddingBottom30,
                 ]}>
-                <Text style={[Theme.textBody, Theme.textBold, Theme.textCenter]}>
+                <Text
+                  style={[Theme.textBody, Theme.textBold, Theme.textCenter]}>
                   399 for 1 month
                 </Text>
                 <View style={[Theme.alignContentCenter, Theme.width60p]}>
@@ -78,7 +79,10 @@ const Membership = ({ navigation }) => {
                   PREMIUM MEMBERSHIP BENEFITS
                 </Text>
 
-                <Component title="Appear on top of search results" icon="heart" />
+                <Component
+                  title="Appear on top of search results"
+                  icon="heart"
+                />
                 <Component title="Send unlimited chat messages" icon="heart" />
                 <Component title="Send unlimited likes" icon="heart" />
                 <Component title="10x higher chance of match" icon="heart" />
