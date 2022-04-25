@@ -1,4 +1,4 @@
-import { updateAdrss, resetAdrss } from './appEnv';
-import { login } from './auth'
+import {updateAdrss, resetAdrss} from './appEnv';
+import {login} from './auth';
 
-export { updateAdrss, resetAdrss, login };
+export {updateAdrss, resetAdrss, login};

@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  BackHandler,
+  TouchableOpacity,
+} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../../Assets/Styles';
@@ -11,43 +18,142 @@ import {
   LinearButton,
 } from '../../Components';
 import { RegisterData } from '../../../data';
+import { logout } from '../../Redux/actions/auth';
+import { useDispatch } from 'react-redux';
 
 const Register = ({ navigation }) => {
+  const dis = useDispatch();
+  const [gender, setGender] = useState(0);
+  const [dob, setDob] = useState(new Date());
+  const [dobChange, setDobChange] = useState(false);
 
-  const [name, setName] = useState();
+  const [skinOpen, setSkinOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [skin, setSkin] = useState('');
+  const [privacy, setPrivacy] = useState('');
+  const [skinItems, setSkinItems] = useState(RegisterData.skin);
+  const [privacyItems, setPrivacyItems] = useState(RegisterData.privacy);
 
-  const [email, setEmail] = useState();
+  const onSkinOpen = useCallback(() => {
+    setPrivacyOpen(false);
+  }, []);
 
+  const onPrivacyOpen = useCallback(() => {
+    setSkinOpen(false);
+  }, []);
 
-  // As soon as user registers(Submit a phone number)
-  //   1. If user does not exists in the DB so new user will be created  with inactive status.
-  //     a.OTP -> fill and verify API -> User Active -> response profile null[bool] -> Redirect -> registration
-  //   2. If user already exists in the DB so this will return user with profile information
-  //   a.profile information == null => registration screen
-  // b.profile information !== null => Dashboard 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [nameError, setNameError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [skinError, setSkinError] = useState(null);
+  const [privacyError, setPrivacyError] = useState(null);
+  const [genderError, setGenderError] = useState(null);
+  const [dobError, setDobError] = useState(null);
 
-  // const isValidEmail = () => {
-  //   if()
-  //   return true
+  const validEmailRegex = RegExp(
+    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+  );
 
-  //   return false
-  // }
+  const handleChange = (field, obj) => {
+    let err = null;
+    switch (field) {
+      case 'name':
+        setName(obj);
+        err = /\d/.test(obj)
+          ? 'Numbers are not allowed'
+          : obj.length < 3
+            ? 'Name must be at least 3 characters long!'
+            : null;
+        setNameError(err);
+        break;
+      case 'email':
+        setEmail(obj);
+        err = validEmailRegex.test(obj) ? '' : 'Email is not valid!';
+        setEmailError(err);
+        break;
+      default:
+        break;
+    }
+  };
 
-  // const emptyValidationCheck = ()=>{
+  const sumbitForm = () => {
+    if (!gender) {
+      setGenderError('Gender is required');
+    }
 
-  // }
+    if (skin.length === 0) {
+      setSkinError('Skin condition is required');
+    }
 
-  // const sumbitForm =() =>{
-  //   if(isValidEmail() && emptyValidationCheck()){
+    if (privacy.length === 0) {
+      setPrivacyError('Privacy settings is required');
+    }
 
-  //   }
-  // }
+    if (name.length === 0) {
+      setNameError('Name is required');
+    }
+
+    if (email.length === 0) {
+      setEmailError('Email is required');
+    }
+    if (!dobChange) {
+      setDobError('Date is required');
+    }
+
+    if (
+      !nameError &&
+      name.length !== 0 &&
+      !emailError &&
+      email.length !== 0 &&
+      dobChange &&
+      !privacyError &&
+      privacy.length !== 0 &&
+      !skinError &&
+      skin.length !== 0 &&
+      gender !== 0
+    ) {
+      navigation.navigate('register2');
+    } else {
+      console.log(
+        !nameError &&
+        name.length !== 0 &&
+        !emailError &&
+        email.length !== 0 &&
+        dobChange &&
+        !privacyError &&
+        privacy.length !== 0 &&
+        !skinError &&
+        skin.length === 0 &&
+        gender !== 0,
+      );
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        dis(logout());
+        return true;
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [dis]),
+  );
 
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        <Header title="Registeration" />
-        <ScrollView style={[]}>
+        <Header
+          left={'arrowleft'}
+          title="Registration"
+          leftnav={() => {
+            dis(logout());
+          }}
+        />
+        <ScrollView>
           <View style={[Theme.width100p, Theme.paddingHorizonal20p]}>
             <Text
               style={[
@@ -55,7 +161,7 @@ const Register = ({ navigation }) => {
                 Theme.paddingVertical10p,
                 Theme.marginTop10,
               ]}>
-              LET'S BUILD YOUR PROFILE
+              Let's build your profile
             </Text>
           </View>
           <View style={Theme.width100p}>
@@ -98,15 +204,18 @@ const Register = ({ navigation }) => {
                   style={[Theme.width40p, Theme.backgroundGray, Theme.height3p]}
                 />
               </View>
-              <Text style={Theme.textCaption}>Gender</Text>
               <View
                 style={[
                   Theme.width100p,
+                  Theme.padding5,
                   Theme.row,
                   Theme.borderBox,
-                  Theme.marginBottom10,
                 ]}>
-                <View
+                <TouchableOpacity
+                  onPress={() => {
+                    setGender(1);
+                    setGenderError(null);
+                  }}
                   style={[
                     Theme.width50p,
                     Theme.row,
@@ -115,60 +224,117 @@ const Register = ({ navigation }) => {
                     Theme.borderRight,
                   ]}>
                   <Icon
-                    name={'male'}
-                    size={30}
-                    color="black"
-                    onPress={() => {
-                      console.log('yoo');
-                    }}
+                    name={'female'}
+                    size={25}
+                    color={gender === 1 ? 'purple' : 'black'}
                   />
                   <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
-                    Male
+                    Female
                   </Text>
-                </View>
-                <View
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setGender(2);
+                    setGenderError(null);
+                  }}
                   style={[
                     Theme.width50p,
                     Theme.row,
                     Theme.padding10,
                     Theme.alignContentCenter,
-                    Theme.borderLeft,
                   ]}>
                   <Icon
-                    name={'female'}
-                    size={30}
-                    color="black"
-                    onPress={() => {
-                      console.log('yoo');
-                    }}
+                    name={'male'}
+                    size={25}
+                    color={gender === 2 ? 'purple' : 'black'}
                   />
                   <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
-                    Female
+                    Male
                   </Text>
-                </View>
+                </TouchableOpacity>
+                <Text style={Theme.textInputLabelStyle}>Gender</Text>
               </View>
-              <DateTimeInput title="Date of birth" />
-              <PickerInput title="Skin condition" items={RegisterData.skin} />
-              <TextInput title="Name*" onChangeText={(name) => setName(name)} />
+
+              {genderError ? (
+                <Text style={[Theme.red, Theme.marginBottom10]}>
+                  {genderError}
+                </Text>
+              ) : null}
+
+              <DateTimeInput
+                title="Date of birth"
+                onChangeDate={date => {
+                  setDob(date);
+                  setDobError(null);
+                  setDobChange(true);
+                }}
+                dobChange={dobChange}
+                error={dobError}
+              />
+
+              <PickerInput
+                title="Skin condition"
+                items={skinItems}
+                value={skin}
+                setValue={data => {
+                  setSkin(data());
+                  setSkinError(null);
+                }}
+                setItems={setSkinItems}
+                open={skinOpen}
+                setOpen={setSkinOpen}
+                onOpen={onSkinOpen}
+                zIndex={15}
+                zIndexTitle={16}
+                error={skinError}
+              />
+
+              <TextInput
+                title="Name"
+                value={name}
+                onChangeText={text => {
+                  handleChange('name', text);
+                }}
+                placeholder="Enter your name"
+                error={nameError}
+              />
+
               <PickerInput
                 title="Privacy setting for name"
-                items={RegisterData.privacy}
+                open={privacyOpen}
+                setOpen={setPrivacyOpen}
+                value={privacy}
+                setValue={data => {
+                  setPrivacy(data());
+                  setPrivacyError(null);
+                }}
+                items={privacyItems}
+                setItems={setPrivacyItems}
+                zIndex={13}
+                zIndexTitle={14}
+                onOpen={onPrivacyOpen}
+                error={privacyError}
               />
-              <TextInput title="Email*" onChangeText={(value) => setEmail(value)} />
+              <TextInput
+                title="Email"
+                value={email}
+                placeholder="Enter your email address"
+                onChangeText={text => {
+                  handleChange('email', text);
+                }}
+                error={emailError}
+              />
 
               <View style={[Theme.width100p, Theme.alignContentCenter]}>
                 <View style={Theme.width60p}>
-                  <LinearButton
-                    title="Continue"
-                    onPress={() => navigation.navigate('register2')}
-                  />
+                  <LinearButton title="Continue" onPress={sumbitForm} />
                 </View>
                 <Text style={[Theme.textCaption]}>
-                  By clicking continue , u agree to
+                  By clicking continue , you agree to our
                 </Text>
                 <Text style={[Theme.textCaption]}>
                   <Text style={[Theme.textCaption, Theme.blue]}>
-                    Terms and condition
+                    Terms and conditions
                   </Text>{' '}
                   {'&'}{' '}
                   <Text style={[Theme.textCaption, Theme.blue]}>

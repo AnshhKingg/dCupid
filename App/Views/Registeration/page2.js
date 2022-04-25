@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -18,8 +18,7 @@ import {
 } from '../../Components';
 import {RegisterData} from '../../../data';
 
-const EduModal = ({state, onPress, onPressCancel, array}) => {
-  const arr = [];
+const ProfessionModal = ({state, onPress, onPressCancel, array}) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -48,9 +47,9 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
                 </LinearGradient>
               </View>
               <View style={[Theme.width100p, Theme.padding10]}>
-                {Object.keys(RegisterData.profession).map((data, index) => {
+                {Object.keys(array).map((data, index) => {
                   return (
-                    <View>
+                    <View key={index}>
                       <Text
                         style={[
                           Theme.textBody,
@@ -59,7 +58,7 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
                         ]}>
                         {data}
                       </Text>
-                      {RegisterData.profession[data].map(profession => {
+                      {array[data].map(profession => {
                         return (
                           <View
                             style={[
@@ -75,7 +74,8 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
                                 Theme.alignCenter,
                                 Theme.paddingHorizonal10p,
                                 Theme.borderBox,
-                              ]}>
+                              ]}
+                              onPress={() => onPress(profession)}>
                               <Text
                                 style={[Theme.textCaption, Theme.padding10]}>
                                 {profession}
@@ -97,16 +97,163 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
 };
 
 const Register2 = ({navigation}) => {
-  const [edu, setEdu] = useState(false);
+  const [professionModal, setProfessionModal] = useState(false);
+  const [profession, setProfession] = useState('');
+  const [professionError, setProfessionError] = useState(null);
+
+  const [highEduOpen, setHighEduOpen] = useState(false);
+  const [highEdu, setHighEdu] = useState('');
+  const [highEduItems, setHighEduItems] = useState(
+    RegisterData.higestEducation,
+  );
+  const [highEduError, setHighEduError] = useState(null);
+
+  const [eduOpen, setEduOpen] = useState(false);
+  const [edu, setEdu] = useState('');
+  const [eduItems, setEduItems] = useState(RegisterData.educationField);
+  const [eduError, setEduError] = useState(null);
+
+  const [drinkOpen, setDrinkOpen] = useState(false);
+  const [drink, setDrink] = useState('');
+  const [drinkItems, setDrinkItems] = useState(RegisterData.drink);
+  const [drinkError, setDrinkError] = useState(null);
+
+  const [smokeOpen, setSmokeOpen] = useState(false);
+  const [smoke, setSmoke] = useState('');
+  const [smokeItems, setSmokeItems] = useState(RegisterData.smoke);
+  const [smokeError, setSmokeError] = useState(null);
+
+  const [maritalOpen, setMaritalOpen] = useState(false);
+  const [marital, setMarital] = useState('');
+  const [maritalItems, setMaritalItems] = useState(RegisterData.marital);
+  const [maritalError, setMaritalError] = useState(null);
+
+  const [religionOpen, setReligionOpen] = useState(false);
+  const [religion, setReligion] = useState('');
+  const [religionItems, setReligionItems] = useState(RegisterData.religion);
+  const [religionError, setReligionError] = useState(null);
+
+  const highEduOpens = useCallback(() => {
+    setEduOpen(false);
+    setDrinkOpen(false);
+    setSmokeOpen(false);
+    setMaritalOpen(false);
+    setReligionOpen(false);
+  }, []);
+
+  const eduOpens = useCallback(() => {
+    setHighEduOpen(false);
+    setDrinkOpen(false);
+    setSmokeOpen(false);
+    setMaritalOpen(false);
+    setReligionOpen(false);
+  }, []);
+
+  const drinkOpens = useCallback(() => {
+    setHighEduOpen(false);
+    setEduOpen(false);
+    // setDrinkOpen(false)
+    setSmokeOpen(false);
+    setMaritalOpen(false);
+    setReligionOpen(false);
+  }, []);
+
+  const smokeOpens = useCallback(() => {
+    setHighEduOpen(false);
+    setEduOpen(false);
+    setDrinkOpen(false);
+    // setSmokeOpen(false)
+    setMaritalOpen(false);
+    setReligionOpen(false);
+  }, []);
+
+  const maritalOpens = useCallback(() => {
+    setHighEduOpen(false);
+    setEduOpen(false);
+    setDrinkOpen(false);
+    setSmokeOpen(false);
+    // setMaritalOpen(false)
+    setReligionOpen(false);
+  }, []);
+
+  const religionOpens = useCallback(() => {
+    setHighEduOpen(false);
+    setEduOpen(false);
+    setDrinkOpen(false);
+    setSmokeOpen(false);
+    setMaritalOpen(false);
+    // setReligionOpen(false)
+  }, []);
+
+  const sumbitForm = () => {
+    console.log(highEdu.length);
+
+    if (highEdu.length === 0) {
+      setHighEduError('High Education field is required');
+    }
+
+    if (edu.length === 0) {
+      setEduError('Education is required');
+    }
+
+    if (profession.length === 0) {
+      setProfessionError('Profession is required');
+    }
+
+    if (drink.length === 0) {
+      setDrinkError('Drink field is required');
+    }
+
+    if (smoke.length === 0) {
+      setSmokeError('Smoke field is required');
+    }
+
+    if (marital.length === 0) {
+      setMaritalError('Marital status is required');
+    }
+
+    if (religion.length === 0) {
+      setReligionError('Religion is required');
+    }
+
+    if (
+      !highEduError &&
+      highEdu.length !== 0 &&
+      !eduError &&
+      edu.length !== 0 &&
+      !professionError &&
+      profession.length !== 0 &&
+      !drinkError &&
+      drink.length !== 0 &&
+      !smokeError &&
+      smoke.length !== 0 &&
+      !maritalError &&
+      marital.length !== 0 &&
+      !religionError &&
+      religion.length !== 0
+    ) {
+      navigation.navigate('dashboard');
+    }
+  };
+
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
         <Header
-          title="Registeration"
+          title="Registration"
           left="arrowleft"
           leftnav={() => navigation.goBack()}
         />
-        <EduModal state={edu} onPressCancel={() => setEdu(!edu)} />
+        <ProfessionModal
+          array={RegisterData.profession}
+          state={professionModal}
+          onPressCancel={() => setProfessionModal(!professionModal)}
+          onPress={data => {
+            setProfession(data);
+            setProfessionModal(false);
+            setProfessionError(false);
+          }}
+        />
         <ScrollView style={[]}>
           <View style={[Theme.width100p, Theme.paddingHorizonal20p]}>
             <Text
@@ -115,7 +262,7 @@ const Register2 = ({navigation}) => {
                 Theme.paddingVertical10p,
                 Theme.marginTop10,
               ]}>
-              LET'S BUILD YOUR PROFILE
+              Let's build your profile
             </Text>
           </View>
           <View style={Theme.width100p}>
@@ -166,36 +313,145 @@ const Register2 = ({navigation}) => {
                   ]}
                 />
               </View>
+              {/*
+              <PickerInput
+                title="Country"
+                zIndex={21}
+                zIndexTitle={22}
+              />
+              <PickerInput
+                title="State/Province"
+                zIndex={19}
+                zIndexTitle={20}
+              />
+              <PickerInput
+                title="City"
+                zIndex={17}
+                zIndexTitle={18}
+              /> */}
 
-              <PickerInput title="Country" />
-              <PickerInput title="State/Province" />
-              <PickerInput title="City" />
               <PickerInput
                 title="Highest Education"
-                items={RegisterData.higestEducation}
+                items={highEduItems}
+                zIndex={15}
+                zIndexTitle={16}
+                value={highEdu}
+                setValue={data => {
+                  setHighEdu(data());
+                  setHighEduError(null);
+                }}
+                setItems={setHighEduItems}
+                open={highEduOpen}
+                setOpen={setHighEduOpen}
+                onOpen={highEduOpens}
+                error={highEduError}
               />
               <PickerInput
                 title="Educational Field"
-                items={RegisterData.educationField}
+                items={eduItems}
+                value={edu}
+                setValue={data => {
+                  setEdu(data());
+                  setEduError(null);
+                }}
+                setItems={setEduItems}
+                open={eduOpen}
+                setOpen={setEduOpen}
+                onOpen={eduOpens}
+                zIndex={13}
+                zIndexTitle={14}
+                error={eduError}
               />
-              <DropDownButton title="Profession" onPress={() => setEdu(!edu)} />
-              <PickerInput title="Drink" items={RegisterData.drink} />
-              <PickerInput title="Smoke" items={RegisterData.smoke} />
+
+              <DropDownButton
+                title="Profession"
+                text={profession}
+                onPress={() => setProfessionModal(!professionModal)}
+                error={professionError}
+              />
+
+              <PickerInput
+                title="Drink"
+                items={drinkItems}
+                value={drink}
+                setValue={data => {
+                  setDrink(data());
+                  setDrinkError(null);
+                }}
+                setItems={setDrinkItems}
+                open={drinkOpen}
+                setOpen={setDrinkOpen}
+                onOpen={drinkOpens}
+                zIndex={11}
+                zIndexTitle={12}
+                error={drinkError}
+              />
+              <PickerInput
+                title="Smoke"
+                items={smokeItems}
+                value={smoke}
+                setValue={data => {
+                  setSmoke(data());
+                  setSmokeError(null);
+                }}
+                setItems={setSmokeItems}
+                open={smokeOpen}
+                setOpen={setSmokeOpen}
+                onOpen={smokeOpens}
+                zIndex={9}
+                zIndexTitle={10}
+                error={smokeError}
+              />
               <PickerInput
                 title="Maritial Status"
-                items={RegisterData.marital}
+                items={maritalItems}
+                value={marital}
+                setValue={data => {
+                  setMarital(data());
+                  setMaritalError(null);
+                }}
+                setItems={setMaritalItems}
+                open={maritalOpen}
+                setOpen={setMaritalOpen}
+                onOpen={maritalOpens}
+                zIndex={7}
+                zIndexTitle={8}
+                error={maritalError}
               />
-              <PickerInput title="Religion" items={RegisterData.religion} />
+              <PickerInput
+                title="Religion"
+                items={religionItems}
+                value={religion}
+                setValue={data => {
+                  setReligion(data());
+                  setReligionError(null);
+                }}
+                setItems={setReligionItems}
+                open={religionOpen}
+                setOpen={setReligionOpen}
+                onOpen={religionOpens}
+                dropDownDirection="TOP"
+                zIndex={5}
+                zIndexTitle={6}
+                error={religionError}
+              />
 
               <View style={[Theme.width100p, Theme.alignContentCenter]}>
                 <View style={Theme.width60p}>
-                  <LinearButton
-                    title="Continue"
-                    onPress={() => {
-                      navigation.navigate('dashboard');
-                    }}
-                  />
+                  <LinearButton title="Continue" onPress={sumbitForm} />
                 </View>
+                <Text style={[Theme.textCaption]}>
+                  By clicking continue , you agree to our
+                </Text>
+                <Text style={[Theme.textCaption]}>
+                  <Text style={[Theme.textCaption, Theme.blue]}>
+                    Terms and conditions
+                  </Text>{' '}
+                  {'&'}{' '}
+                  <Text style={[Theme.textCaption, Theme.blue]}>
+                    Privacy policy
+                  </Text>
+                </Text>
               </View>
             </View>
           </View>

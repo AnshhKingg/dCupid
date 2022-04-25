@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {Theme} from '../Assets/Styles';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Entypo';
 
-const CustomDateTimeInput = ({title, error, onPress}) => {
+const CustomDateTimeInput = ({title, error, onPress, text}) => {
   return (
     <View style={Theme.inputContainer}>
       <TouchableOpacity
@@ -21,10 +21,16 @@ const CustomDateTimeInput = ({title, error, onPress}) => {
             Theme.justifySpcBtw,
             Theme.row,
           ]}>
-          <Text style={[Theme.textBody, Theme.grey]}>Select</Text>
+          <Text
+            style={[
+              Theme.textCaption,
+              text && text.length > 0 ? Theme.black : Theme.grey,
+            ]}>
+            {text && text.length > 0 ? text : 'Select'}
+          </Text>
           <Icon
-            name={'caretdown'}
-            size={10}
+            name={'chevron-small-down'}
+            size={27}
             color="grey"
             onPress={() => {
               console.log('yoo');
@@ -33,6 +39,7 @@ const CustomDateTimeInput = ({title, error, onPress}) => {
         </View>
       </TouchableOpacity>
       {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}
+      {error ? <Text style={Theme.red}>{error}</Text> : null}
     </View>
   );
 };

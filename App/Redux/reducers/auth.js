@@ -1,25 +1,24 @@
-import { Constants } from '../constants/index';
+import {Constants} from '../constants/index';
 
 const initialState = {
-    key: null
+  key: null,
 };
 
 const auth = (state = initialState, action) => {
-    switch (action.type) {
+  switch (action.type) {
+    case Constants.SET_AUTHKEY:
+      return {
+        key: action.payload,
+      };
 
-        case Constants.SET_AUTHKEY:
-            return {
-                key: action.payload,
-            };
+    case Constants.LOGOUT:
+      return {
+        key: null,
+      };
 
-        case Constants.LOGOUT:
-            return {
-                key: null,
-            };
-
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 };
 
 export default auth;

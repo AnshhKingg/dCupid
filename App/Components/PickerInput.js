@@ -1,44 +1,63 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text} from 'react-native';
 import {Theme} from '../Assets/Styles';
-import {Picker} from '@react-native-picker/picker';
+import DropDownPicker from 'react-native-dropdown-picker';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const CustomPickerInput = ({
   title,
   error,
+  zIndex,
+  zIndexTitle,
+  dropDownDirection,
   items,
-  onValueChange,
-  enabled,
-  selectedValue,
+  value,
+  setValue,
+  setItems,
+  onOpen,
+  open,
+  setOpen,
 }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
   return (
-    <View
-      style={[
-        Theme.textInput,
-        Theme.inputContainer,
-        enabled === false ? Theme.backgroundGray : Theme.backgroundWhite,
-      ]}>
-      <Picker
-        selectedValue={selectedLanguage}
-        mode="dropdown"
-        onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
-        enabled={enabled}>
-        <Picker.Item label={'Select'} value={''} style={Theme.textBody} />
-        {items
-          ? items.map(data => {
-              return (
-                <Picker.Item
-                  label={data.label}
-                  value={data.value}
-                  style={Theme.textBody}
-                />
-              );
-            })
-          : null}
-      </Picker>
-      {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}
+    <View style={Theme.inputContainer}>
+      <DropDownPicker
+        style={[Theme.textInput, Theme.paddingHorizonal20p]}
+        dropDownContainerStyle={[Theme.borderRadius0p, Theme.borderLightGrey]}
+        listItemContainerStyle={Theme.height50p}
+        itemSeparator={true}
+        itemSeparatorStyle={Theme.backgroundGray}
+        onOpen={onOpen}
+        ArrowUpIconComponent={() => <Icon size={25} name="closecircleo" />}
+        zIndex={zIndex}
+        open={open}
+        setOpen={setOpen}
+        value={value}
+        listMode="SCROLLVIEW"
+        items={items ? items : []}
+        disableBorderRadius={true}
+        setValue={setValue}
+        textStyle={[Theme.textCaption]}
+        labelStyle={Theme.textCaption}
+        setItems={setItems}
+        showTickIcon={false}
+        selectedItemLabelStyle={Theme.purple}
+        placeholderStyle={Theme.grey}
+        min={4}
+        max={4}
+        mode="BADGE"
+        dropDownDirection={dropDownDirection ? dropDownDirection : 'BOTTOM'}
+      />
 
+      {title ? (
+        <Text
+          style={[
+            Theme.textInputLabelStyle,
+            {zIndex: zIndexTitle ? zIndexTitle : 2},
+          ]}>
+          {' '}
+          {title}{' '}
+        </Text>
+      ) : null}
       {error ? <Text style={Theme.red}>{error}</Text> : null}
     </View>
   );

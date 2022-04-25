@@ -1,5 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { colors } from '../Colors';
+import {StyleSheet, Dimensions} from 'react-native';
+import {colors} from '../Colors';
 const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
@@ -31,6 +31,9 @@ const Styles = StyleSheet.create({
   },
   height100p: {
     height: '100%',
+  },
+  height50p: {
+    height: 50,
   },
   height3p: {
     height: 3,
@@ -161,6 +164,9 @@ const Styles = StyleSheet.create({
   heightAuto: {
     height: 'auto',
   },
+  borderRadius0p: {
+    borderRadius: 0,
+  },
   textInput: {
     width: '100%',
     borderRadius: 4,
@@ -174,7 +180,8 @@ const Styles = StyleSheet.create({
     left: 20,
     backgroundColor: 'white',
     fontSize: 16,
-    color: 'black',
+    color: colors.purpledark,
+    zIndex: 10,
   },
   inputContainer: {
     borderRadius: 3,
@@ -190,7 +197,7 @@ const Styles = StyleSheet.create({
     fontSize: 18,
   },
   textXl: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: '700',
     color: 'black',
   },
@@ -382,6 +389,10 @@ const Styles = StyleSheet.create({
     margin: 5,
     borderRadius: 35,
   },
+  borderRed: {
+    borderWidth: 1,
+    borderColor: 'red',
+  },
   borderBox: {
     borderWidth: 0.5,
     borderColor: 'lightgrey',
@@ -401,6 +412,9 @@ const Styles = StyleSheet.create({
   borderRadius10: {
     borderRadius: 10,
     overflow: 'hidden',
+  },
+  borderRadius5: {
+    borderRadius: 5,
   },
   trashPos: {
     position: 'absolute',
@@ -537,7 +551,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: '#3498db',
     borderTopColor: '#3498db',
-    transform: [{ rotateZ: '-135deg' }],
+    transform: [{rotateZ: '-135deg'}],
   },
   secondProgressLayer: {
     width: 150,
@@ -549,7 +563,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: '#3498db',
     borderTopColor: '#3498db',
-    transform: [{ rotateZ: '45deg' }],
+    transform: [{rotateZ: '45deg'}],
   },
   offsetLayer: {
     width: 150,
@@ -561,7 +575,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: 'lightgrey',
     borderTopColor: 'lightgrey',
-    transform: [{ rotateZ: '-135deg' }],
+    transform: [{rotateZ: '-135deg'}],
   },
   //Otp Styles
   underlineStyleBase: {

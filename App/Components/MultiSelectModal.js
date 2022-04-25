@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { LinearButton, LinearGradient } from '.';
-import { Theme } from '../Assets/Styles';
+import {LinearButton, LinearGradient} from '.';
+import {Theme} from '../Assets/Styles';
 
-const ConditionModal = ({ state, onPress, onPressCancel, array }) => {
-  const [arr, setArr] = useState([])
+const ConditionModal = ({state, onPress, onPressCancel, array}) => {
+  const [arr, setArr] = useState([]);
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -22,7 +22,7 @@ const ConditionModal = ({ state, onPress, onPressCancel, array }) => {
           Theme.alignContentCenter,
           Theme.blackFaded,
           Theme.padding10,
-          Theme.paddingHorizonal30p
+          Theme.paddingHorizonal30p,
         ]}
         onPress={onPressCancel}>
         <ScrollView
@@ -47,7 +47,7 @@ const ConditionModal = ({ state, onPress, onPressCancel, array }) => {
                   Theme.width100p,
                   Theme.row,
                   Theme.alignCenter,
-                  { flexWrap: 'wrap' },
+                  Theme.flexWrap,
                   Theme.padding10,
                 ]}>
                 {arr.map(data => {
@@ -61,27 +61,32 @@ const ConditionModal = ({ state, onPress, onPressCancel, array }) => {
                         Theme.paddingHorizonal10p,
                       ]}>
                       <Icon name="check" size={30} />
-                      <Text style={[Theme.textCaption, Theme.paddingHorizonal10p]}>
+                      <Text
+                        style={[Theme.textCaption, Theme.paddingHorizonal10p]}>
                         {data}
                       </Text>
-                      <Icon name="cancel" size={25} onPress={() => {
-                        if (arr.includes(data)) {
-                          const newArr = arr.filter((value) => {
-                            return value !== data
-                          })
-                          setArr(newArr)
-                        }
-                      }} />
+                      <Icon
+                        name="cancel"
+                        size={25}
+                        onPress={() => {
+                          if (arr.includes(data)) {
+                            const newArr = arr.filter(value => {
+                              return value !== data;
+                            });
+                            setArr(newArr);
+                          }
+                        }}
+                      />
                     </View>
-                  )
+                  );
                 })}
               </View>
               <View style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
                 <View style={[Theme.width10p]}>
                   <BouncyCheckbox
-                    iconStyle={{ borderRadius: 5 }}
+                    iconStyle={Theme.borderRadius5}
                     onPress={isChecked => {
-                      setArr(['Doesnt matter'])
+                      setArr(['Doesnt matter']);
                     }}
                   />
                 </View>
@@ -92,20 +97,19 @@ const ConditionModal = ({ state, onPress, onPressCancel, array }) => {
                 </View>
               </View>
               {array.map(data => {
-
                 return (
                   <View style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
                     <View style={[Theme.width10p]}>
                       <BouncyCheckbox
-                        iconStyle={{ borderRadius: 5 }}
+                        iconStyle={Theme.borderRadius5}
                         onPress={isChecked => {
                           if (arr.includes(data.label)) {
-                            const newArr = arr.filter((value) => {
-                              return value !== data.label
-                            })
-                            setArr(newArr)
+                            const newArr = arr.filter(value => {
+                              return value !== data.label;
+                            });
+                            setArr(newArr);
                           } else {
-                            setArr([...arr, data.label])
+                            setArr([...arr, data.label]);
                           }
                         }}
                       />

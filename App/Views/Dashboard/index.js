@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   CircularBar,
   Header,
@@ -12,9 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Dashboard = ({ navigation }) => {
-
-
+const Dashboard = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -33,7 +31,7 @@ const Dashboard = ({ navigation }) => {
                 style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => {
                   navigation.navigate('profile', {
-                    change: false
+                    change: false,
                   });
                 }}>
                 <LinearGradient
@@ -73,10 +71,9 @@ const Dashboard = ({ navigation }) => {
                 style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => {
                   navigation.navigate('profile', {
-                    change: true
+                    change: true,
                   });
-                }}
-              >
+                }}>
                 <LinearGradient
                   style={[
                     Theme.mediumButtonLook,
@@ -117,7 +114,8 @@ const Dashboard = ({ navigation }) => {
 
           <View style={[Theme.width100p, Theme.separator, Theme.marginBottom0]}>
             <View style={[Theme.width100p, Theme.row]}>
-              <TouchableOpacity style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+              <TouchableOpacity
+                style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => navigation.navigate('trustscore')}>
                 <View
                   style={[
@@ -132,7 +130,8 @@ const Dashboard = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+              <TouchableOpacity
+                style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => navigation.navigate('trustscore')}>
                 <View
                   style={[
@@ -147,7 +146,8 @@ const Dashboard = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
+              <TouchableOpacity
+                style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}
                 onPress={() => navigation.navigate('trustscore')}>
                 <View
                   style={[

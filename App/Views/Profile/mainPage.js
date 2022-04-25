@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
   Modal,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   Header,
   LinearButton,
@@ -16,12 +16,10 @@ import {
   SemiCircularBar,
 } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IconM from 'react-native-vector-icons/MaterialIcons';
-import { colors } from '../../Assets/Colors';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { RegisterData } from '../../../data';
+import {colors} from '../../Assets/Colors';
+import {RegisterData} from '../../../data';
 
-const Tiles = ({ text }) => {
+const Tiles = ({text}) => {
   return (
     <View style={[Theme.alignContentCenter, Theme.row]}>
       <Icon name="user" size={20} color={colors.purpledark} />
@@ -38,8 +36,7 @@ const Tiles = ({ text }) => {
   );
 };
 
-const InterestModal = ({ state, onPress, onPressCancel, array }) => {
-  const arr = [];
+const InterestModal = ({state, onPress, onPressCancel, array}) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -86,7 +83,7 @@ const InterestModal = ({ state, onPress, onPressCancel, array }) => {
                     <TouchableOpacity style={Theme.paddingHorizonal5p}>
                       <LinearGradient
                         style={[
-                          { borderWidth: 1, borderColor: 'red' },
+                          Theme.borderRed,
                           Theme.modalButton,
                           Theme.alignContentCenter,
                           Theme.width100p,
@@ -128,18 +125,17 @@ const InterestModal = ({ state, onPress, onPressCancel, array }) => {
   );
 };
 
-const Profile = ({ navigation, route }) => {
+const Profile = ({navigation, route}) => {
   const [toggle, setToggle] = useState(false);
   const [interestModal, setInterestModal] = useState(false);
-  const bottom = useRef(null)
+  const bottom = useRef(null);
 
   useEffect(() => {
     if (route.params.change) {
-      setToggle(true)
-      bottom.current.scrollToEnd({ animated: true });
+      setToggle(true);
+      bottom.current.scrollToEnd({animated: true});
     }
-  }, [])
-
+  }, [route.params.change]);
 
   return (
     <>

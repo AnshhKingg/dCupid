@@ -12,13 +12,13 @@ const Otp2 = ({navigation}) => {
         <SafeAreaView style={[Theme.height100p]}>
           <ScrollView contentContainerStyle={Theme.flexGrow}>
             <View style={[Theme.flex1, Theme.totalView]}>
-              <Text style={[Theme.textXl, Theme.textUnderLine, Theme.purple]}>
+              <Text style={[Theme.textHeader, Theme.purple]}>
                 Mobile Number
               </Text>
 
               <Text
                 style={[
-                  Theme.textHeader,
+                  Theme.textTitle,
                   Theme.grey,
                   Theme.textFontWeight0,
                   Theme.paddingVertical20p,
@@ -50,7 +50,7 @@ const Otp2 = ({navigation}) => {
                 <View style={[Theme.width60p, Theme.alignContentCenter]}>
                   <LinearButton
                     title="Submit"
-                    onPress={() => navigation.replace('DashB')}
+                    onPress={() => navigation.navigate('register')}
                   />
                 </View>
 
