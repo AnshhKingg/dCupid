@@ -1,9 +1,20 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Modal,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {LinearGradient} from '../../Components';
+import {useDispatch} from 'react-redux';
+import {masterData} from '../../Redux/actions';
+import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import auth from '@react-native-firebase/auth';
 
 const FaceBookQuestionMarkModal = ({state, setState}) => {
   return (
@@ -78,7 +89,7 @@ const Slider = () => {
     setSelectedIndex(selected);
   };
   return (
-    <View style={[Theme.flex1]}>
+    <View>
       <ScrollView
         horizontal
         pagingEnabled
@@ -192,51 +203,102 @@ const Slider = () => {
 
 const Homepage = ({navigation}) => {
   const [modal, setModal] = useState(false);
+
+  const LoginFB = () => {
+    LoginManager.logInWithPermissions().then(
+      async result => {
+        const data = await AccessToken.getCurrentAccessToken();
+        console.log(data);
+        console.log(result);
+        if (result.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          // const currentProfile = Profile.getCurrentProfile().then((currentProfile) => {
+          //   if (currentProfile) {
+          //     console.log(currentProfile);
+          //     console.log("The current logged user is: " +
+          //       currentProfile.name
+          //       + ". His profile id is: " +
+          //       currentProfile.userID
+          //     );
+          //   }
+          // }
+          // );
+          const facebookCredential = auth.FacebookAuthProvider.credential(
+            data.accessToken,
+          );
+          auth()
+            .signInWithCredential(facebookCredential)
+            .then(resp => {
+              console.log(resp);
+            })
+            .catch(er => {
+              console.log(er);
+            });
+        }
+      },
+      error => {
+        console.log('Login fail with error: ' + error);
+      },
+    );
+  };
+
+  const dis = useDispatch();
+  //  const masterDataState = useSelector(state => state.masterData.dataSaved)
+  useEffect(() => {
+    dis(masterData());
+  }, [dis]);
+
   return (
     <>
       <FaceBookQuestionMarkModal
         state={modal}
         setState={() => setModal(!modal)}
       />
-      <LinearGradient>
-        <SafeAreaView style={[Theme.height100p]}>
-          <View style={[Theme.flex2, Theme.width100p]}>
-            <Slider />
-          </View>
-          <View
-            style={[Theme.flex1, Theme.width100p, Theme.alignContentCenter]}>
-            <View style={[Theme.width90p, Theme.alignContentCenter]}>
-              {/* <View
-                style={[Theme.width90p, Theme.alignContentCenter, Theme.row]}>
-                <TouchableOpacity
-                  style={[
-                    Theme.width90p,
-                    Theme.alignContentCenter,
-                    Theme.buttonLook,
-                    Theme.backgroundBlue,
-                    Theme.row,
-                  ]}
-                  onPress={() => {
-                    // navigation.navigate('help'); facebook-square
-                  }}>
-                  <Icon
-                    name={'facebook-square'}
-                    size={30}
-                    color="white"
-                    onPress={() => {
-                      console.log('yoo');
-                    }}
-                  />
-                  <Text
+      <LinearGradient style={[Theme.height100p]}>
+        <ScrollView style={[Theme.flexGrow]}>
+          <SafeAreaView style={[Theme.height100p]}>
+            <View
+              style={[
+                Theme.width100p,
+                {height: (Dimensions.get('window').height / 100) * 70},
+              ]}>
+              <Slider />
+            </View>
+            <View style={[Theme.width100p, Theme.alignContentCenter]}>
+              <View style={[Theme.width90p, Theme.alignContentCenter]}>
+                <View style={[Theme.width100p, Theme.alignContentCenter]}>
+                  {/* <TouchableOpacity
                     style={[
-                      Theme.textCaption,
-                      Theme.white,
-                      Theme.paddingHorizonal10p,
-                    ]}>
-                    CONTINUE WITH FACEBOOK
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
+                      Theme.width100p,
+                      Theme.alignContentCenter,
+                      Theme.buttonLook,
+                      Theme.backgroundBlue,
+                      Theme.row,
+                    ]}
+                    onPress={() => {
+                      // navigation.navigate('help'); facebook-square
+                      LoginFB()
+                    }}>
+                    <Icon
+                      name={'facebook-square'}
+                      size={30}
+                      color="white"
+                      onPress={() => {
+                        console.log('yoo');
+                      }}
+                    />
+                    <Text
+                      style={[
+                        Theme.textCaption,
+                        Theme.white,
+                        Theme.paddingHorizonal10p,
+                      ]}>
+                      CONTINUE WITH FACEBOOK
+                    </Text>
+                  </TouchableOpacity> */}
+
+                  {/* <TouchableOpacity
                   style={[
                     Theme.alignContentCenter,
                     Theme.smallButtonLook,
@@ -254,69 +316,78 @@ const Homepage = ({navigation}) => {
                       console.log('yoo');
                     }}
                   />
-                </TouchableOpacity>
-              </View> */}
-              <View
-                style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>
-                <TouchableOpacity
+                </TouchableOpacity> */}
+                </View>
+                <View
                   style={[
                     Theme.width100p,
                     Theme.alignContentCenter,
-                    Theme.buttonLook,
                     Theme.row,
-                    Theme.backgroundBlue,
-                    Theme.paddingHorizonal5p,
-                  ]}
-                  onPress={() => {
-                    navigation.navigate('otp');
-                  }}>
-                  <Icon name={'mobile-phone'} size={25} color="white" />
-                  <Text
+                  ]}>
+                  <TouchableOpacity
                     style={[
-                      Theme.textCaption,
-                      Theme.white,
-                      Theme.paddingHorizonal10p,
-                    ]}>
-                    CONTINUE WITH PHONE NUMBER
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={[
-                  Theme.width100p,
-                  Theme.alignContentCenter,
-                  Theme.marginTop10,
-                ]}>
-                <Text
-                  style={[Theme.textCaption, Theme.textUnderLine, Theme.white]}>
-                  Contact Us
-                </Text>
-                <Text style={[Theme.textCaption, Theme.white]}>
-                  By clicking continue , u agree to
-                </Text>
-                <Text style={[Theme.textCaption, Theme.white]}>
-                  <Text
-                    style={[
-                      Theme.textCaption,
-                      Theme.textUnderLine,
-                      Theme.white,
-                    ]}>
-                    Terms and condition
-                  </Text>{' '}
-                  {'&'}{' '}
+                      Theme.width100p,
+                      Theme.alignContentCenter,
+                      Theme.buttonLook,
+                      Theme.row,
+                      Theme.backgroundBlue,
+                      Theme.paddingHorizonal5p,
+                    ]}
+                    onPress={() => {
+                      navigation.navigate('otp');
+                    }}>
+                    <Icon name={'mobile-phone'} size={25} color="white" />
+                    <Text
+                      style={[
+                        Theme.textCaption,
+                        Theme.white,
+                        Theme.paddingHorizonal10p,
+                      ]}>
+                      CONTINUE WITH PHONE NUMBER
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={[
+                    Theme.width100p,
+                    Theme.alignContentCenter,
+                    Theme.marginTop10,
+                  ]}>
                   <Text
                     style={[
                       Theme.textCaption,
                       Theme.textUnderLine,
                       Theme.white,
                     ]}>
-                    Privacy policy
+                    Contact Us
                   </Text>
-                </Text>
+                  <Text style={[Theme.textCaption, Theme.white]}>
+                    By clicking continue , u agree to
+                  </Text>
+                  <Text style={[Theme.textCaption, Theme.white]}>
+                    <Text
+                      style={[
+                        Theme.textCaption,
+                        Theme.textUnderLine,
+                        Theme.white,
+                      ]}>
+                      Terms and condition
+                    </Text>{' '}
+                    {'&'}{' '}
+                    <Text
+                      style={[
+                        Theme.textCaption,
+                        Theme.textUnderLine,
+                        Theme.white,
+                      ]}>
+                      Privacy policy
+                    </Text>
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        </SafeAreaView>
+          </SafeAreaView>
+        </ScrollView>
       </LinearGradient>
     </>
   );

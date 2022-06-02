@@ -11,6 +11,7 @@ import IconE from 'react-native-vector-icons/Entypo';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import {logout} from '../../Redux/actions/auth';
+import auth from '@react-native-firebase/auth';
 
 const Component = ({title, icon}) => {
   return (
@@ -148,7 +149,13 @@ const Settings = ({navigation}) => {
                 Theme.selfAlignCenter,
                 Theme.paddingBottom20,
               ]}>
-              <LinearButton title="LOG OUT" onPress={() => dis(logout())} />
+              <LinearButton
+                title="LOG OUT"
+                onPress={() => {
+                  auth().signOut();
+                  dis(logout());
+                }}
+              />
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('delete')}

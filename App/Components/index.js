@@ -11,6 +11,7 @@ import DropButton from './DropDownButton';
 import ModalComponent from './Modal';
 import MultiSelectModal from './MultiSelectModal';
 import ProfileComponent from './ProfileComponent';
+import LoadingComponent from './Loading';
 
 export const TextInput = Input;
 export const Header = HeaderBar;
@@ -25,3 +26,4 @@ export const DropDownButton = DropButton;
 export const Modal = ModalComponent;
 export const MultiSelect = MultiSelectModal;
 export const ProfileComp = ProfileComponent;
+export const Loading = LoadingComponent;

@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Modal,
+  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
@@ -16,7 +17,10 @@ import {
   DropDownButton,
   LinearGradient,
 } from '../../Components';
-import {RegisterData} from '../../../data';
+import Toast from 'react-native-toast-message';
+import {useDispatch, useSelector} from 'react-redux';
+import axiosService from '../../service/axios';
+import {setProfile} from '../../Redux/actions/profile';
 
 const ProfessionModal = ({state, onPress, onPressCancel, array}) => {
   return (
@@ -97,6 +101,60 @@ const ProfessionModal = ({state, onPress, onPressCancel, array}) => {
 };
 
 const Register2 = ({navigation}) => {
+  const auth = useSelector(state => state.auth);
+  const selecterData = useSelector(state => state.masterData.data);
+  const dis = useDispatch();
+
+  const [country, setCountry] = useState('');
+  const [countryItems, setCountryItems] = useState([]);
+  const [countryError, setCountryError] = useState(null);
+  const [countryOpen, setCountryOpen] = useState(false);
+
+  const [state, setState] = useState('');
+  const [stateItems, setStateItems] = useState([]);
+  const [stateError, setStateError] = useState(null);
+  const [stateOpen, setStateOpen] = useState(false);
+
+  const [city, setCity] = useState('');
+  const [cityItems, setCityItems] = useState([]);
+  const [cityError, setCityError] = useState(null);
+  const [cityOpen, setCityOpen] = useState(false);
+
+  useEffect(() => {
+    axiosService(auth.token)
+      .get('/location/country')
+      .then(resp => {
+        setCountryItems(resp.data.data);
+      })
+      .catch(er => {
+        console.log(er.response.data);
+      });
+  }, [auth.token]);
+
+  const getState = data => {
+    axiosService(auth.token)
+      .get(`/location/state/${data}`)
+      .then(resp => {
+        setStateItems(resp.data.data);
+      })
+      .catch(er => {
+        console.log('State failed');
+        console.log(er.response.data);
+      });
+  };
+
+  const getCity = data => {
+    axiosService(auth.token)
+      .get(`/location/city/${data}`)
+      .then(resp => {
+        setCityItems(resp.data.data);
+      })
+      .catch(er => {
+        console.log('City failed');
+        console.log(er.response.data);
+      });
+  };
+
   const [professionModal, setProfessionModal] = useState(false);
   const [profession, setProfession] = useState('');
   const [professionError, setProfessionError] = useState(null);
@@ -104,36 +162,69 @@ const Register2 = ({navigation}) => {
   const [highEduOpen, setHighEduOpen] = useState(false);
   const [highEdu, setHighEdu] = useState('');
   const [highEduItems, setHighEduItems] = useState(
-    RegisterData.higestEducation,
+    selecterData.highestEducation,
   );
   const [highEduError, setHighEduError] = useState(null);
 
   const [eduOpen, setEduOpen] = useState(false);
   const [edu, setEdu] = useState('');
-  const [eduItems, setEduItems] = useState(RegisterData.educationField);
+  const [eduItems, setEduItems] = useState(selecterData.education);
   const [eduError, setEduError] = useState(null);
 
   const [drinkOpen, setDrinkOpen] = useState(false);
   const [drink, setDrink] = useState('');
-  const [drinkItems, setDrinkItems] = useState(RegisterData.drink);
+  const [drinkItems, setDrinkItems] = useState(selecterData.drink);
   const [drinkError, setDrinkError] = useState(null);
 
   const [smokeOpen, setSmokeOpen] = useState(false);
   const [smoke, setSmoke] = useState('');
-  const [smokeItems, setSmokeItems] = useState(RegisterData.smoke);
+  const [smokeItems, setSmokeItems] = useState(selecterData.smoke);
   const [smokeError, setSmokeError] = useState(null);
 
   const [maritalOpen, setMaritalOpen] = useState(false);
   const [marital, setMarital] = useState('');
-  const [maritalItems, setMaritalItems] = useState(RegisterData.marital);
+  const [maritalItems, setMaritalItems] = useState(selecterData.maritalStatus);
   const [maritalError, setMaritalError] = useState(null);
 
   const [religionOpen, setReligionOpen] = useState(false);
   const [religion, setReligion] = useState('');
-  const [religionItems, setReligionItems] = useState(RegisterData.religion);
+  const [religionItems, setReligionItems] = useState(selecterData.religion);
   const [religionError, setReligionError] = useState(null);
 
+  const countryOpens = useCallback(() => {
+    setStateOpen(false);
+    setCityOpen(false);
+    setEduOpen(false);
+    setDrinkOpen(false);
+    setSmokeOpen(false);
+    setMaritalOpen(false);
+    setReligionOpen(false);
+  }, []);
+
+  const stateOpens = useCallback(() => {
+    setCountryOpen(false);
+    setCityOpen(false);
+    setEduOpen(false);
+    setDrinkOpen(false);
+    setSmokeOpen(false);
+    setMaritalOpen(false);
+    setReligionOpen(false);
+  }, []);
+
+  const cityOpens = useCallback(() => {
+    setCountryOpen(false);
+    setStateOpen(false);
+    setEduOpen(false);
+    setDrinkOpen(false);
+    setSmokeOpen(false);
+    setMaritalOpen(false);
+    setReligionOpen(false);
+  }, []);
+
   const highEduOpens = useCallback(() => {
+    setCountryOpen(false);
+    setStateOpen(false);
+    setCityOpen(false);
     setEduOpen(false);
     setDrinkOpen(false);
     setSmokeOpen(false);
@@ -142,6 +233,9 @@ const Register2 = ({navigation}) => {
   }, []);
 
   const eduOpens = useCallback(() => {
+    setCountryOpen(false);
+    setStateOpen(false);
+    setCityOpen(false);
     setHighEduOpen(false);
     setDrinkOpen(false);
     setSmokeOpen(false);
@@ -150,43 +244,61 @@ const Register2 = ({navigation}) => {
   }, []);
 
   const drinkOpens = useCallback(() => {
+    setCountryOpen(false);
+    setStateOpen(false);
+    setCityOpen(false);
     setHighEduOpen(false);
     setEduOpen(false);
-    // setDrinkOpen(false)
     setSmokeOpen(false);
     setMaritalOpen(false);
     setReligionOpen(false);
   }, []);
 
   const smokeOpens = useCallback(() => {
+    setCountryOpen(false);
+    setStateOpen(false);
+    setCityOpen(false);
     setHighEduOpen(false);
     setEduOpen(false);
     setDrinkOpen(false);
-    // setSmokeOpen(false)
     setMaritalOpen(false);
     setReligionOpen(false);
   }, []);
 
   const maritalOpens = useCallback(() => {
+    setCountryOpen(false);
+    setStateOpen(false);
+    setCityOpen(false);
     setHighEduOpen(false);
     setEduOpen(false);
     setDrinkOpen(false);
     setSmokeOpen(false);
-    // setMaritalOpen(false)
     setReligionOpen(false);
   }, []);
 
   const religionOpens = useCallback(() => {
+    setCountryOpen(false);
+    setStateOpen(false);
+    setCityOpen(false);
     setHighEduOpen(false);
     setEduOpen(false);
     setDrinkOpen(false);
     setSmokeOpen(false);
     setMaritalOpen(false);
-    // setReligionOpen(false)
   }, []);
 
   const sumbitForm = () => {
-    console.log(highEdu.length);
+    if (country.length === 0) {
+      setCountryError('Country is required');
+    }
+
+    if (state.length === 0) {
+      setStateError('State is required');
+    }
+
+    if (city.length === 0) {
+      setCityError('City is required');
+    }
 
     if (highEdu.length === 0) {
       setHighEduError('High Education field is required');
@@ -232,7 +344,34 @@ const Register2 = ({navigation}) => {
       !religionError &&
       religion.length !== 0
     ) {
-      navigation.navigate('dashboard');
+      axiosService(auth.token)
+        .post('/register/second', {
+          country: country,
+          state: state,
+          city: city,
+          education: edu,
+          highesteducation: highEdu,
+          profession: profession,
+          drink: drink,
+          smoke: smoke,
+          marital: marital,
+          religion: religion,
+        })
+        .then(resp => {
+          dis(setProfile(resp.data.user));
+          console.log(resp.data.user);
+          navigation.navigate('dashboard');
+        })
+        .catch(er => {
+          console.log(er.response.data);
+          console.log('Er ran');
+          Alert.alert('Something went wrong');
+        });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Please check all the fields',
+      });
     }
   };
 
@@ -245,7 +384,7 @@ const Register2 = ({navigation}) => {
           leftnav={() => navigation.goBack()}
         />
         <ProfessionModal
-          array={RegisterData.profession}
+          array={selecterData.profession}
           state={professionModal}
           onPressCancel={() => setProfessionModal(!professionModal)}
           onPress={data => {
@@ -313,22 +452,62 @@ const Register2 = ({navigation}) => {
                   ]}
                 />
               </View>
-              {/*
+
               <PickerInput
                 title="Country"
                 zIndex={21}
                 zIndexTitle={22}
+                items={countryItems}
+                value={country}
+                setValue={data => {
+                  getState(data());
+                  setCountry(data());
+                  setCountryError(null);
+                  setState('');
+                  setCity('');
+                }}
+                setItems={setCountryItems}
+                open={countryOpen}
+                setOpen={setCountryOpen}
+                onOpen={countryOpens}
+                error={countryError}
               />
               <PickerInput
                 title="State/Province"
                 zIndex={19}
                 zIndexTitle={20}
+                items={stateItems}
+                value={state}
+                setValue={data => {
+                  getCity(data());
+                  setState(data());
+                  setStateError(null);
+                  setCity('');
+                }}
+                setItems={setStateItems}
+                open={stateOpen}
+                setOpen={setStateOpen}
+                onOpen={stateOpens}
+                error={stateError}
+                disabled={country === ''}
               />
               <PickerInput
                 title="City"
                 zIndex={17}
                 zIndexTitle={18}
-              /> */}
+                items={cityItems}
+                value={city}
+                setValue={data => {
+                  setCity(data());
+                  setCityError(null);
+                }}
+                setItems={setCityItems}
+                open={cityOpen}
+                setOpen={setCityOpen}
+                onOpen={cityOpens}
+                error={cityError}
+                disabled={state === ''}
+              />
 
               <PickerInput
                 title="Highest Education"

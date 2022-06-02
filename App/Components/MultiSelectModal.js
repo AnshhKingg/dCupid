@@ -12,8 +12,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {LinearButton, LinearGradient} from '.';
 import {Theme} from '../Assets/Styles';
 
-const ConditionModal = ({state, onPress, onPressCancel, array}) => {
-  const [arr, setArr] = useState([]);
+const ConditionModal = ({
+  state,
+  onPress,
+  onPressCancel,
+  array,
+  selectedItems,
+}) => {
+  const [arr, setArr] = useState(selectedItems);
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -58,11 +64,11 @@ const ConditionModal = ({state, onPress, onPressCancel, array}) => {
                         Theme.row,
                         Theme.alignContentCenter,
                         Theme.backgroundGray,
-                        Theme.paddingHorizonal10p,
+                        Theme.paddingHorizonal5p,
                       ]}>
-                      <Icon name="check" size={30} />
+                      <Icon name="check" size={25} />
                       <Text
-                        style={[Theme.textCaption, Theme.paddingHorizonal10p]}>
+                        style={[Theme.textCaption, Theme.paddingHorizonal5p]}>
                         {data}
                       </Text>
                       <Icon
@@ -84,9 +90,11 @@ const ConditionModal = ({state, onPress, onPressCancel, array}) => {
               <View style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
                 <View style={[Theme.width10p]}>
                   <BouncyCheckbox
+                    disableBuiltInState={true}
+                    isChecked={arr.length === 0 ? true : false}
                     iconStyle={Theme.borderRadius5}
                     onPress={isChecked => {
-                      setArr(['Doesnt matter']);
+                      setArr([]);
                     }}
                   />
                 </View>
@@ -101,8 +109,10 @@ const ConditionModal = ({state, onPress, onPressCancel, array}) => {
                   <View style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
                     <View style={[Theme.width10p]}>
                       <BouncyCheckbox
+                        disableBuiltInState={true}
+                        isChecked={arr.includes(data.label) ? true : false}
                         iconStyle={Theme.borderRadius5}
-                        onPress={isChecked => {
+                        onPress={() => {
                           if (arr.includes(data.label)) {
                             const newArr = arr.filter(value => {
                               return value !== data.label;
@@ -135,7 +145,7 @@ const ConditionModal = ({state, onPress, onPressCancel, array}) => {
             />
           </View>
           <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
-            <LinearButton title="Save" onPress={onPress} />
+            <LinearButton title="Save" onPress={() => onPress(arr)} />
           </View>
         </View>
       </TouchableOpacity>

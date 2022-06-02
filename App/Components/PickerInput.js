@@ -17,11 +17,16 @@ const CustomPickerInput = ({
   onOpen,
   open,
   setOpen,
+  disabled,
 }) => {
   return (
     <View style={Theme.inputContainer}>
       <DropDownPicker
-        style={[Theme.textInput, Theme.paddingHorizonal20p]}
+        style={[
+          Theme.textInput,
+          Theme.paddingHorizonal20p,
+          disabled ? Theme.backgroundGray : Theme.backgroundWhite,
+        ]}
         dropDownContainerStyle={[Theme.borderRadius0p, Theme.borderLightGrey]}
         listItemContainerStyle={Theme.height50p}
         itemSeparator={true}
@@ -30,6 +35,7 @@ const CustomPickerInput = ({
         ArrowUpIconComponent={() => <Icon size={25} name="closecircleo" />}
         zIndex={zIndex}
         open={open}
+        autoScroll={true}
         setOpen={setOpen}
         value={value}
         listMode="SCROLLVIEW"
@@ -39,20 +45,21 @@ const CustomPickerInput = ({
         textStyle={[Theme.textCaption]}
         labelStyle={Theme.textCaption}
         setItems={setItems}
+        placeholder="Select"
         showTickIcon={false}
         selectedItemLabelStyle={Theme.purple}
         placeholderStyle={Theme.grey}
         min={4}
+        disabled={disabled}
         max={4}
         mode="BADGE"
         dropDownDirection={dropDownDirection ? dropDownDirection : 'BOTTOM'}
       />
-
       {title ? (
         <Text
           style={[
             Theme.textInputLabelStyle,
-            {zIndex: zIndexTitle ? zIndexTitle : 2},
+            {zIndex: zIndexTitle ? zIndexTitle : Theme.zIndex2},
           ]}>
           {' '}
           {title}{' '}

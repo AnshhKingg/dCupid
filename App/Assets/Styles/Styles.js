@@ -183,6 +183,17 @@ const Styles = StyleSheet.create({
     color: colors.purpledark,
     zIndex: 10,
   },
+  toastFontBig: {
+    fontSize: 18,
+    color: 'black',
+  },
+  toastFontMed: {
+    fontSize: 16,
+    color: 'black',
+  },
+  zIndex2: {
+    zIndex: 2,
+  },
   inputContainer: {
     borderRadius: 3,
     marginVertical: 10,
@@ -218,7 +229,7 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
   textCaption: {
-    fontSize: 18,
+    fontSize: 16,
     color: 'black',
   },
   textBold: {
@@ -325,9 +336,8 @@ const Styles = StyleSheet.create({
     elevation: 5,
   },
   modalButton: {
-    backgroundColor: 'gray',
-    height: 40,
-    margin: 10,
+    height: 35,
+    margin: 5,
     borderRadius: 20,
   },
   buttonLook: {

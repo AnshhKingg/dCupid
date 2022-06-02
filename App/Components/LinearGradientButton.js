@@ -4,9 +4,17 @@ import {Theme} from '../Assets/Styles';
 import PropTypes from 'prop-types';
 import LinearGradient from './LinearGradient';
 
-const LinearGradientButton = ({title, onPress, noGradient, color, flat}) => {
+const LinearGradientButton = ({
+  title,
+  onPress,
+  noGradient,
+  color,
+  flat,
+  disabled,
+}) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       style={[Theme.width100p, Theme.alignContentCenter]}
       onPress={onPress}>
       {noGradient ? (

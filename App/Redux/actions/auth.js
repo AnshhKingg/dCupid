@@ -1,83 +1,34 @@
 import {Alert} from 'react-native';
-import axios from 'axios';
 import {Constants} from '../constants';
+import axiosService from '../../service/axios';
 
-export const login = mobile => {
+export const login = (uid, mobile) => {
   return (dispatch, getState) => {
-    axios
-      .post(
-        'https://vast-island-86310.herokuapp.com/rest-auth/login/',
-        {
-          username: mobile,
-          password: 'test@123',
-        },
-        {
-          withCredentials: false,
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+    console.log('api in progress');
+    axiosService()
+      .post('/login', {
+        uid: uid,
+        mobile: mobile,
+      })
       .then(resp => {
-        dispatch({type: Constants.SET_AUTHKEY, payload: resp.data.key});
+        dispatch({type: Constants.SET_PROFILE, payload: resp.data.user});
+        dispatch({type: Constants.SET_AUTHKEY, payload: resp.data});
       })
       .catch(er => {
-        console.log(er.response.data);
-        Alert.alert('Unable to login');
-      });
-  };
-};
-
-export const register = () => {
-  return (dispatch, getState) => {
-    axios
-      .post(
-        'https://vast-island-86310.herokuapp.com/rest-auth/registration/',
-        {
-          username: '',
-          email: '',
-          password1: '',
-          password2: '',
-        },
-        {
-          withCredentials: false,
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      .then(resp => {
-        console.log(resp.data);
-        // dispatch({ type: Constants.SET_AUTHKEY, payload: resp.data.key });
-      })
-      .catch(er => {
-        console.log(er.response.data);
+        console.log(er);
+        Alert.alert(er, er.response.data);
       });
   };
 };
 
 export const logout = () => {
   return (dispatch, getState) => {
-    axios
-      .post(
-        'https://vast-island-86310.herokuapp.com/rest-auth/logout/',
-        {},
-        {
-          withCredentials: false,
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      .then(resp => {
-        console.log(resp);
-        dispatch({type: Constants.LOGOUT});
-      })
-      .catch(er => {
-        console.log(er.response.data);
-      });
+    // axiosService.post('/rest-auth/logout/').then((resp) => {
+
+    dispatch({type: Constants.REMOVE_PROFILE});
+    dispatch({type: Constants.LOGOUT});
+    // }).catch((er) => {
+    // console.log(er.response.data);
+    // })
   };
 };
