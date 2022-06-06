@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -8,7 +8,8 @@ import {
   Text,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {RegisterData} from '../../../data';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateProfile} from '../../Redux/actions/profile';
 import {Theme} from '../../Assets/Styles';
 import {
   Header,
@@ -48,7 +49,7 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
                 </LinearGradient>
               </View>
               <View style={[Theme.width100p, Theme.padding10]}>
-                {Object.keys(RegisterData.profession).map((data, index) => {
+                {Object.keys(array).map((data, index) => {
                   return (
                     <View>
                       <Text
@@ -59,7 +60,7 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
                         ]}>
                         {data}
                       </Text>
-                      {RegisterData.profession[data].map(profession => {
+                      {array[data].map(profession => {
                         return (
                           <View
                             style={[
@@ -75,7 +76,8 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
                                 Theme.alignCenter,
                                 Theme.paddingHorizonal10p,
                                 Theme.borderBox,
-                              ]}>
+                              ]}
+                              onPress={() => onPress(profession)}>
                               <Text
                                 style={[Theme.textCaption, Theme.padding10]}>
                                 {profession}
@@ -97,7 +99,33 @@ const EduModal = ({state, onPress, onPressCancel, array}) => {
 };
 
 const Education = ({navigation}) => {
-  const [edu, setEdu] = useState(false);
+  const dis = useDispatch();
+  const profile = useSelector(state => state.profile.user);
+  const selecterData = useSelector(state => state.masterData.data);
+  const [professionModal, setProfessionModal] = useState(false);
+  const [profession, setProfession] = useState(profile.profession);
+  const [professionError, setProfessionError] = useState(null);
+
+  const [highEduOpen, setHighEduOpen] = useState(false);
+  const [highEdu, setHighEdu] = useState(profile.highestEdu);
+  const [highEduItems, setHighEduItems] = useState(
+    selecterData.highestEducation,
+  );
+  const [highEduError, setHighEduError] = useState(null);
+
+  const [eduOpen, setEduOpen] = useState(false);
+  const [edu, setEdu] = useState(profile.education);
+  const [eduItems, setEduItems] = useState(selecterData.education);
+  const [eduError, setEduError] = useState(null);
+
+  const highEduOpens = useCallback(() => {
+    setEduOpen(false);
+  }, []);
+
+  const eduOpens = useCallback(() => {
+    setHighEduOpen(false);
+  }, []);
+
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -106,43 +134,88 @@ const Education = ({navigation}) => {
           left="arrowleft"
           leftnav={() => navigation.goBack()}
         />
-        <EduModal state={edu} onPressCancel={() => setEdu(!edu)} />
-        <ScrollView style={[]}>
-          <View style={[Theme.width100p]}>
-            <View style={[Theme.selectedItems, Theme.padding10]}>
-              <PickerInput
-                title="Highest Education"
-                items={RegisterData.higestEducation}
-              />
-              <PickerInput
-                title="Education field"
-                items={RegisterData.educationField}
-              />
-              <DropDownButton title="Profession" onPress={() => setEdu(!edu)} />
-              <View
-                style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>
-                <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
-                  <LinearButton
-                    title="Save"
-                    onPress={() => {
-                      navigation.navigate('dashboard');
-                    }}
-                  />
-                </View>
-                <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
-                  <LinearButton
-                    noGradient={true}
-                    title="Cancel"
-                    onPress={() => {
-                      navigation.goBack();
-                    }}
-                    color="lightgrey"
-                  />
-                </View>
+        <EduModal
+          array={selecterData.profession}
+          state={professionModal}
+          onPressCancel={() => setProfessionModal(!professionModal)}
+          onPress={data => {
+            setProfession(data);
+            setProfessionModal(false);
+            setProfessionError(false);
+          }}
+        />
+
+        <View style={[Theme.width100p]}>
+          <View style={[Theme.selectedItems, Theme.padding10]}>
+            <PickerInput
+              title="Highest Education"
+              items={highEduItems}
+              zIndex={15}
+              zIndexTitle={16}
+              value={highEdu}
+              setValue={data => {
+                setHighEdu(data());
+                setHighEduError(null);
+              }}
+              setItems={setHighEduItems}
+              open={highEduOpen}
+              setOpen={setHighEduOpen}
+              onOpen={highEduOpens}
+              error={highEduError}
+            />
+            <PickerInput
+              title="Educational Field"
+              items={eduItems}
+              value={edu}
+              setValue={data => {
+                setEdu(data());
+                setEduError(null);
+              }}
+              setItems={setEduItems}
+              open={eduOpen}
+              setOpen={setEduOpen}
+              onOpen={eduOpens}
+              zIndex={13}
+              zIndexTitle={14}
+              error={eduError}
+            />
+
+            <DropDownButton
+              title="Profession"
+              text={profession}
+              onPress={() => setProfessionModal(!professionModal)}
+              error={professionError}
+            />
+            <View
+              style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>
+              <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
+                <LinearButton
+                  title="Save"
+                  onPress={() => {
+                    dis(
+                      updateProfile({
+                        profession: profession,
+                        highestEdu: highEdu,
+                        education: edu,
+                      }),
+                    );
+                    navigation.goBack();
+                  }}
+                />
+              </View>
+              <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
+                <LinearButton
+                  noGradient={true}
+                  title="Cancel"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                  color="lightgrey"
+                />
               </View>
             </View>
           </View>
-        </ScrollView>
+        </View>
       </SafeAreaView>
     </>
   );

@@ -22,6 +22,7 @@ const CustomDateTimeInput = ({title, error, onPress, text}) => {
             Theme.row,
           ]}>
           <Text
+            numberOfLines={1}
             style={[
               Theme.textCaption,
               text && text.length > 0 ? Theme.black : Theme.grey,

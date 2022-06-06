@@ -4,8 +4,7 @@ import {useSelector} from 'react-redux';
 import {DrawerStack, AuthStack} from './Routes';
 
 const Navigator = () => {
-  const state = useSelector(data => data.auth.key);
-
+  const state = useSelector(data => data.auth.token);
   return (
     <NavigationContainer>
       {state ? <DrawerStack /> : <AuthStack />}

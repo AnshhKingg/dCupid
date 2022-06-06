@@ -347,7 +347,7 @@ export const RegisterData = {
     'Jogging',
     'Walking',
     'Gym workout',
-    'Yoga ',
+    'Yoga',
     'Meditation',
     'Gardening',
     'Adventure Sports',

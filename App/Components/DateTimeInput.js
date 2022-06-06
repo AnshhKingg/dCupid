@@ -9,8 +9,8 @@ const CustomDateTimeInput = ({title, error, dobChange, onChangeDate}) => {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const currDate = new Date();
-  const minDate = currDate.setFullYear(currDate.getFullYear() - 18);
-  const maxDate = currDate.setFullYear(currDate.getFullYear() - 70 + 18);
+  const maxDate = currDate.setFullYear(currDate.getFullYear() - 18);
+  const minDate = currDate.setFullYear(currDate.getFullYear() - 70 + 18);
   return (
     <View style={Theme.inputContainer}>
       <TouchableOpacity
@@ -33,16 +33,9 @@ const CustomDateTimeInput = ({title, error, dobChange, onChangeDate}) => {
               Theme.textCaption,
               !dobChange ? Theme.grey : Theme.textBlack,
             ]}>
-            {dobChange ? `${moment(date).format('DD/MM/YYYY')}` : 'Select'}
+            {dobChange ? `${moment(date).format('DD-MM-YYYY')}` : 'Select'}
           </Text>
-          <Icon
-            name={'chevron-small-down'}
-            size={27}
-            color="grey"
-            onPress={() => {
-              console.log('yoo');
-            }}
-          />
+          <Icon name={'chevron-small-down'} size={27} color="grey" />
         </View>
       </TouchableOpacity>
       {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}
@@ -53,17 +46,22 @@ const CustomDateTimeInput = ({title, error, dobChange, onChangeDate}) => {
           value={date}
           mode="date"
           onChange={(e, value) => {
-            setShow(!show);
-            setDate(value);
-            onChangeDate(moment(value).format('DD/MM/YYYY'));
+            console.log(value);
+            if (e.type !== 'dismissed') {
+              setShow(!show);
+              setDate(value);
+              onChangeDate(moment(value).format('DD-MM-YYYY'));
+            } else {
+              setShow(!show);
+            }
           }}
           onTouchCancel={() => {
             setShow(!show);
           }}
           display={'spinner'}
           is24Hour={true}
-          minimumDate={maxDate}
-          maximumDate={minDate}
+          minimumDate={minDate}
+          maximumDate={maxDate}
         />
       )}
       {error ? <Text style={Theme.red}>{error}</Text> : null}

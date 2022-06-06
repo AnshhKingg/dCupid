@@ -39,7 +39,7 @@ const Drawer = createDrawerNavigator();
 
 export const MainStack = () => {
   return (
-    <Stack.Navigator initialRouteName={'register'} screenOptions={screenOption}>
+    <Stack.Navigator initialRouteName="register" screenOptions={screenOption}>
       <Stack.Screen name={'register'} component={RegisterContainer} />
       <Stack.Screen name={'register2'} component={RegisterContainer2} />
       <Stack.Screen name={'dashboard'} component={DashboardContainer} />
@@ -82,8 +82,6 @@ export const AuthStack = () => {
       <Stack.Screen name={'homepage'} component={HomepageContainer} />
       <Stack.Screen name={'otp'} component={OtpContainer} />
       <Stack.Screen name={'otp2'} component={Otp2Container} />
-
-      {/* <Stack.Screen name={'DashB'} component={DrawerStack} /> */}
     </Stack.Navigator>
   );
 };

@@ -1,15 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import {
   View,
   Text,
   ScrollView,
   BackHandler,
   TouchableOpacity,
+  // Alert,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   DateTimeInput,
   Header,
@@ -17,12 +18,19 @@ import {
   PickerInput,
   LinearButton,
 } from '../../Components';
-import { RegisterData } from '../../../data';
-import { logout } from '../../Redux/actions/auth';
-import { useDispatch } from 'react-redux';
+import {logout} from '../../Redux/actions/auth';
+import {setProfile} from '../../Redux/actions/profile';
+import {useDispatch, useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+import axiosService from '../../service/axios';
+import fireAuth from '@react-native-firebase/auth';
+// import { Profile } from 'react-native-fbsdk-next';
 
-const Register = ({ navigation }) => {
+const Register = ({navigation}) => {
   const dis = useDispatch();
+  const selecterData = useSelector(state => state.masterData.data);
+  const auth = useSelector(state => state.auth);
+  const profile = useSelector(state => state.profile.user);
   const [gender, setGender] = useState(0);
   const [dob, setDob] = useState(new Date());
   const [dobChange, setDobChange] = useState(false);
@@ -31,8 +39,8 @@ const Register = ({ navigation }) => {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [skin, setSkin] = useState('');
   const [privacy, setPrivacy] = useState('');
-  const [skinItems, setSkinItems] = useState(RegisterData.skin);
-  const [privacyItems, setPrivacyItems] = useState(RegisterData.privacy);
+  const [skinItems, setSkinItems] = useState(selecterData.skin);
+  const [privacyItems, setPrivacyItems] = useState(selecterData.privacy);
 
   const onSkinOpen = useCallback(() => {
     setPrivacyOpen(false);
@@ -60,11 +68,7 @@ const Register = ({ navigation }) => {
     switch (field) {
       case 'name':
         setName(obj);
-        err = /\d/.test(obj)
-          ? 'Numbers are not allowed'
-          : obj.length < 3
-            ? 'Name must be at least 3 characters long!'
-            : null;
+        err = /\d/.test(obj) ? 'Numbers are not allowed' : null;
         setNameError(err);
         break;
       case 'email':
@@ -113,22 +117,44 @@ const Register = ({ navigation }) => {
       skin.length !== 0 &&
       gender !== 0
     ) {
-      navigation.navigate('register2');
+      axiosService(auth.token)
+        .post('/register/first', {
+          gender: gender === 1 ? 'Female' : 'Male',
+          dob: dob,
+          skin: skin,
+          name: name,
+          privacy: privacy,
+          email: email,
+        })
+        .then(resp => {
+          dis(setProfile(resp.data.user));
+          navigation.navigate('register2');
+        })
+        .catch(er => {
+          if (er.response.data.errors.email) {
+            setEmailError(er.response.data.errors.email.msg);
+          }
+          console.log(er.response.data.errors.email.msg);
+          console.log('Er ran');
+          Toast.show({
+            type: 'error',
+            text1: 'Please check all the fields',
+          });
+        });
     } else {
-      console.log(
-        !nameError &&
-        name.length !== 0 &&
-        !emailError &&
-        email.length !== 0 &&
-        dobChange &&
-        !privacyError &&
-        privacy.length !== 0 &&
-        !skinError &&
-        skin.length === 0 &&
-        gender !== 0,
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Please check all the fields',
+      });
     }
   };
+  useEffect(() => {
+    if (profile.firstForm && profile.secondForm) {
+      navigation.navigate('dashboard');
+    } else if (profile.firstForm) {
+      navigation.navigate('register2');
+    }
+  }, [navigation]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -137,7 +163,6 @@ const Register = ({ navigation }) => {
         return true;
       };
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
       return () =>
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, [dis]),
@@ -149,7 +174,8 @@ const Register = ({ navigation }) => {
         <Header
           left={'arrowleft'}
           title="Registration"
-          leftnav={() => {
+          leftnav={async () => {
+            await fireAuth().signOut();
             dis(logout());
           }}
         />

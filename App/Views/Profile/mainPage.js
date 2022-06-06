@@ -1,14 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
   TouchableWithoutFeedback,
   Modal,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   Header,
   LinearButton,
@@ -16,13 +17,16 @@ import {
   SemiCircularBar,
 } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {colors} from '../../Assets/Colors';
-import {RegisterData} from '../../../data';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from '../../Assets/Colors';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateProfile } from '../../Redux/actions/profile';
 
-const Tiles = ({text}) => {
+const Tiles = ({ text, icon }) => {
   return (
     <View style={[Theme.alignContentCenter, Theme.row]}>
-      <Icon name="user" size={20} color={colors.purpledark} />
+      {icon}
       <Text
         style={[
           Theme.textCaption,
@@ -36,7 +40,14 @@ const Tiles = ({text}) => {
   );
 };
 
-const InterestModal = ({state, onPress, onPressCancel, array}) => {
+const InterestModal = ({
+  state,
+  onPress,
+  onPressCancel,
+  array,
+  selectedItems,
+}) => {
+  const [arr, setArr] = useState(selectedItems);
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -70,36 +81,70 @@ const InterestModal = ({state, onPress, onPressCancel, array}) => {
                   Theme.width100p,
                   Theme.row,
                   Theme.alignCenter,
+                  Theme.justifyCenter,
                   Theme.flexWrap,
                   Theme.padding10,
                 ]}>
-                {/* <TouchableOpacity style={[Theme.modalButton, Theme.row, { borderWidth: 1, borderColor: 'red' },
-                Theme.alignContentCenter, Theme.backgroundGray, Theme.paddingHorizonal10p]}>
-                  <Text style={[Theme.textCaption, Theme.paddingHorizonal10p]}>aadadasdasd</Text>
-                </TouchableOpacity> */}
-
-                {RegisterData.interests.map(data => {
+                {array.map(data => {
                   return (
-                    <TouchableOpacity style={Theme.paddingHorizonal5p}>
-                      <LinearGradient
-                        style={[
-                          Theme.borderRed,
-                          Theme.modalButton,
-                          Theme.alignContentCenter,
-                          Theme.width100p,
-                        ]}>
+                    <TouchableOpacity
+                      style={Theme.paddingHorizonal5p}
+                      onPress={() => {
+                        if (arr.length >= 10 && !arr.includes(data)) {
+                          ToastAndroid.show(
+                            'Maximum 10 values can be selected',
+                            ToastAndroid.SHORT,
+                          );
+                        } else if (arr.includes(data)) {
+                          const newArr = arr.filter(value => {
+                            return value !== data;
+                          });
+                          setArr(newArr);
+                        } else {
+                          setArr([...arr, data]);
+                        }
+                      }}>
+                      {arr.includes(data) ? (
+                        <LinearGradient
+                          style={[
+                            Theme.borderRed,
+                            Theme.modalButton,
+                            Theme.alignContentCenter,
+                            Theme.width100p,
+                          ]}>
+                          <View
+                            style={[Theme.width100p, Theme.alignContentCenter]}>
+                            <Text
+                              style={[
+                                Theme.textBody,
+                                Theme.white,
+                                Theme.paddingHorizonal10p,
+                              ]}>
+                              {data}
+                            </Text>
+                          </View>
+                        </LinearGradient>
+                      ) : (
                         <View
-                          style={[Theme.width100p, Theme.alignContentCenter]}>
-                          <Text
-                            style={[
-                              Theme.textBody,
-                              Theme.white,
-                              Theme.paddingHorizonal10p,
-                            ]}>
-                            {data}
-                          </Text>
+                          style={[
+                            Theme.borderBox,
+                            Theme.modalButton,
+                            Theme.alignContentCenter,
+                            Theme.width100p,
+                          ]}>
+                          <View
+                            style={[Theme.width100p, Theme.alignContentCenter]}>
+                            <Text
+                              style={[
+                                Theme.textBody,
+                                Theme.textBlack,
+                                Theme.paddingHorizonal10p,
+                              ]}>
+                              {data}
+                            </Text>
+                          </View>
                         </View>
-                      </LinearGradient>
+                      )}
                     </TouchableOpacity>
                   );
                 })}
@@ -109,6 +154,9 @@ const InterestModal = ({state, onPress, onPressCancel, array}) => {
         </ScrollView>
         <View style={[Theme.width100p, Theme.row, Theme.backgroundWhite]}>
           <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
+            <LinearButton title="Save" onPress={() => onPress(arr)} />
+          </View>
+          <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
             <LinearButton
               title="Cancel"
               noGradient={true}
@@ -116,26 +164,37 @@ const InterestModal = ({state, onPress, onPressCancel, array}) => {
               onPress={onPressCancel}
             />
           </View>
-          <View style={[Theme.width50p, Theme.paddingHorizonal10p]}>
-            <LinearButton title="Save" onPress={onPress} />
-          </View>
         </View>
       </TouchableOpacity>
     </Modal>
   );
 };
 
-const Profile = ({navigation, route}) => {
+const Profile = ({ navigation, route }) => {
+  const dis = useDispatch();
   const [toggle, setToggle] = useState(false);
+  const selecterData = useSelector(state => state.masterData.data);
   const [interestModal, setInterestModal] = useState(false);
+  const profile = useSelector(state => state.profile.user);
   const bottom = useRef(null);
+
+  const ageCalc = date => {
+    const today = new Date();
+    const [day, month, year] = date.split('-');
+    var age = today.getFullYear() - parseInt(year, 10);
+    const diff = today.getMonth() - parseInt(month, 10);
+    if (diff < 0 || (diff === 0 && today.getDate() < parseInt(day, 10))) {
+      age--;
+    }
+    return age;
+  };
 
   useEffect(() => {
     if (route.params.change) {
       setToggle(true);
-      bottom.current.scrollToEnd({animated: true});
+      bottom.current.scrollToEnd({ animated: true });
     }
-  }, [route.params.change]);
+  }, []);
 
   return (
     <>
@@ -148,6 +207,12 @@ const Profile = ({navigation, route}) => {
         />
         <InterestModal
           state={interestModal}
+          array={selecterData.interest}
+          selectedItems={profile.interest}
+          onPress={data => {
+            dis(updateProfile({ interest: data }));
+            setInterestModal(false);
+          }}
           onPressCancel={() => setInterestModal(!interestModal)}
         />
         <ScrollView ref={bottom}>
@@ -176,9 +241,11 @@ const Profile = ({navigation, route}) => {
                 </LinearGradient>
               </TouchableOpacity>
               <Text style={[Theme.textHeader, Theme.textFontWeight0]}>
-                Username
+                {profile.name}
               </Text>
-              <Text style={[Theme.textCaption]}>40 yrs</Text>
+              <Text style={[Theme.textCaption]}>
+                {ageCalc(profile.dob)} years
+              </Text>
             </View>
           </View>
 
@@ -190,23 +257,68 @@ const Profile = ({navigation, route}) => {
             ]}>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.width50p, Theme.padding5, Theme.flexStart]}>
-                <Tiles text="Psorisis" />
+                <Tiles
+                  text={profile.skin}
+                  icon={
+                    <IconMaterial
+                      name="waves"
+                      size={20}
+                      color={colors.purpledark}
+                    />
+                  }
+                />
               </View>
               <View style={[Theme.width50p, Theme.padding5, Theme.flexStart]}>
-                <Tiles text="Never married" />
+                <Tiles
+                  text={profile.marital}
+                  icon={
+                    <IconMaterialCommunity
+                      name="ring"
+                      size={20}
+                      color={colors.purpledark}
+                    />
+                  }
+                />
               </View>
             </View>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.width50p, Theme.padding5, Theme.flexStart]}>
-                <Tiles text="Hindu" />
+                <Tiles
+                  text={profile.religion}
+                  icon={
+                    <IconMaterialCommunity
+                      name="book"
+                      size={20}
+                      color={colors.purpledark}
+                    />
+                  }
+                />
               </View>
               <View style={[Theme.width50p, Theme.padding5, Theme.flexStart]}>
-                <Tiles text="Non it-engineer" />
+                <Tiles
+                  text={profile.profession}
+                  icon={
+                    <IconMaterialCommunity
+                      name="briefcase"
+                      size={20}
+                      color={colors.purpledark}
+                    />
+                  }
+                />
               </View>
             </View>
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.width50p, Theme.padding5, Theme.flexStart]}>
-                <Tiles text="India" />
+                <Tiles
+                  text={profile.state}
+                  icon={
+                    <IconMaterial
+                      name="location-on"
+                      size={20}
+                      color={colors.purpledark}
+                    />
+                  }
+                />
               </View>
             </View>
           </View>
@@ -251,7 +363,7 @@ const Profile = ({navigation, route}) => {
                   ]}>
                   <Icon name="photo" size={20} color="black" />
                 </View>
-                <Text style={[Theme.textBody, Theme.textCenter]}>
+                <Text style={[Theme.textCaption, Theme.textCenter]}>
                   Verify mobile 20%
                 </Text>
               </View>
@@ -263,7 +375,7 @@ const Profile = ({navigation, route}) => {
                     Theme.alignContentCenter,
                     Theme.backgroundGray,
                   ]}>
-                  <Icon name="user" size={25} color="black" />
+                  <Icon name="user" size={20} color="black" />
                 </View>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>
                   Verify Photo ID 20%
@@ -277,7 +389,7 @@ const Profile = ({navigation, route}) => {
                     Theme.alignContentCenter,
                     Theme.backgroundGray,
                   ]}>
-                  <Icon name="user" size={25} color="black" />
+                  <Icon name="user" size={20} color="black" />
                 </View>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>
                   Verify Photo ID 20%
@@ -336,7 +448,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.partnerpref.ageFrom} to {profile.partnerpref.ageTo}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -348,7 +460,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.partnerpref.skin.length === 0 ? "Doesn't Matter" : profile.partnerpref.skin.toString()}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -360,8 +472,9 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.partnerpref.marital.length === 0 ? "Dosen't Matter" : profile.partnerpref.marital.toString()}
                   </Text>
+
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('age')}>
                   <Icon name="pencil" size={25} color="orange" />
@@ -385,7 +498,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.partnerpref.country.length === 0 ? "Doesn't Matter" : profile.partnerpref.country.toString()}
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -394,7 +507,7 @@ const Profile = ({navigation, route}) => {
                 </TouchableOpacity>
               </View>
 
-              <View
+              {/* <View
                 style={[
                   Theme.width100p,
                   Theme.justifySpcBtw,
@@ -418,7 +531,7 @@ const Profile = ({navigation, route}) => {
                   onPress={() => navigation.navigate('religion')}>
                   <Icon name="pencil" size={25} color="orange" />
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
           ) : (
             <View
@@ -462,7 +575,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.name}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -474,7 +587,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.privacy}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -486,7 +599,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.dob}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -498,7 +611,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.skin}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -510,8 +623,26 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.marital}
                   </Text>
+                  {
+                    profile.children ?
+                      <>
+                        <Text style={[Theme.textBody, Theme.marginTop10]}>
+                          Children
+                        </Text>
+                        <Text
+                          style={[
+                            Theme.textCaption,
+                            Theme.grey,
+                            Theme.paddingVertical5p,
+                          ]}>
+                          {profile.children}
+                        </Text>
+                      </>
+                      :
+                      null
+                  }
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('name')}>
                   <Icon name="pencil" size={25} color="orange" />
@@ -535,7 +666,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.country}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>State</Text>
@@ -545,7 +676,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.state}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>City</Text>
@@ -555,7 +686,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.city}
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -581,9 +712,8 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.highestEdu}
                   </Text>
-
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
                     Education field
                   </Text>
@@ -593,7 +723,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.education}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -605,7 +735,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.profession}
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -631,7 +761,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.interest ? profile.interest.toString() : ''}
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -657,7 +787,7 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.drink}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>Smoke</Text>
@@ -667,8 +797,24 @@ const Profile = ({navigation, route}) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    abcd
+                    {profile.smoke}
                   </Text>
+
+                  {profile.diet ? (
+                    <>
+                      <Text style={[Theme.textBody, Theme.marginTop10]}>
+                        Diet
+                      </Text>
+                      <Text
+                        style={[
+                          Theme.textCaption,
+                          Theme.grey,
+                          Theme.paddingVertical5p,
+                        ]}>
+                        {profile.diet}
+                      </Text>
+                    </>
+                  ) : null}
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('drink')}>
                   <Icon name="pencil" size={25} color="orange" />

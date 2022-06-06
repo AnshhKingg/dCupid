@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {LinearButton, LinearGradient} from '../../Components';
 
-const Otp2 = ({navigation}) => {
+const Otp2 = ({navigation, route}) => {
+  const [otp, setOtp] = useState('');
   return (
     <>
       <LinearGradient>
@@ -33,8 +34,10 @@ const Otp2 = ({navigation}) => {
                 <OTPInputView
                   style={[Theme.width100p]}
                   pinCount={6}
-                  // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                  // onCodeChanged = {code => { this.setState({code})}}
+                  code={otp}
+                  onCodeChanged={code => {
+                    setOtp(code);
+                  }}
                   codeInputFieldStyle={[Theme.underlineStyleBase]}
                   onCodeFilled={code => {
                     console.log(`Code is ${code}, you are good to go!`);
@@ -49,20 +52,26 @@ const Otp2 = ({navigation}) => {
                 ]}>
                 <View style={[Theme.width60p, Theme.alignContentCenter]}>
                   <LinearButton
+                    disabled={otp.length !== 6}
                     title="Submit"
-                    onPress={() => navigation.navigate('register')}
+                    onPress={() => {
+                      route.params.verify(otp);
+                      navigation.navigate('register');
+                    }}
                   />
                 </View>
 
-                <Text
-                  style={[
-                    Theme.textBody,
-                    Theme.textUnderLine,
-                    Theme.blue,
-                    Theme.paddingVertical10p,
-                  ]}>
-                  Resend
-                </Text>
+                <TouchableOpacity onPress={route.params.resend}>
+                  <Text
+                    style={[
+                      Theme.textBody,
+                      Theme.textUnderLine,
+                      Theme.blue,
+                      Theme.paddingVertical10p,
+                    ]}>
+                    Resend
+                  </Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('otp')}>
                   <Text
                     style={[
