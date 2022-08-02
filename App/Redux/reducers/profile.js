@@ -1,4 +1,4 @@
-import {Constants} from '../constants/index';
+import { Constants } from '../constants/index';
 
 const initialState = {
   user: {
@@ -25,6 +25,7 @@ const initialState = {
     profession: null,
     religion: null,
     secondForm: false,
+    photos: [],
     skin: null,
     smoke: null,
     state: null,
@@ -40,9 +41,7 @@ const profile = (state = initialState, action) => {
         user: action.payload,
       };
     case Constants.REMOVE_PROFILE:
-      return {
-        user: state,
-      };
+      return initialState;
 
     default:
       return state;

@@ -1,5 +1,5 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {colors} from '../Colors';
+import { StyleSheet, Dimensions } from 'react-native';
+import { colors } from '../Colors';
 const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
@@ -368,7 +368,7 @@ const Styles = StyleSheet.create({
     borderRadius: 15,
     position: 'absolute',
     bottom: -0,
-    right: -10,
+    right: 0,
   },
   vsmallButtonLook: {
     width: 30,
@@ -520,7 +520,7 @@ const Styles = StyleSheet.create({
     width: width,
   },
   imageMatchingProfileWidth: {
-    width: width - 20,
+    width: width - 22,
     height: 300,
   },
   imageMatchingVerticalComponent: {
@@ -543,49 +543,49 @@ const Styles = StyleSheet.create({
 
   //Circular bar
   container: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     borderWidth: 15,
-    borderRadius: 75,
+    borderRadius: 60,
     borderColor: 'lightgrey',
     justifyContent: 'center',
     alignItems: 'center',
   },
   firstProgressLayer: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     borderWidth: 15,
-    borderRadius: 75,
+    borderRadius: 60,
     position: 'absolute',
     borderLeftColor: 'transparent',
     borderBottomColor: 'transparent',
-    borderRightColor: '#3498db',
-    borderTopColor: '#3498db',
-    transform: [{rotateZ: '-135deg'}],
+    borderRightColor: colors.purpledark,
+    borderTopColor: colors.purpledark,
+    transform: [{ rotateZ: '-135deg' }],
   },
   secondProgressLayer: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     borderWidth: 15,
-    borderRadius: 75,
+    borderRadius: 60,
     position: 'absolute',
     borderLeftColor: 'transparent',
     borderBottomColor: 'transparent',
-    borderRightColor: '#3498db',
-    borderTopColor: '#3498db',
-    transform: [{rotateZ: '45deg'}],
+    borderRightColor: colors.purpledark,
+    borderTopColor: colors.purpledark,
+    transform: [{ rotateZ: '45deg' }],
   },
   offsetLayer: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     borderWidth: 15,
-    borderRadius: 75,
+    borderRadius: 60,
     position: 'absolute',
     borderLeftColor: 'transparent',
     borderBottomColor: 'transparent',
     borderRightColor: 'lightgrey',
     borderTopColor: 'lightgrey',
-    transform: [{rotateZ: '-135deg'}],
+    transform: [{ rotateZ: '-135deg' }],
   },
   //Otp Styles
   underlineStyleBase: {

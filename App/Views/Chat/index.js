@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,29 @@ import {
   TextInput,
   Keyboard,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {LinearButton, LinearGradient} from '../../Components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearButton, LinearGradient } from '../../Components';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import IconIon from 'react-native-vector-icons/Ionicons';
-import {Menu, MenuItem} from 'react-native-material-menu';
+import { Menu, MenuItem } from 'react-native-material-menu';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+import { connect } from 'socket.io-client';
+import { ip } from '../../Components/ipAddress';
+import axiosServ from '../../service/axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getConversations } from '../../Redux/actions';
+import moment from 'moment-timezone';
 
-const UserMsg = ({toggle}) => {
+
+const UserMsg = ({ toggle, data }) => {
+  let dateData = moment(data.createdAt).isSame(new Date(), "day");
+  if (dateData) {
+    dateData = moment(data.createdAt).format('hh:mm')
+  } else {
+    dateData = moment(data.createdAt).format('DD-MM-YYYY')
+  }
   return (
     <View style={Theme.width100p}>
       <View style={toggle ? Theme.selfAlignEnd : Theme.selfAlignStart}>
@@ -29,8 +42,7 @@ const UserMsg = ({toggle}) => {
             Theme.selfAlignStart,
           ]}>
           <Text style={[Theme.maxWidth80, Theme.textCaption]}>
-            Name sdff sdf sdfsdfsdf sdfsdfsd sdsdfsdfsfsd f sfsd ssdfsdfsdfs sdf
-            sdfsdfsdf sdfsdf sdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsdfsdfsdf
+            {data.message}
           </Text>
           <IconAwesome
             style={[Theme.maxWidth20, Theme.paddingLeft]}
@@ -40,22 +52,66 @@ const UserMsg = ({toggle}) => {
           />
         </View>
         <View>
-          <Text style={[Theme.textCaption]}>5:00 am</Text>
+          <Text style={[Theme.textCaption]}>{dateData}</Text>
         </View>
       </View>
     </View>
   );
 };
 
-const Chat = ({navigation}) => {
+const Chat = ({ navigation, route }) => {
   const bottom = useRef(null);
   const pos = useRef(false);
+  const [msgs, setMsgs] = useState([])
+  const [chatMsg, setChatMsg] = useState('')
+  const dis = useDispatch()
+  const token = useSelector(state => state.auth.token)
+  const id = useSelector(state => state.profile.user._id)
 
   useEffect(() => {
-    bottom.current.scrollToEnd({animated: true});
+    // socket.current.on('connect', () => {
+    //   console.log(socket.current.id)
+    // })
+    axiosServ(token).post(`/chat/get-user-conversation`, { 'userId': route.params.receiverId }).then((resp) => {
+      console.log(resp.data);
+      setMsgs(resp.data.data)
+    }).catch((er) => {
+      console.log('i failed');
+      // console.log(er.response);
+    })
+  }, [route.params.receiverId])
+
+  const sendmsg = () => {
+    axiosServ(token).post(`/chat/send-msg`, {
+      'receiverId': route.params.receiverId,
+      'senderId': id,
+      'message': chatMsg
+    }).then((resp) => {
+      setMsgs([...msgs, {
+        "createdAt": new Date(),
+        "message": chatMsg,
+        "readStatus": false,
+        "receiverId": route.params.receiverId,
+        "senderId": id,
+      }])
+      setChatMsg('')
+      axiosServ(token).post(`/chat/chat-read`, { 'conversationId': resp.data.conversationId }).then((resp) => {
+      }).catch((er) => {
+        console.log('i failed 1');
+        console.log(er.response.data.errors);
+      })
+    }).catch((er) => {
+      console.log('i failed 222');
+      console.log(er.response.data);
+    })
+  }
+
+
+  useEffect(() => {
+    bottom.current.scrollToEnd({ animated: true });
     Keyboard.addListener('keyboardDidShow', () => {
       if (pos.current) {
-        bottom.current.scrollToEnd({animated: true});
+        bottom.current.scrollToEnd({ animated: true });
       }
     });
     return () => {
@@ -137,8 +193,8 @@ const Chat = ({navigation}) => {
           onScrollEndDrag={e => {
             if (
               e.nativeEvent.contentSize.height -
-                e.nativeEvent.layoutMeasurement.height -
-                e.nativeEvent.contentOffset.y <
+              e.nativeEvent.layoutMeasurement.height -
+              e.nativeEvent.contentOffset.y <
               90
             ) {
               pos.current = true;
@@ -147,14 +203,11 @@ const Chat = ({navigation}) => {
             }
           }}>
           <View style={[Theme.width100p, Theme.padding5]}>
-            <UserMsg />
-
-            <UserMsg toggle={true} />
-
-            <UserMsg />
-
-            <UserMsg />
-
+            {
+              msgs?.map((data, index) => {
+                return <UserMsg key={index} data={data} toggle={data.senderId === id} />
+              })
+            }
             <View
               style={[
                 Theme.width100p,
@@ -162,7 +215,7 @@ const Chat = ({navigation}) => {
                 Theme.marginBottom10,
               ]}>
               <Text style={[Theme.textCaption]}>
-                Name has not accepted your friend request.
+                Name has not accepted your chat request.
               </Text>
             </View>
             <View
@@ -193,10 +246,14 @@ const Chat = ({navigation}) => {
               <TextInput
                 style={Theme.chatTextInputStyle}
                 placeholder="Type Something"
+                value={chatMsg}
+                onChangeText={(text) => setChatMsg(text)}
               />
             </View>
             <TouchableOpacity
-              style={[Theme.width20p, Theme.alignContentCenter]}>
+              style={[Theme.width20p, Theme.alignContentCenter]}
+              onPress={sendmsg}
+            >
               <LinearGradient
                 style={[Theme.alignContentCenter, Theme.largeButtonLook]}>
                 <IconIon name={'send-sharp'} size={40} color="white" />

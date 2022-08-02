@@ -1,20 +1,19 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconMat from 'react-native-vector-icons/MaterialCommunityIcons';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {LinearGradient, ProfileComp, SemiCircularBar} from '../../Components';
-import {colors} from '../../Assets/Colors';
-import {Menu, MenuItem} from 'react-native-material-menu';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { LinearGradient, ProfileComp, SemiCircularBar } from '../../Components';
+import { colors } from '../../Assets/Colors';
+import { Menu, MenuItem } from 'react-native-material-menu';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
-const OtherUsersProfile = ({navigation}) => {
+const OtherUsersProfile = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
-
+  const { data } = route.params
   const hideMenu = () => setVisible(false);
-
   const showMenu = () => setVisible(true);
   return (
     <>
@@ -36,7 +35,7 @@ const OtherUsersProfile = ({navigation}) => {
               />
               <Text
                 style={[
-                  Theme.textHeader,
+                  Theme.textTitle,
                   Theme.white,
                   Theme.paddingHorizonal10p,
                 ]}>
@@ -73,6 +72,7 @@ const OtherUsersProfile = ({navigation}) => {
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.padding10, Theme.alignCenter]}>
               <ProfileComp
+                data={data}
                 onPress={() => navigation.navigate('chat')}
                 disableButton={true}
               />
@@ -153,7 +153,7 @@ const OtherUsersProfile = ({navigation}) => {
                 ]}>
                 <Text style={[Theme.textTitle]}>About me</Text>
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  About me
+                  {data.aboutme}
                 </Text>
               </View>
 
@@ -165,13 +165,13 @@ const OtherUsersProfile = ({navigation}) => {
                   Theme.padding10,
                 ]}>
                 <Text style={[Theme.textTitle]}>City</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]} />
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>{data.city}</Text>
 
                 <Text style={[Theme.textTitle]}>State</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]} />
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>{data.state}</Text>
 
                 <Text style={[Theme.textTitle]}>Country</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]} />
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>{data.country}</Text>
               </View>
 
               <View
@@ -183,7 +183,7 @@ const OtherUsersProfile = ({navigation}) => {
                 ]}>
                 <Text style={[Theme.textTitle]}>Education</Text>
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  Blogger Coumputer/IT
+                  {data.education}
                 </Text>
               </View>
 
@@ -196,7 +196,37 @@ const OtherUsersProfile = ({navigation}) => {
                 ]}>
                 <Text style={[Theme.textTitle]}>Professsion</Text>
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  Blogger Coumputer/IT
+                  {data.profession}
+                </Text>
+              </View>
+              <View
+                style={[
+                  Theme.width100p,
+                  Theme.separator,
+                  Theme.marginBottom0,
+                  Theme.padding10,
+                ]}>
+                <Text style={[Theme.textTitle]}>Interest</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.interest
+                    ? data.interest.toString().replace(/,/g, ' , ')
+                    : ''}
+                </Text>
+              </View>
+              <View
+                style={[
+                  Theme.width100p,
+                  Theme.separator,
+                  Theme.marginBottom0,
+                  Theme.padding10,
+                ]}>
+                <Text style={[Theme.textTitle]}>Drink</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.drink}
+                </Text>
+                <Text style={[Theme.textTitle]}>Smoke</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.smoke}
                 </Text>
               </View>
             </View>
@@ -218,7 +248,7 @@ const OtherUsersProfile = ({navigation}) => {
                 Theme.textBold,
                 Theme.backgroundWhite,
               ]}
-              onPress={() => {}}>
+              onPress={() => { }}>
               <IconMat
                 name={'message-processing'}
                 size={30}

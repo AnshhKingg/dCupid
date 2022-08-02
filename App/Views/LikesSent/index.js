@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header} from '../../Components';
+import { View, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { Header } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 
 const LikesTile = () => {
   return (
@@ -64,7 +65,8 @@ const LikesTile = () => {
   );
 };
 
-const LikesSent = ({navigation}) => {
+const LikesSent = ({ navigation }) => {
+  const likes = useSelector(state => state.likeUser)
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>

@@ -1,11 +1,13 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton} from '../../Components';
+import { View, Text, ScrollView, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { Header, LinearButton } from '../../Components';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
+import auth from '@react-native-firebase/auth';
 
-const MessageTile = ({toggle, togglemsg, header, des, title, onPress}) => {
+const MessageTile = ({ toggle, togglemsg, header, des, title, onPress }) => {
   return (
     <View
       style={[
@@ -53,7 +55,8 @@ const MessageTile = ({toggle, togglemsg, header, des, title, onPress}) => {
   );
 };
 
-const TrustScore = ({navigation}) => {
+const TrustScore = ({ navigation }) => {
+  const profile = useSelector(state => state.profile.user)
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -80,40 +83,44 @@ const TrustScore = ({navigation}) => {
                 YOUR PROFILE TRUST SCORE
               </Text>
               <Text style={[Theme.textTitle, Theme.textCenter, Theme.purple]}>
-                20%
+                {((profile.photos.length > 0 ? 1 : 0) + (profile.mobileVerified ? 1 : 0) + (profile.photoID ? 1 : 0) + (profile.emailVerified ? 1 : 0)) * 25}%
               </Text>
             </View>
             <MessageTile
-              toggle={false}
-              togglemsg="Photograph verified"
+              toggle={profile.photos.length > 0}
+              togglemsg={profile.photos.length > 0 ? profile.photos[0].photoApproved ? "Photograph verified" : "Profile photo is under verification" : ""}
               header="Add your recent photo (20%)"
               title={'Add Photo'}
               onPress={() => navigation.navigate('photo')}
             />
 
             <MessageTile
-              toggle={true}
+              toggle={profile.mobileVerified ? true : false}
               togglemsg="Mobile verified"
-              // header='Add your recent photo (20%)' title={'Add Photo'}
-              // onPress={() => navigation.navigate('photo')}
+              header="Verify your mobile number (20%)"
+              title={'Verify mobile'}
+              onPress={() => {
+
+              }}
             />
 
             {/* <MessageTile toggle={false} togglemsg='Facebook profile verified'
-                            header='Connect your facebook profile (20%)' des='We will never post anything on your facebook profile'
-                            title='Connect now' onPress={{}} /> */}
+              header='Connect your facebook profile (20%)' des='We will never post anything on your facebook profile'
+              title='Connect now' onPress={{}} /> */}
 
             <MessageTile
-              toggle={false}
+              toggle={profile.emailVerified ? true : false}
               togglemsg="Email id verified"
               header="Verify your email (20%)"
               des="We will never share your email with other users."
               title="Verify email"
-              onPress={{}}
-            />
+              onPress={async () => {
 
+              }}
+            />
             <MessageTile
-              toggle={false}
-              togglemsg="Photo id verified"
+              toggle={profile.photoID ? true : false}
+              togglemsg={profile.photoIDApproved ? "Photo Id verified" : "Photo Id under verification."}
               header="Verify your photo id (20%)"
               des="Upload a copy of your driving licence , passport or any other photo id that has your photo ,date of birth and name mentioned on it."
               title="Upload"

@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useState} from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   // Alert,
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   DateTimeInput,
   Header,
@@ -18,15 +18,15 @@ import {
   PickerInput,
   LinearButton,
 } from '../../Components';
-import {logout} from '../../Redux/actions/auth';
-import {setProfile} from '../../Redux/actions/profile';
-import {useDispatch, useSelector} from 'react-redux';
+import { logout } from '../../Redux/actions/auth';
+import { setProfile } from '../../Redux/actions/profile';
+import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import axiosService from '../../service/axios';
 import fireAuth from '@react-native-firebase/auth';
 // import { Profile } from 'react-native-fbsdk-next';
 
-const Register = ({navigation}) => {
+const Register = ({ navigation }) => {
   const dis = useDispatch();
   const selecterData = useSelector(state => state.masterData.data);
   const auth = useSelector(state => state.auth);
@@ -131,10 +131,10 @@ const Register = ({navigation}) => {
           navigation.navigate('register2');
         })
         .catch(er => {
+          console.log(er.response.data);
           if (er.response.data.errors.email) {
             setEmailError(er.response.data.errors.email.msg);
           }
-          console.log(er.response.data.errors.email.msg);
           console.log('Er ran');
           Toast.show({
             type: 'error',
@@ -148,17 +148,31 @@ const Register = ({navigation}) => {
       });
     }
   };
-  useEffect(() => {
-    if (profile.firstForm && profile.secondForm) {
-      navigation.navigate('dashboard');
-    } else if (profile.firstForm) {
-      navigation.navigate('register2');
-    }
-  }, [navigation]);
+
+  // useEffect(() => {
+  //   if (profile.firstForm && profile.secondForm) {
+  //     navigation.navigate('dashboard');
+  //   } else if (profile.firstForm && !profile.secondForm) {
+  //     navigation.navigate('register2');
+  //   }
+  // }, [navigation, profile.firstForm, profile.secondForm]);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (profile.firstForm && profile.secondForm) {
+        navigation.replace('dashboard');
+      } else if (profile.firstForm) {
+        navigation.replace('register2');
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, profile.firstForm, profile.secondForm]);
 
   useFocusEffect(
     React.useCallback(() => {
-      const onBackPress = () => {
+      const onBackPress = async () => {
+        await fireAuth().signOut();
         dis(logout());
         return true;
       };
@@ -167,6 +181,10 @@ const Register = ({navigation}) => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, [dis]),
   );
+
+
+
+
 
   return (
     <>

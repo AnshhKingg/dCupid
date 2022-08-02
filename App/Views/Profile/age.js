@@ -1,7 +1,7 @@
-import React, {useCallback, useState} from 'react';
-import {View, Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import React, { useCallback, useState } from 'react';
+import { View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   Header,
   PickerInput,
@@ -9,10 +9,10 @@ import {
   DropDownButton,
   MultiSelect,
 } from '../../Components';
-import {useDispatch, useSelector} from 'react-redux';
-import {updateProfile} from '../../Redux/actions/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfile } from '../../Redux/actions/profile';
 
-const Age = ({navigation}) => {
+const Age = ({ navigation }) => {
   const dis = useDispatch();
   const profile = useSelector(state => state.profile.user);
   console.log(profile);
@@ -27,12 +27,12 @@ const Age = ({navigation}) => {
   const age1 = [...Array(71).keys()]
     .splice(parseInt(profile.partnerpref.ageFrom, 10))
     .map(data => {
-      return {value: data, label: data};
+      return { value: data, label: data };
     });
   const age2 = [...Array(71).keys()]
     .splice(parseInt(profile.partnerpref.ageTo, 10))
     .map(data => {
-      return {value: data, label: data};
+      return { value: data, label: data };
     });
 
   const [ageFromOpen, setAgeFromOpen] = useState(false);
@@ -62,6 +62,7 @@ const Age = ({navigation}) => {
           leftnav={() => navigation.goBack()}
         />
         <MultiSelect
+          title="Skin Condition"
           state={skinCondition}
           array={selecterData.skin}
           selectedItems={profile.partnerpref.skin}
@@ -72,6 +73,7 @@ const Age = ({navigation}) => {
           }}
         />
         <MultiSelect
+          title="Marital Status"
           state={maritalStatus}
           array={selecterData.maritalStatus}
           selectedItems={profile.partnerpref.marital}
@@ -98,7 +100,7 @@ const Age = ({navigation}) => {
                     const newageArray = [...Array(71).keys()]
                       .splice(data() + 4)
                       .map(val => {
-                        return {value: val, label: val};
+                        return { value: val, label: val };
                       });
                     setAgeToItems(newageArray);
                   }}
@@ -130,12 +132,12 @@ const Age = ({navigation}) => {
             <DropDownButton
               title="Skin Condition"
               onPress={() => SetSkinCondition(!skinCondition)}
-              text={skin.toString()}
+              text={skin.length === 0 ? "Doesn't matter" : skin.toString().replace(/,/g, ' , ')}
             />
             <DropDownButton
               title="Maritial Status"
               onPress={() => setMartitalStatus(!maritalStatus)}
-              text={marital.toString()}
+              text={marital.length === 0 ? "Doesn't matter" : marital.toString().replace(/,/g, ' , ')}
             />
             <View
               style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>

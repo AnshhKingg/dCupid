@@ -1,4 +1,4 @@
-import {Constants} from '../constants';
+import { Constants } from '../constants';
 import axiosService from '../../service/axios';
 
 export const masterData = () => {
@@ -7,10 +7,11 @@ export const masterData = () => {
       .get('/masterdata')
       .then(resp => {
         console.log('Master api ran');
-        dispatch({type: Constants.SET_DATA, payload: resp.data});
+        dispatch({ type: Constants.SET_DATA, payload: resp.data });
       })
       .catch(er => {
-        console.log(er.response.data);
+        console.log(er);
+        console.log('Master api failed');
       });
   };
 };
