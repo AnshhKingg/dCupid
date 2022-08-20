@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, Alert } from 'react-native';
+import { View, Text, ScrollView, Alert, PermissionsAndroid } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../../Assets/Styles';
 import { Header, LinearButton } from '../../Components';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
-import auth from '@react-native-firebase/auth';
+import ImagePicker from 'react-native-image-crop-picker';
+import { ip } from '../../Components/ipAddress';
 
 const MessageTile = ({ toggle, togglemsg, header, des, title, onPress }) => {
   return (
@@ -57,6 +58,7 @@ const MessageTile = ({ toggle, togglemsg, header, des, title, onPress }) => {
 
 const TrustScore = ({ navigation }) => {
   const profile = useSelector(state => state.profile.user)
+  const token = useSelector(state => state.auth.token)
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -114,17 +116,65 @@ const TrustScore = ({ navigation }) => {
               header="Verify your email (20%)"
               des="We will never share your email with other users."
               title="Verify email"
-              onPress={async () => {
-
+              onPress={() => {
+                navigation.navigate('verifyemail')
               }}
             />
+
             <MessageTile
               toggle={profile.photoID ? true : false}
               togglemsg={profile.photoIDApproved ? "Photo Id verified" : "Photo Id under verification."}
               header="Verify your photo id (20%)"
               des="Upload a copy of your driving licence , passport or any other photo id that has your photo ,date of birth and name mentioned on it."
               title="Upload"
-              onPress={{}}
+              onPress={async () => {
+                const granted = await PermissionsAndroid.request(
+                  PermissionsAndroid.PERMISSIONS.CAMERA,
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                  ImagePicker.openCamera({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                    compressImageQuality: 0.2
+                  }).then(image => {
+                    console.log(image);
+                    let data = new FormData();
+                    data.append('photo', {
+                      uri: image.path,
+                      name: 'image.jpg',
+                      type: 'image/jpeg'
+                    });
+                    data.append('type','photoId');
+                    try {
+                      fetch(`${ip}/api/v1/user/upload-photos`,
+                        {
+                          method: 'POST', headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': `${token}`
+                          }, body: data,
+                        }).then((resp) => {
+                          console.log(resp);
+                          if (resp.status === 201) {
+                            dis(getProfile())
+                            Alert.alert(
+                              'Upload Photo',
+                              'Your photo has been uploaded successfully. It will go live after screening',
+                            );
+                            setState()
+                          } else {
+                            Alert.alert(
+                              'Upload Photo',
+                              'Error is uploading photo. PLease try again.',
+                            );
+                          }
+                        })
+                    } catch (er) {
+                      console.log(er);
+                    }
+                  })
+                }
+              }}
             />
           </View>
         </ScrollView>

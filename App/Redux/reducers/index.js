@@ -6,6 +6,8 @@ import profile from './profile';
 import blockUser from './blockUser';
 import likeUser from './likeUser';
 import chat from './chat';
+import chatRequested from './chatRequest';
+import chatDeclined from './chatDeclined';
 
 const appReducer = combineReducers({
   appEnv,
@@ -14,7 +16,9 @@ const appReducer = combineReducers({
   profile,
   blockUser,
   likeUser,
-  chat
+  chat,
+  chatRequested,
+  chatDeclined
 });
 
 const rootReducer = (state, action) => {

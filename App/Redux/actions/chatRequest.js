@@ -1,13 +1,13 @@
-import { Alert } from 'react-native';
 import { Constants } from '../constants';
 import axiosService from '../../service/axios';
 
-export const getConversations = () => {
+export const getConversationsRequested = () => {
     return (dispatch, getState) => {
         axiosService(getState().auth.token)
-            .get('/chat/get-conversations/accepted')
+            .get('/chat/get-conversations/requested')
             .then(resp => {
-                dispatch({ type: Constants.GET_CONVERSATION, payload: resp.data.data });
+                console.log(resp.data);
+                dispatch({ type: Constants.GET_CONVERSATION_REQUESTED, payload: resp.data.data });
             })
             .catch(er => {
                 console.log('get conv error');

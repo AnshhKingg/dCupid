@@ -67,7 +67,7 @@ const MessageTile = ({ onPress, data }) => {
           </View>
 
           {
-            data.unread === 0 ?
+            data.conversationData.unread === 0 ?
               null
               :
               <View
@@ -89,7 +89,6 @@ const MessageTile = ({ onPress, data }) => {
 
 const Message = ({ navigation }) => {
   const msglist = useSelector(state => state.chat.data)
-
   // const socket = useRef(connect("http://ec2-3-110-117-121.ap-south-1.compute.amazonaws.com:5000"))
   useEffect(() => {
     // socket.current.on('connect', () => {
@@ -113,8 +112,10 @@ const Message = ({ navigation }) => {
               <Text style={[Theme.textBody, Theme.selfAlignCenter, Theme.paddingVertical20p]}>No messages found !</Text>
               :
               msglist.map((data, index) => {
-                console.log(data);
-                return <MessageTile data={data} key={index} onPress={() => navigation.navigate('chat', { receiverId: data.userData._id })} />
+                return <MessageTile
+                  data={data}
+                  key={index}
+                  onPress={() => navigation.navigate('chat', { receiverId: data.userData._id, name: data.userData.name })} />
               })
             }
           </View>

@@ -4,6 +4,8 @@ import { masterData } from './masterData';
 import { blockUser } from './blockUser'
 import { likeUser } from './likeUser'
 import { getConversations } from './chat'
+import { getConversationsDeclined } from './chatDeclined'
+import { getConversationsRequested } from './chatRequest'
 import { getProfile, removeProfile, setProfile, updateProfile } from './profile'
 
 export {
@@ -11,6 +13,6 @@ export {
     login, masterData,
     likeUser, blockUser,
     getProfile, removeProfile,
-    setProfile, updateProfile,
-    getConversations
+    setProfile, updateProfile, getConversationsRequested,
+    getConversations, getConversationsDeclined
 };

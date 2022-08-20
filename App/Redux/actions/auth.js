@@ -12,6 +12,7 @@ export const login = (uid, mobile, token) => {
         token: token
       })
       .then(resp => {
+        console.log(resp.data.data);
         dispatch({ type: Constants.SET_PROFILE, payload: resp.data.user });
         dispatch({ type: Constants.SET_AUTHKEY, payload: resp.data });
       })

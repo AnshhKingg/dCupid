@@ -377,7 +377,7 @@ const Profile = ({ navigation, route }) => {
               }
 
               {
-                profile.emailVerifed ? null :
+                profile.emailVerified ? null :
                   <TouchableOpacity
                     onPress={() => navigation.navigate('trustscore')}
                     style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>

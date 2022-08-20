@@ -183,7 +183,9 @@ const Drawer = props => {
             text="Likes Sent"
             onPress={() => props.navigation.navigate('likes')}
           />
-          <DrawerComponent text="Declined Profiles" />
+          <DrawerComponent text="Declined Profiles"
+            onPress={() => props.navigation.navigate('chatdeclined')}
+          />
         </View>
       </ScrollView>
       <View

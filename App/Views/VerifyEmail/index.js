@@ -15,90 +15,46 @@ import {
     LinearGradient,
     Loading,
 } from '../../Components';
-import CountryPicker from 'react-native-country-picker-modal';
-import { useDispatch } from 'react-redux';
-import { login, logout } from '../../Redux/actions/auth';
-import { removeProfile } from '../../Redux/actions/profile';
-import auth from '@react-native-firebase/auth';
+import { useDispatch, useSelector } from 'react-redux';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import axiosServ from '../../service/axios';
 
-const Otp = ({ navigation }) => {
+const VerifyEmail = ({ navigation }) => {
     const dis = useDispatch();
+    const token = useSelector(state => state.auth.token)
+    const emailid = useSelector(state => state.profile.user.email)
     const [loading, setLoading] = useState(false);
     const [otp, setOtp] = useState('');
-    const [country, setcountry] = useState('');
-    const [countryCode, setcountryCode] = useState('');
-    const [mobile, setMobile] = useState('');
+    const [email, setEmail] = useState(emailid);
     const [error, setError] = useState('');
-    const [countryError, setCountryError] = useState('');
-    const [confirmation, setConfirmation] = useState(null);
     const [otpSent, setOtpSent] = useState(false);
-    const timer = useRef(null);
-    const [count, setCount] = useState(0);
-
-
-    useEffect(() => {
-        const listener = auth().onAuthStateChanged(user => {
-            if (user) {
-                dis(login(user.uid, user.phoneNumber));
-            } else {
-                dis(removeProfile());
-                dis(logout());
-            }
-        });
-        return () => {
-            listener();
-        };
-    }, [dis]);
-
-    useEffect(() => {
-        if (otpSent && count !== 0) {
-            timer.current = setInterval(() => {
-                setCount(state => state - 1);
-            }, 1000);
-        } else {
-            clearInterval(timer.current);
-        }
-
-        return () => {
-            clearInterval(timer.current);
-        };
-    }, [timer, count, otpSent]);
-
-
-    function signInWithPhoneNumber(phoneNumber) {
-        setLoading(true);
-        auth()
-            .signInWithPhoneNumber(phoneNumber)
-            .then(resp => {
-                setLoading(false);
-                console.log('OTP send.');
-                setOtpSent(true);
-                setConfirmation(resp);
-                ToastAndroid.show(
-                    'Otp is sent to your mobile number',
-                    ToastAndroid.SHORT,
-                );
-            })
-            .catch(err => {
-                setLoading(false);
-                const firebaseerr = err.message.split('] ');
-                Alert.alert('Error', firebaseerr[1]);
-            });
+    const validEmailRegex = RegExp(
+        /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+    );
+    const sendEmail = () => {
+        axiosServ(token).post('/user/send-email-otp', {
+            email: email
+        }).then((resp) => {
+            console.log(resp.data);
+            setError('')
+            setOtpSent(true)
+        }).catch((er) => {
+            console.log(er.response.data);
+            Alert.alert('Unable to send otp.')
+        })
     }
 
-    async function confirmCode(number) {
-        setLoading(true);
-        try {
-            const { user } = await confirmation.confirm(otp);
-            dis(login(user.uid, number));
-            setLoading(false);
-        } catch (err) {
-            const firebaseerr = err.message.split('] ');
-            Alert.alert('Error', firebaseerr[1]);
-            setLoading(false);
-        }
+    const verifyEmail = () => {
+        axiosServ(token).post('/user/verify-email-otp', {
+            otp: otp
+        }).then((resp) => {
+            Alert.alert('Email Verified')
+        }).catch((er) => {
+            console.log(er.response.data);
+            Alert.alert('Enter the correct otp.')
+        })
     }
+
 
     return (
         <>
@@ -108,16 +64,16 @@ const Otp = ({ navigation }) => {
                     <ScrollView contentContainerStyle={Theme.flexGrow}>
                         <View style={[Theme.flex1, Theme.totalView]}>
                             <Text style={[Theme.textHeader, Theme.purple]}>
-                                {otpSent ? 'Mobile Number' : 'Enter Mobile Number'}
+                                {otpSent ? 'EMAIL ADDRESS' : 'ENTER EMAIL ADDRESS'}
                             </Text>
                             <View style={[Theme.justifySpcArnd, Theme.paddingVertical30p]}>
                                 <Text
                                     style={[Theme.textTitle, Theme.grey, Theme.textFontWeight0]}>
-                                    {otpSent ? 'Verify mobile number' : ''}
+                                    {otpSent ? 'Verify Email address' : ''}
                                 </Text>
                                 <Text style={[Theme.textBody, Theme.paddingVertical10p]}>
                                     {otpSent
-                                        ? 'Enter the six digit code sent to your mobile number.'
+                                        ? 'Enter the six digit code sent to your email adderss.'
                                         : ''}
                                 </Text>
                             </View>
@@ -140,42 +96,16 @@ const Otp = ({ navigation }) => {
                                 </View>
                             ) : (
                                 <View style={[Theme.width100p, Theme.row, Theme.flexStart]}>
-                                    <View style={[Theme.width30p, Theme.marginVertical10]}>
-                                        <View style={[Theme.textInput, Theme.alignContentCenter]}>
-                                            <CountryPicker
-                                                placeholder={<Text style={Theme.textCaption}>ISD</Text>}
-                                                withCallingCodeButton
-                                                countryCode={country}
-                                                withCloseButton
-                                                containerButtonStyle={Theme.paddingHorizonal5p}
-                                                withAlphaFilter
-                                                withFilter
-                                                withEmoji
-                                                withFlag
-                                                withCallingCode
-                                                onSelect={text => {
-                                                    setCountryError('');
-                                                    setcountry(text.cca2);
-                                                    setcountryCode(text.callingCode);
-                                                }}
-                                            />
-                                        </View>
-                                        {countryError !== '' ? (
-                                            <Text style={Theme.red}>{countryError}</Text>
-                                        ) : null}
-                                    </View>
-                                    <View style={[Theme.width70p]}>
+                                    <View style={[Theme.width100p]}>
                                         <TextInput
-                                            placeholder={'Mobile number'}
+                                            placeholder={'Email'}
                                             multiline={false}
                                             keyboardType="numeric"
-                                            value={mobile}
+                                            value={email}
                                             onChangeText={text => {
-                                                if (text[0] === '0') {
-                                                    setMobile('');
-                                                } else {
-                                                    setMobile(text.replace(/[^0-9]/g, ''));
-                                                }
+                                                setEmail(text);
+                                                let err = validEmailRegex.test(text) ? '' : 'Email is not valid!';
+                                                setError(err);
                                             }}
                                             error={error}
                                         />
@@ -194,40 +124,14 @@ const Otp = ({ navigation }) => {
                                         <LinearButton
                                             disabled={otp.length !== 6}
                                             title="Submit"
-                                            onPress={() => {
-                                                confirmCode(`+${countryCode}${mobile}`);
-                                            }}
+                                            onPress={verifyEmail}
                                         />
                                     </View>
 
                                     <TouchableOpacity
                                         onPress={() => {
-                                            if (count === 0) {
-                                                signInWithPhoneNumber(`+${countryCode}${mobile}`);
-                                                setCount(60);
-                                            } else {
-                                                ToastAndroid.show(
-                                                    `Please wait for ${count} seconds`,
-                                                    ToastAndroid.SHORT,
-                                                );
-                                            }
-                                        }}>
-                                        <Text
-                                            style={[
-                                                Theme.textBody,
-                                                Theme.textUnderLine,
-                                                Theme.blue,
-                                                Theme.paddingVertical10p,
-                                            ]}>
-                                            Resend
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            setCount(60);
-                                            clearInterval(timer.current);
                                             setOtpSent(false);
-                                            setMobile('');
+                                            setEmail('');
                                             setOtp('');
                                         }}>
                                         <Text
@@ -237,7 +141,7 @@ const Otp = ({ navigation }) => {
                                                 Theme.blue,
                                                 Theme.paddingVertical10p,
                                             ]}>
-                                            Change Mobile Number
+                                            Change Email Address
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -251,14 +155,10 @@ const Otp = ({ navigation }) => {
                                     <LinearButton
                                         title="Submit"
                                         onPress={() => {
-                                            if (mobile === '') {
-                                                setError('Please enter your mobile number.');
-                                            } else if (country === '') {
-                                                setCountryError('Please select country code.');
-                                            } else {
-                                                signInWithPhoneNumber(`+${countryCode}${mobile}`);
-                                                setCountryError('');
-                                                setError('');
+                                            if (email === '') {
+                                                setError('Please enter your email id.');
+                                            } else if (!error) {
+                                                sendEmail()
                                             }
                                         }}
                                     />
@@ -272,4 +172,4 @@ const Otp = ({ navigation }) => {
     );
 };
 
-export default Otp;
+export default VerifyEmail;

@@ -4,11 +4,14 @@ import rootReducer from '../reducers/index';
 import { persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'masterData', 'profile', 'likeUser', 'blockUser', 'chat'],
+  whitelist: ['auth', 'masterData', 'profile', 'likeUser',
+    'blockUser', 'chat', 'chatRequested', 'chatDeclined'],
 };
+
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

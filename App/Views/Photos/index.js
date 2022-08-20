@@ -119,6 +119,7 @@ const PhotoModal = ({ state, setState, token }) => {
                     name: 'image.jpg',
                     type: 'image/jpeg'
                   });
+                  data.append('type','photo')
                   try {
                     console.log('i tried');
                     fetch(`${ip}/api/v1/user/upload-photos`,
@@ -181,6 +182,7 @@ const PhotoModal = ({ state, setState, token }) => {
                       name: 'image.jpg',
                       type: 'image/jpeg'
                     });
+                    data.append('type','photo')
                     try {
                       fetch(`${ip}/api/v1/user/upload-photos`,
                         {
@@ -207,36 +209,8 @@ const PhotoModal = ({ state, setState, token }) => {
                     } catch (er) {
                       console.log(er);
                     }
-
-                    // try {
-                    //   let res = await fetch(`${ip}/api/v1/user/upload-photos`, {
-                    //     method: "POST",
-                    //     body: data,
-                    //     headers: {
-                    //       // "Content-Type": "multipart/form-data",
-                    //       Accept: "application/json",
-                    //       Authorization: `Bearer ${token}`
-                    //     }
-                    //   });
-                    //   console.log(res);
-                    // } catch (error) {
-                    //   console.log(error);
-                    // }
-                    // });
-                    // axios(token, true).post('/user/upload-photos', data).then((resp) => {
-                    //   console.log(resp);
-                    //   Alert.alert(
-                    //     'Alert',
-                    //     'Your photo has been uploaded successfully. It will go live after screening',
-                    //   );
-                    // }).catch((er) => {
-                    //   console.log(er);
-                    // })
                   })
                 }
-                // else {
-                //     Alert.alert('Please allow camera permission.')
-                // }
               }}>
               <Icon name="camera" size={25} color={colors.purpledark} />
               <Text style={[Theme.textCaption, Theme.paddingHorizonal10p]}>

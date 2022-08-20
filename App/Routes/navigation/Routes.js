@@ -1,7 +1,7 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {screenOption} from './constants/options';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { screenOption } from './constants/options';
 import {
   HelpContainer,
   FaqContainer,
@@ -32,10 +32,15 @@ import {
   SearchMenuContainer,
   LikesSentContainer,
   LikesReceivedContainer,
+  ChatRequestedContainer,
+  DeclinedRequestContainer,
+  VerifyEmailContainer
 } from '../../Views';
-import {DrawerView} from '../../Components';
+import { DrawerView } from '../../Components';
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+
 
 export const MainStack = () => {
   return (
@@ -72,6 +77,9 @@ export const MainStack = () => {
       <Stack.Screen name={'searchmenu'} component={SearchMenuContainer} />
       <Stack.Screen name={'likes'} component={LikesSentContainer} />
       <Stack.Screen name={'likesreceived'} component={LikesReceivedContainer} />
+      <Stack.Screen name={'chatrequested'} component={ChatRequestedContainer} />
+      <Stack.Screen name={'chatdeclined'} component={DeclinedRequestContainer} />
+      <Stack.Screen name={'verifyemail'} component={VerifyEmailContainer} />
     </Stack.Navigator>
   );
 };

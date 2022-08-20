@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -20,11 +20,19 @@ import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import { getProfile } from '../../Redux/actions/profile'
 import { useDispatch, useSelector } from 'react-redux';
-import { likeUser, getConversations } from '../../Redux/actions/index';
+import { likeUser, getConversations, getConversationsDeclined, getConversationsRequested } from '../../Redux/actions/index';
+import { SocketContext } from '../../Components/Socket';
+import axios from '../../service/axios'
 
 const Dashboard = ({ navigation }) => {
+  const socket = useContext(SocketContext);
   const dis = useDispatch()
+  const [count,setCount]=useState(0)
   const profile = useSelector(state => state.profile.user)
+  console.log(profile)
+  const token=useSelector(state=>state.auth.token)
+  const conversationRequestedData = useSelector(state => state.chatRequested.data.length)
+
   const trust = ((profile.photos.length > 0 ? 1 : 0) +
     (profile.mobileVerified ? 1 : 0)
     + (profile.photoID ? 1 : 0) +
@@ -36,14 +44,29 @@ const Dashboard = ({ navigation }) => {
         return true;
       };
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () =>
+      return () => {
+        // socket.disconnect()
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, []),
+      }
+    }, [navigation]),
   );
+
   useEffect(() => {
+    socket.emit('join', profile._id)
+    socket.on('update_unread_count',(resp)=>{
+      console.log(resp);
+     axios(token).get('/chat/get-unread-count')
+     .then(resp=>setCount(resp.data.data))
+     .catch(er=>console.log(er))
+    })
+    axios(token).get('/chat/get-unread-count')
+    .then(resp=>setCount(resp.data.data))
+    .catch(er=>console.log(er))
     dis(getProfile())
     dis(likeUser())
     dis(getConversations())
+    dis(getConversationsDeclined())
+    dis(getConversationsRequested())
   }, [])
 
   return (
@@ -167,7 +190,7 @@ const Dashboard = ({ navigation }) => {
               }
 
               {
-                profile.emailVerifed ? null :
+                profile.emailVerified ? null :
                   <TouchableOpacity
                     onPress={() => navigation.navigate('trustscore')}
                     style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
@@ -259,7 +282,7 @@ const Dashboard = ({ navigation }) => {
                       Theme.alignContentCenter,
                       Theme.backgroundBlue,
                     ]}>
-                    <Text style={[Theme.textCaption, Theme.white]}>9</Text>
+                    <Text style={[Theme.textCaption, Theme.white]}>{count}</Text>
                   </View>
                 </TouchableOpacity>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>
@@ -268,7 +291,7 @@ const Dashboard = ({ navigation }) => {
               </View>
 
               <View style={[Theme.flex1, Theme.alignCenter, Theme.padding5]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('chatrequested')}>
                   <IconMaterial
                     name="message-text-outline"
                     size={50}
@@ -280,7 +303,7 @@ const Dashboard = ({ navigation }) => {
                       Theme.alignContentCenter,
                       Theme.backgroundBlue,
                     ]}>
-                    <Text style={[Theme.textCaption, Theme.white]}>9</Text>
+                    <Text style={[Theme.textCaption, Theme.white]}>{conversationRequestedData}</Text>
                   </View>
                 </TouchableOpacity>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>

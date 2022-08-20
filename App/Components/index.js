@@ -11,6 +11,8 @@ import DropButton from './DropDownButton';
 import ModalComponent from './Modal';
 import MultiSelectModal from './MultiSelectModal';
 import ProfileComponent from './ProfileComponent';
+import ChatRequestComp from './ChatRequestComp';
+import ChatDeclinedComponent from './ChatDeclinedComp';
 import LoadingComponent from './Loading';
 
 export const TextInput = Input;
@@ -26,4 +28,6 @@ export const DropDownButton = DropButton;
 export const Modal = ModalComponent;
 export const MultiSelect = MultiSelectModal;
 export const ProfileComp = ProfileComponent;
+export const ChatReqComp = ChatRequestComp;
+export const ChatDeclinedComp = ChatDeclinedComponent;
 export const Loading = LoadingComponent;

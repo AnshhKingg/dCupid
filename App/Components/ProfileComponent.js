@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, ToastAndroid } from 'react-native';
 import { Theme } from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,7 +14,7 @@ const ProfileComponent = ({ onPress, onPressProfile, disableButton, data }) => {
   const dis = useDispatch()
   const profile = useSelector(state => state.profile.user)
   const token = useSelector(state => state.auth.token)
-  const [like, setLike] = useState(profile.userLikes.includes(data._id) ? true : false)
+  const [like, setLike] = useState(profile.userLikes.find(e => data._id === e.likedUser) ? true : false)
   const trust = ((data.photos.length > 0 ? 1 : 0) + (data.mobileVerifed ? 1 : 0) + (data.photoID ? 1 : 0) + (data.emailVerified ? 1 : 0)) * 25
   const ageCalc = (date) => {
     const newdate = new Date()
@@ -25,7 +25,6 @@ const ProfileComponent = ({ onPress, onPressProfile, disableButton, data }) => {
   const setIndex = event => {
     const contentOffset = event.nativeEvent.contentOffset;
     const viewSize = event.nativeEvent.layoutMeasurement;
-
     // Divide the horizontal offset by the width of the view to see which page is visible
     const selected = Math.ceil(contentOffset.x / viewSize.width);
     setSelectedIndex(selected);
@@ -39,7 +38,6 @@ const ProfileComponent = ({ onPress, onPressProfile, disableButton, data }) => {
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={setIndex}>
         <View style={[Theme.row]}>
-
           {data.photos.length === 0 ?
             <View style={[
               Theme.imageMatchingProfileWidth,
@@ -49,7 +47,7 @@ const ProfileComponent = ({ onPress, onPressProfile, disableButton, data }) => {
             </View>
             :
             data.photos.map((data) => {
-              <Image
+              return <Image
                 source={{ uri: `${data.photo}` }}
                 style={[
                   Theme.imageMatchingProfileWidth,
@@ -120,7 +118,7 @@ const ProfileComponent = ({ onPress, onPressProfile, disableButton, data }) => {
                     Theme.textBold,
                     Theme.backgroundWhite,
                   ]} onPress={() => {
-                    if (!profile.userLikes.includes(data._id)) {
+                    if (!profile.userLikes.find(e => data._id === e.likedUser) ? true : false) {
                       axios(token).post('/user/add-like', { liked_user: data._id }).then(() => {
                         dis(getProfile())
                       }).catch((er) => {
@@ -130,7 +128,7 @@ const ProfileComponent = ({ onPress, onPressProfile, disableButton, data }) => {
                       ToastAndroid.show('Your have already liked this user', ToastAndroid.SHORT)
                     }
                   }}>
-                  <Icon name={profile.userLikes.includes(data._id) ? 'heart' : 'heart-o'} size={30} color={colors.purpledark} />
+                  <Icon name={profile.userLikes.find(e => data._id === e.likedUser) ? 'heart' : 'heart-o'} size={30} color={colors.purpledark} />
                 </TouchableOpacity>
               </View>
               <View
@@ -163,4 +161,4 @@ const ProfileComponent = ({ onPress, onPressProfile, disableButton, data }) => {
   );
 };
 
-export default ProfileComponent;
+export default memo(ProfileComponent)

@@ -78,7 +78,7 @@ const MatchingProfile = ({ navigation, route }) => {
             renderItem={(data) => {
               return <ProfileComp
                 data={data.item}
-                onPress={() => navigation.navigate('chat', { receiverId: data.item._id })}
+                onPress={() => navigation.navigate('chat', { receiverId: data.item._id, name: data.item.name })}
                 onPressProfile={() => navigation.navigate('otherprofile', { data: data.item })}
               />
             }}
