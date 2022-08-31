@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, FlatList, ActivityIndicator, ToastAndroid } from 'react-native';
+import { View, FlatList, ActivityIndicator, ToastAndroid, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { Theme } from '../../Assets/Styles';
@@ -30,6 +30,10 @@ const MatchingProfile = ({ navigation, route }) => {
       skin: route.params ? route.params.skin : profile.partnerpref.skin,
       page: page.current
     }).then((resp) => {
+      if(resp.data.data.length === 0 && data.length===0){
+        navigation.goBack()
+        Alert.alert('Message','No matching profiles found. Please update your partner preferences.')
+      }
       if (resp.data.data.length === 0) {
         endReached.current = true
       } else {
@@ -37,6 +41,7 @@ const MatchingProfile = ({ navigation, route }) => {
       }
       setLoading(false)
     }).catch(er => {
+      console.log(er);
       setLoading(false)
     })
   }

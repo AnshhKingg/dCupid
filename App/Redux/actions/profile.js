@@ -1,9 +1,9 @@
-import { Constants } from '../constants';
+import {Constants} from '../constants';
 import axiosService from '../../service/axios';
 
 export const setProfile = data => {
-  return (dispatch) => {
-    dispatch({ type: Constants.SET_PROFILE, payload: data });
+  return dispatch => {
+    dispatch({type: Constants.SET_PROFILE, payload: data});
   };
 };
 
@@ -13,10 +13,10 @@ export const getProfile = data => {
       .get('/user/get-profile')
       .then(resp => {
         console.log('Profile get update.');
-        dispatch({ type: Constants.SET_PROFILE, payload: resp.data.data });
+        dispatch({type: Constants.SET_PROFILE, payload: resp.data.data});
       })
       .catch(er => {
-        console.log(er);
+        console.log('Profile update err', er.response.data);
       });
   };
 };
@@ -27,7 +27,7 @@ export const updateProfile = data => {
       .post('/user/update', data)
       .then(resp => {
         console.log('Update data');
-        dispatch({ type: Constants.SET_PROFILE, payload: resp.data.user });
+        dispatch({type: Constants.SET_PROFILE, payload: resp.data.user});
       })
       .catch(er => {
         console.log(er);
@@ -38,6 +38,6 @@ export const updateProfile = data => {
 
 export const removeProfile = data => {
   return (dispatch, getState) => {
-    dispatch({ type: Constants.REMOVE_PROFILE });
+    dispatch({type: Constants.REMOVE_PROFILE});
   };
 };

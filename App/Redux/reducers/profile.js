@@ -1,8 +1,11 @@
-import { Constants } from '../constants/index';
+import {Constants} from '../constants/index';
 
 const initialState = {
   user: {
+    isDeleted: false,
     age: null,
+    otp: null,
+    paid: false,
     children: null,
     city: null,
     country: null,
@@ -31,6 +34,8 @@ const initialState = {
     state: null,
     uid: '',
     updatedAt: '',
+    timezone: '',
+    subscriptionExpiry: null,
   },
 };
 

@@ -24,6 +24,8 @@ import { colors } from '../../Assets/Colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateProfile } from '../../Redux/actions/profile';
 import moment from 'moment-timezone';
+import { trustscore } from '../../service/utils';
+
 
 const Tiles = ({ text, icon }) => {
   return (
@@ -179,10 +181,7 @@ const Profile = ({ navigation, route }) => {
   const selecterData = useSelector(state => state.masterData.data);
   const [interestModal, setInterestModal] = useState(false);
   const profile = useSelector(state => state.profile.user);
-  const trust = ((profile.photos.length > 0 ? 1 : 0) +
-    (profile.mobileVerified ? 1 : 0) +
-    (profile.photoID ? 1 : 0) +
-    (profile.emailVerified ? 1 : 0)) * 25
+  const trust = trustscore(profile)
   const bottom = useRef(null);
 
   const ageCalc = (date) => {

@@ -58,9 +58,10 @@ const ConditionModal = ({
                   Theme.flexWrap,
                   Theme.padding10,
                 ]}>
-                {arr.map(data => {
+                {arr.map((data,index) => {
                   return (
                     <View
+                      key={index}
                       style={[
                         Theme.modalButton,
                         Theme.row,
@@ -106,9 +107,9 @@ const ConditionModal = ({
                   </Text>
                 </View>
               </View>
-              {array.map(data => {
+              {array.map((data,index) => {
                 return (
-                  <View style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
+                  <View key={index} style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
                     <View style={[Theme.width10p]}>
                       <BouncyCheckbox
                         disableBuiltInState={true}

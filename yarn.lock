@@ -1296,6 +1296,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-14.9.1.tgz#368b48bbfdae2b64246591ae42e70ff38a3fb17f"
   integrity sha512-pTZZ80xx4ionhBa7kj7YhUvZdvJazDHqPH1K+j648tlU/1iytM/N2Ius7Ty40O0m29GVp0l+fEdWpzSeaV775w==
 
+"@react-native-firebase/messaging@^15.4.0":
+  version "15.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-15.4.0.tgz#1a6834cebe90c520a8b23180dcd52bf38dc90e08"
+  integrity sha512-irmmkAWwD0PqZc3Nua4vdDS5liPfJzis5/zC1XxZw/AS4AfoEj2yv3+r273bqx/E9aZ2Udl1GBPV2nWBDDR/yA==
+
 "@react-native-picker/picker@^2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.3.1.tgz#e77e14c351605afdf4bd5fe93fa1fe381cc6ad27"
@@ -2818,15 +2823,15 @@ escape-html@~1.0.3:
   resolved "https://registry.npmjs.org/escape-html/-/escape-html-1.0.3.tgz"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
 
+escape-string-regexp@2.0.0, escape-string-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
+  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
+
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
-
-escape-string-regexp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
-  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
 
 escape-string-regexp@^4.0.0:
   version "4.0.0"
@@ -3667,7 +3672,7 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
-invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -5877,6 +5882,14 @@ react-native-vector-icons@^9.1.0:
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-webview@^11.23.0:
+  version "11.23.0"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.23.0.tgz#603a584236da2e993906e6a094f165dcac3a1fdb"
+  integrity sha512-mGrgsMnYcQONvQy59xpBn87sKqkCsSkqIDRo+c2Ov4ISYl1j90wFBs+qViVJRWdoNHVuoCAZ4nZkJ65mhDpHhA==
+  dependencies:
+    escape-string-regexp "2.0.0"
+    invariant "2.2.4"
 
 react-native@0.67.3:
   version "0.67.3"

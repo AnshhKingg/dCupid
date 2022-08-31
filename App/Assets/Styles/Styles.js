@@ -1,5 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { colors } from '../Colors';
+import {StyleSheet, Dimensions} from 'react-native';
+import {colors} from '../Colors';
 const width = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
@@ -352,6 +352,10 @@ const Styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
   },
+  borderButton: {
+    borderColor: 'white',
+    borderWidth: 2,
+  },
   notificationLook: {
     width: 25,
     height: 25,
@@ -537,6 +541,16 @@ const Styles = StyleSheet.create({
     bottom: 40,
     left: 0,
   },
+  imageTimeComponent: {
+    width: 120,
+    height: 40,
+    position: 'absolute',
+    top: 20,
+    right: 0,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   width90: {
     width: width * 0.9,
   },
@@ -561,7 +575,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: colors.purpledark,
     borderTopColor: colors.purpledark,
-    transform: [{ rotateZ: '-135deg' }],
+    transform: [{rotateZ: '-135deg'}],
   },
   secondProgressLayer: {
     width: 120,
@@ -573,7 +587,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: colors.purpledark,
     borderTopColor: colors.purpledark,
-    transform: [{ rotateZ: '45deg' }],
+    transform: [{rotateZ: '45deg'}],
   },
   offsetLayer: {
     width: 120,
@@ -585,7 +599,7 @@ const Styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderRightColor: 'lightgrey',
     borderTopColor: 'lightgrey',
-    transform: [{ rotateZ: '-135deg' }],
+    transform: [{rotateZ: '-135deg'}],
   },
   //Otp Styles
   underlineStyleBase: {

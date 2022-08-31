@@ -11,14 +11,15 @@ import TrustScore from './TrustScore';
 import Delete from './Delete';
 import Membership from './Membership';
 import Settings from './Settings';
-import { SearchMenu } from './Search';
+import {SearchMenu} from './Search';
 import LikesSent from './LikesSent';
 import LikesRecived from './LikesRecived';
-import { Otp, Otp2 } from './Otp';
-import { Register, Register2 } from './Registeration';
+import {Otp, Otp2} from './Otp';
+import {Register, Register2} from './Registeration';
 import ChatRequest from './ChatRequest';
 import DeclinedRequest from './DeclinedRequest';
 import VerifyEmail from './VerifyEmail';
+import Payment from './Payment';
 import {
   Profile,
   Age,
@@ -64,5 +65,6 @@ export const OtherUsersProfileContainer = OtherUsersProfile;
 export const SearchMenuContainer = SearchMenu;
 export const LikesSentContainer = LikesSent;
 export const LikesReceivedContainer = LikesRecived;
-export const ChatRequestedContainer = ChatRequest
-export const DeclinedRequestContainer = DeclinedRequest
+export const ChatRequestedContainer = ChatRequest;
+export const DeclinedRequestContainer = DeclinedRequest;
+export const PaymentContainer = Payment;

@@ -9,7 +9,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['auth', 'masterData', 'profile', 'likeUser',
-    'blockUser', 'chat', 'chatRequested', 'chatDeclined'],
+    'blockUser', 'chat', 'chatRequested', 'chatDeclined','likesReceived'],
 };
 
 

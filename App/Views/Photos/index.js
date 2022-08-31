@@ -363,15 +363,13 @@ const Photos = ({ navigation }) => {
                         },
                         {
                           text: "OK", onPress: () => {
-                            let data1 = new FormData();
-                            data1.append('photo', data.photo);
                             try {
-                              fetch(`${ip}/api/v1/user/delete-photos`,
+                              fetch(`${ip}/api/v1/user/delete-photos/${data._id}`,
                                 {
                                   method: 'DELETE', headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded',
-                                    'Authorization': `Bearer ${token}`
-                                  }, body: qs.stringify({ 'photo': data.photo })
+                                    'Authorization': `${token}`
+                                  }
                                 }).then((resp) => {
                                   console.log(resp);
                                   if (resp.status === 201) {
@@ -385,7 +383,6 @@ const Photos = ({ navigation }) => {
                         }
                       ]
                     );
-
                   }} style={Theme.trashPos}>
                     <IconCircle
                       name="trash-2"
@@ -394,7 +391,28 @@ const Photos = ({ navigation }) => {
                     />
                   </TouchableOpacity>
                   {data.photoApproved ?
-                    null
+                    <View style={Theme.pendingButtonPos}>
+                      <LinearButton title="Make profile photo" flat={true} disabled={true}
+                      onPress={()=>{
+                        try {
+                          fetch(`${ip}/api/v1/user/make-profile-photo/${data._id}`,
+                            {
+                              method: 'GET', headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Authorization': `${token}`
+                              }
+                            }).then((resp) => {
+                              console.log(resp);
+                              if (resp.status === 201) {
+                                dis(getProfile())
+                              }
+                            })
+                        } catch (er) {
+                          console.log(er);
+                        }
+                      }}
+                      />
+                   </View>
                     :
                     <View style={Theme.pendingButtonPos}>
                       <LinearButton title="Pending approval" flat={true} disabled={true} />

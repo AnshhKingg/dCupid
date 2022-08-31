@@ -5,8 +5,9 @@ import { Theme } from '../../Assets/Styles';
 import { Header } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
+import { ageCalc,dateTime } from '../../service/utils';
 
-const LikesTile = () => {
+const LikesTile = ({data}) => {
   return (
     <View
       style={[
@@ -37,13 +38,13 @@ const LikesTile = () => {
           ]}>
           <View style={[Theme.width60p]}>
             <Text style={[Theme.textBody, Theme.textBold]} numberOfLines={1}>
-              This is a loooong message. This is a loooong message
+              {data.likedUser.name} {ageCalc(data.likedUser.dob)}
             </Text>
           </View>
           <View style={[Theme.width40p]}>
             <Text
               style={[Theme.textCaption, Theme.textBlack, Theme.selfAlignEnd]}>
-              Feb 2021
+              {dateTime(data.createdAt)}
             </Text>
           </View>
         </View>
@@ -55,8 +56,8 @@ const LikesTile = () => {
             Theme.row,
           ]}>
           <View style={[Theme.width80p]}>
-            <Text style={[]} numberOfLines={1}>
-              This is a loooong message. This is a loooong message
+            <Text style={[Theme.textCaption, Theme.textBold]} numberOfLines={1}>
+            {data.likedUser.city} {data.likedUser.state}
             </Text>
           </View>
         </View>
@@ -79,7 +80,11 @@ const LikesSent = ({ navigation }) => {
         />
         <ScrollView contentContainerStyle={[]}>
           <View style={[Theme.width100p]}>
-            <LikesTile />
+            {
+              likes.data.map((data,i)=>{
+                return  <LikesTile key={i} data={data}  />
+              })
+            }
           </View>
         </ScrollView>
       </SafeAreaView>

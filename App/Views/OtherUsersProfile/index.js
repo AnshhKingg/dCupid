@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconMat from 'react-native-vector-icons/MaterialCommunityIcons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { LinearGradient, ProfileComp, SemiCircularBar } from '../../Components';
-import { colors } from '../../Assets/Colors';
-import { Menu, MenuItem } from 'react-native-material-menu';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {LinearGradient, ProfileComp, SemiCircularBar} from '../../Components';
+import {colors} from '../../Assets/Colors';
+import {Menu, MenuItem} from 'react-native-material-menu';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+import {trustscore} from '../../service/utils';
 
-const OtherUsersProfile = ({ navigation, route }) => {
+const OtherUsersProfile = ({navigation, route}) => {
   const [visible, setVisible] = useState(false);
-  const { data } = route.params
+  const {data} = route.params;
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
   return (
@@ -39,7 +40,7 @@ const OtherUsersProfile = ({ navigation, route }) => {
                   Theme.white,
                   Theme.paddingHorizonal10p,
                 ]}>
-                Matching Profile
+                User Profile
               </Text>
             </View>
             <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
@@ -79,11 +80,11 @@ const OtherUsersProfile = ({ navigation, route }) => {
               <View style={[Theme.paddingVertical20p]}>
                 <SemiCircularBar
                   progressWidth={20}
-                  percentage={70}
+                  percentage={trustscore(data)}
                   interiorCircleColor="#f2f2f2"
                   progressColor="purple"
                   progressShadowColor="grey">
-                  <Text style={[Theme.textHeader]}>40%</Text>
+                  <Text style={[Theme.textHeader]}>{trustscore(data)}%</Text>
                 </SemiCircularBar>
               </View>
               <View
@@ -165,13 +166,19 @@ const OtherUsersProfile = ({ navigation, route }) => {
                   Theme.padding10,
                 ]}>
                 <Text style={[Theme.textTitle]}>City</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>{data.city}</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.city}
+                </Text>
 
                 <Text style={[Theme.textTitle]}>State</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>{data.state}</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.state}
+                </Text>
 
                 <Text style={[Theme.textTitle]}>Country</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>{data.country}</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.country}
+                </Text>
               </View>
 
               <View
@@ -248,7 +255,12 @@ const OtherUsersProfile = ({ navigation, route }) => {
                 Theme.textBold,
                 Theme.backgroundWhite,
               ]}
-              onPress={() => { }}>
+              onPress={() =>
+                navigation.navigate('chat', {
+                  receiverId: data._id,
+                  name: data.name,
+                })
+              }>
               <IconMat
                 name={'message-processing'}
                 size={30}

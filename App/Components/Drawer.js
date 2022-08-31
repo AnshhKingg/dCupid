@@ -1,22 +1,23 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { Theme } from '../Assets/Styles';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from './LinearGradient';
 import LinearGradientButton from './LinearGradientButton';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import {trustscore} from '../service/utils';
 
-const DrawerComponent = ({ text, onPress, seperator }) => {
+const DrawerComponent = ({text, onPress, seperator}) => {
   const style =
     seperator === false
       ? [Theme.width90p, Theme.paddingVertical5p, Theme.flexStart]
       : [
-        Theme.width90p,
-        Theme.paddingVertical5p,
-        Theme.flexStart,
-        Theme.drawerSeparator,
-      ];
+          Theme.width90p,
+          Theme.paddingVertical5p,
+          Theme.flexStart,
+          Theme.drawerSeparator,
+        ];
   return (
     <TouchableOpacity
       style={[
@@ -41,24 +42,24 @@ const DrawerComponent = ({ text, onPress, seperator }) => {
   );
 };
 
-const DrawerExtendedComponent = ({ text, onPress, seperator }) => {
+const DrawerExtendedComponent = ({text, onPress, seperator, num}) => {
   const style =
     seperator === false
       ? [
-        Theme.width90p,
-        Theme.alignCenter,
-        Theme.padding5,
-        Theme.row,
-        Theme.justifySpcBtw,
-      ]
+          Theme.width90p,
+          Theme.alignCenter,
+          Theme.padding5,
+          Theme.row,
+          Theme.justifySpcBtw,
+        ]
       : [
-        Theme.width90p,
-        Theme.alignCenter,
-        Theme.padding5,
-        Theme.row,
-        Theme.drawerSeparator,
-        Theme.justifySpcBtw,
-      ];
+          Theme.width90p,
+          Theme.alignCenter,
+          Theme.padding5,
+          Theme.row,
+          Theme.drawerSeparator,
+          Theme.justifySpcBtw,
+        ];
   return (
     <TouchableOpacity
       style={[
@@ -77,7 +78,7 @@ const DrawerExtendedComponent = ({ text, onPress, seperator }) => {
             Theme.alignContentCenter,
             Theme.backgroundBlue,
           ]}>
-          <Text style={[Theme.textBody, Theme.white]}>9</Text>
+          <Text style={[Theme.textBody, Theme.white]}>{num}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -85,9 +86,11 @@ const DrawerExtendedComponent = ({ text, onPress, seperator }) => {
 };
 
 const Drawer = props => {
-  const profile = useSelector(state => state.profile.user)
-  const trust = ((profile.photos.length > 0 ? 1 : 0) + (profile.mobileVerified ? 1 : 0) + (profile.photoID ? 1 : 0) + (profile.emailVerified ? 1 : 0)) * 25
-
+  const profile = useSelector(state => state.profile.user);
+  const like = useSelector(state => state.likesReceived.data);
+  const chatReq = useSelector(state => state.chatRequested.data);
+  const trust = trustscore(profile);
+  console.log(chatReq);
   return (
     <View style={[Theme.flex1]}>
       <ScrollView
@@ -115,19 +118,28 @@ const Drawer = props => {
                 Theme.padding5,
                 Theme.row,
               ]}>
-              {
-                profile.photos.length === 0 ?
-                  <View
-                    style={[
-                      Theme.alignContentCenter,
-                      Theme.profileIcon,
-                      Theme.blackFaded
-                    ]}>
-                    <Icon name={'user-friends'} size={25} color="white" />
-                  </View> :
-                  <Image style={{ width: 70, height: 70, borderRadius: 35 }} source={{ uri: profile.photos[0].photo }} />
-              }
-              <Text style={[Theme.textBody, Theme.paddingLeft, Theme.textHeader, Theme.white]}>
+              {profile.photos.length === 0 ? (
+                <View
+                  style={[
+                    Theme.alignContentCenter,
+                    Theme.profileIcon,
+                    Theme.blackFaded,
+                  ]}>
+                  <Icon name={'user-friends'} size={25} color="white" />
+                </View>
+              ) : (
+                <Image
+                  style={{width: 70, height: 70, borderRadius: 35}}
+                  source={{uri: profile.photos[0].photo}}
+                />
+              )}
+              <Text
+                style={[
+                  Theme.textBody,
+                  Theme.paddingLeft,
+                  Theme.textHeader,
+                  Theme.white,
+                ]}>
                 {profile.name}
               </Text>
             </View>
@@ -170,11 +182,25 @@ const Drawer = props => {
             seperator={false}
             onPress={() => props.navigation.navigate('likesreceived')}
           />
-          <DrawerExtendedComponent text="Regular" seperator={false} />
-          <DrawerExtendedComponent text="Filtered out" />
+          <DrawerExtendedComponent
+            text="Regular"
+            seperator={false}
+            num={like.regular.length}
+          />
+          <DrawerExtendedComponent
+            text="Filtered out"
+            num={like.filterOut.length}
+          />
           <DrawerComponent text="Chat Request" seperator={false} />
-          <DrawerExtendedComponent text="Regular" seperator={false} />
-          <DrawerExtendedComponent text="Filtered out" />
+          <DrawerExtendedComponent
+            text="Regular"
+            seperator={false}
+            num={chatReq.regular.length}
+          />
+          <DrawerExtendedComponent
+            text="Filtered out"
+            num={chatReq.filterOut.length}
+          />
           <DrawerComponent
             text="Messages"
             onPress={() => props.navigation.navigate('message')}
@@ -183,7 +209,8 @@ const Drawer = props => {
             text="Likes Sent"
             onPress={() => props.navigation.navigate('likes')}
           />
-          <DrawerComponent text="Declined Profiles"
+          <DrawerComponent
+            text="Declined Profiles"
             onPress={() => props.navigation.navigate('chatdeclined')}
           />
         </View>

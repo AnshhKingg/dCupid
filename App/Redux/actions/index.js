@@ -2,7 +2,7 @@ import { updateAdrss, resetAdrss } from './appEnv';
 import { login } from './auth';
 import { masterData } from './masterData';
 import { blockUser } from './blockUser'
-import { likeUser } from './likeUser'
+import { likeUser,getLikedReceivedUsers } from './likeUser'
 import { getConversations } from './chat'
 import { getConversationsDeclined } from './chatDeclined'
 import { getConversationsRequested } from './chatRequest'
@@ -14,5 +14,5 @@ export {
     likeUser, blockUser,
     getProfile, removeProfile,
     setProfile, updateProfile, getConversationsRequested,
-    getConversations, getConversationsDeclined
+    getConversations, getConversationsDeclined,getLikedReceivedUsers
 };

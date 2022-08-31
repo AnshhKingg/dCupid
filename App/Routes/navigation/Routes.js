@@ -1,7 +1,7 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { screenOption } from './constants/options';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {screenOption} from './constants/options';
 import {
   HelpContainer,
   FaqContainer,
@@ -34,13 +34,13 @@ import {
   LikesReceivedContainer,
   ChatRequestedContainer,
   DeclinedRequestContainer,
-  VerifyEmailContainer
+  VerifyEmailContainer,
+  PaymentContainer,
 } from '../../Views';
-import { DrawerView } from '../../Components';
+import {DrawerView} from '../../Components';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
-
 
 export const MainStack = () => {
   return (
@@ -68,6 +68,7 @@ export const MainStack = () => {
       <Stack.Screen name={'message'} component={MessagesContainer} />
       <Stack.Screen name={'trustscore'} component={TrustScoreContainer} />
       <Stack.Screen name={'membership'} component={MembershipContainer} />
+      <Stack.Screen name={'payment'} component={PaymentContainer} />
       <Stack.Screen name={'settings'} component={SettingsContainer} />
       <Stack.Screen name={'delete'} component={DeleteContainer} />
       <Stack.Screen
@@ -78,7 +79,10 @@ export const MainStack = () => {
       <Stack.Screen name={'likes'} component={LikesSentContainer} />
       <Stack.Screen name={'likesreceived'} component={LikesReceivedContainer} />
       <Stack.Screen name={'chatrequested'} component={ChatRequestedContainer} />
-      <Stack.Screen name={'chatdeclined'} component={DeclinedRequestContainer} />
+      <Stack.Screen
+        name={'chatdeclined'}
+        component={DeclinedRequestContainer}
+      />
       <Stack.Screen name={'verifyemail'} component={VerifyEmailContainer} />
     </Stack.Navigator>
   );
