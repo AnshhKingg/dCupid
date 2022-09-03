@@ -2,8 +2,22 @@ import {Constants} from '../constants';
 import axiosService from '../../service/axios';
 
 export const setProfile = data => {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch({type: Constants.SET_PROFILE, payload: data});
+  };
+};
+
+export const getProfile = data => {
+  return (dispatch, getState) => {
+    axiosService(getState().auth.token)
+      .get('/user/get-profile')
+      .then(resp => {
+        console.log('Profile get update.');
+        dispatch({type: Constants.SET_PROFILE, payload: resp.data.data});
+      })
+      .catch(er => {
+        console.log('Profile update err', er.response.data);
+      });
   };
 };
 

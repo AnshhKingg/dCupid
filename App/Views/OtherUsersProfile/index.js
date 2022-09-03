@@ -9,12 +9,12 @@ import {colors} from '../../Assets/Colors';
 import {Menu, MenuItem} from 'react-native-material-menu';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+import {trustscore} from '../../service/utils';
 
-const OtherUsersProfile = ({navigation}) => {
+const OtherUsersProfile = ({navigation, route}) => {
   const [visible, setVisible] = useState(false);
-
+  const {data} = route.params;
   const hideMenu = () => setVisible(false);
-
   const showMenu = () => setVisible(true);
   return (
     <>
@@ -36,11 +36,11 @@ const OtherUsersProfile = ({navigation}) => {
               />
               <Text
                 style={[
-                  Theme.textHeader,
+                  Theme.textTitle,
                   Theme.white,
                   Theme.paddingHorizonal10p,
                 ]}>
-                Matching Profile
+                User Profile
               </Text>
             </View>
             <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
@@ -73,17 +73,18 @@ const OtherUsersProfile = ({navigation}) => {
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.padding10, Theme.alignCenter]}>
               <ProfileComp
+                data={data}
                 onPress={() => navigation.navigate('chat')}
                 disableButton={true}
               />
               <View style={[Theme.paddingVertical20p]}>
                 <SemiCircularBar
                   progressWidth={20}
-                  percentage={70}
+                  percentage={trustscore(data)}
                   interiorCircleColor="#f2f2f2"
                   progressColor="purple"
                   progressShadowColor="grey">
-                  <Text style={[Theme.textHeader]}>40%</Text>
+                  <Text style={[Theme.textHeader]}>{trustscore(data)}%</Text>
                 </SemiCircularBar>
               </View>
               <View
@@ -153,7 +154,7 @@ const OtherUsersProfile = ({navigation}) => {
                 ]}>
                 <Text style={[Theme.textTitle]}>About me</Text>
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  About me
+                  {data.aboutme}
                 </Text>
               </View>
 
@@ -165,13 +166,19 @@ const OtherUsersProfile = ({navigation}) => {
                   Theme.padding10,
                 ]}>
                 <Text style={[Theme.textTitle]}>City</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]} />
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.city}
+                </Text>
 
                 <Text style={[Theme.textTitle]}>State</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]} />
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.state}
+                </Text>
 
                 <Text style={[Theme.textTitle]}>Country</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]} />
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.country}
+                </Text>
               </View>
 
               <View
@@ -183,7 +190,7 @@ const OtherUsersProfile = ({navigation}) => {
                 ]}>
                 <Text style={[Theme.textTitle]}>Education</Text>
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  Blogger Coumputer/IT
+                  {data.education}
                 </Text>
               </View>
 
@@ -196,7 +203,37 @@ const OtherUsersProfile = ({navigation}) => {
                 ]}>
                 <Text style={[Theme.textTitle]}>Professsion</Text>
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  Blogger Coumputer/IT
+                  {data.profession}
+                </Text>
+              </View>
+              <View
+                style={[
+                  Theme.width100p,
+                  Theme.separator,
+                  Theme.marginBottom0,
+                  Theme.padding10,
+                ]}>
+                <Text style={[Theme.textTitle]}>Interest</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.interest
+                    ? data.interest.toString().replace(/,/g, ' , ')
+                    : ''}
+                </Text>
+              </View>
+              <View
+                style={[
+                  Theme.width100p,
+                  Theme.separator,
+                  Theme.marginBottom0,
+                  Theme.padding10,
+                ]}>
+                <Text style={[Theme.textTitle]}>Drink</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.drink}
+                </Text>
+                <Text style={[Theme.textTitle]}>Smoke</Text>
+                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                  {data.smoke}
                 </Text>
               </View>
             </View>
@@ -218,7 +255,12 @@ const OtherUsersProfile = ({navigation}) => {
                 Theme.textBold,
                 Theme.backgroundWhite,
               ]}
-              onPress={() => {}}>
+              onPress={() =>
+                navigation.navigate('chat', {
+                  receiverId: data._id,
+                  name: data.name,
+                })
+              }>
               <IconMat
                 name={'message-processing'}
                 size={30}

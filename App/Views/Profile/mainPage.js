@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,10 @@ import {
   ToastAndroid,
   TouchableWithoutFeedback,
   Modal,
+  Image,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   Header,
   LinearButton,
@@ -19,11 +20,13 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../../Assets/Colors';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile } from '../../Redux/actions/profile';
+import {colors} from '../../Assets/Colors';
+import {useSelector, useDispatch} from 'react-redux';
+import {updateProfile} from '../../Redux/actions/profile';
+import moment from 'moment-timezone';
+import {trustscore} from '../../service/utils';
 
-const Tiles = ({ text, icon }) => {
+const Tiles = ({text, icon}) => {
   return (
     <View style={[Theme.alignContentCenter, Theme.row]}>
       {icon}
@@ -88,6 +91,7 @@ const InterestModal = ({
                 {array.map(data => {
                   return (
                     <TouchableOpacity
+                      key={data}
                       style={Theme.paddingHorizonal5p}
                       onPress={() => {
                         if (arr.length >= 10 && !arr.includes(data)) {
@@ -170,31 +174,27 @@ const InterestModal = ({
   );
 };
 
-const Profile = ({ navigation, route }) => {
+const Profile = ({navigation, route}) => {
   const dis = useDispatch();
   const [toggle, setToggle] = useState(false);
   const selecterData = useSelector(state => state.masterData.data);
   const [interestModal, setInterestModal] = useState(false);
   const profile = useSelector(state => state.profile.user);
+  const trust = trustscore(profile);
   const bottom = useRef(null);
 
   const ageCalc = date => {
-    const today = new Date();
-    const [day, month, year] = date.split('-');
-    var age = today.getFullYear() - parseInt(year, 10);
-    const diff = today.getMonth() - parseInt(month, 10);
-    if (diff < 0 || (diff === 0 && today.getDate() < parseInt(day, 10))) {
-      age--;
-    }
+    const newdate = new Date();
+    const age = moment(newdate).diff(moment(date), 'years');
     return age;
   };
 
   useEffect(() => {
     if (route.params.change) {
       setToggle(true);
-      bottom.current.scrollToEnd({ animated: true });
+      bottom.current.scrollToEnd({animated: true});
     }
-  }, []);
+  }, [route.params.change]);
 
   return (
     <>
@@ -210,7 +210,7 @@ const Profile = ({ navigation, route }) => {
           array={selecterData.interest}
           selectedItems={profile.interest}
           onPress={data => {
-            dis(updateProfile({ interest: data }));
+            dis(updateProfile({interest: data}));
             setInterestModal(false);
           }}
           onPressCancel={() => setInterestModal(!interestModal)}
@@ -223,22 +223,39 @@ const Profile = ({ navigation, route }) => {
                 onPress={() => {
                   navigation.navigate('photo');
                 }}>
-                <LinearGradient
-                  style={[
-                    Theme.profileIcon,
-                    Theme.alignContentCenter,
-                    Theme.backgroundBlue,
-                  ]}>
-                  <Icon name="user" size={30} color="white" />
-                  <View
+                {profile.photos.length === 0 ? (
+                  <LinearGradient
                     style={[
-                      Theme.profileIconNotification,
+                      Theme.profileIcon,
                       Theme.alignContentCenter,
                       Theme.backgroundBlue,
                     ]}>
-                    <Icon name="camera" size={20} color="white" />
-                  </View>
-                </LinearGradient>
+                    <Icon name="user" size={30} color="white" />
+                    <View
+                      style={[
+                        Theme.profileIconNotification,
+                        Theme.alignContentCenter,
+                        Theme.backgroundBlue,
+                      ]}>
+                      <Icon name="camera" size={20} color="white" />
+                    </View>
+                  </LinearGradient>
+                ) : (
+                  <>
+                    <Image
+                      style={{width: 70, height: 70, borderRadius: 35}}
+                      source={{uri: profile.photos[0].photo}}
+                    />
+                    <View
+                      style={[
+                        Theme.profileIconNotification,
+                        Theme.alignContentCenter,
+                        Theme.backgroundBlue,
+                      ]}>
+                      <Icon name="camera" size={20} color="white" />
+                    </View>
+                  </>
+                )}
               </TouchableOpacity>
               <Text style={[Theme.textHeader, Theme.textFontWeight0]}>
                 {profile.name}
@@ -328,11 +345,11 @@ const Profile = ({ navigation, route }) => {
               <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
                 <SemiCircularBar
                   progressWidth={20}
-                  percentage={70}
+                  percentage={trust}
                   interiorCircleColor="#f2f2f2"
-                  progressColor="purple"
+                  progressColor={colors.purpledark}
                   progressShadowColor="grey">
-                  <Text style={[Theme.textHeader]}>40%</Text>
+                  <Text style={[Theme.textHeader]}>{trust}%</Text>
                 </SemiCircularBar>
               </View>
             </View>
@@ -340,61 +357,77 @@ const Profile = ({ navigation, route }) => {
 
           <View style={[Theme.width100p, Theme.separator, Theme.marginBottom0]}>
             <View style={[Theme.width100p, Theme.row]}>
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <View
-                  style={[
-                    Theme.smallButtonLook,
-                    Theme.alignContentCenter,
-                    Theme.backgroundGray,
-                  ]}>
-                  <Icon name="user" size={20} color="black" />
-                </View>
-                <Text style={[Theme.textCaption, Theme.textCenter]}>
-                  Verify Email 20%
-                </Text>
-              </View>
+              {profile.mobileVerified ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="photo" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Verify mobile
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <View
-                  style={[
-                    Theme.smallButtonLook,
-                    Theme.alignContentCenter,
-                    Theme.backgroundGray,
-                  ]}>
-                  <Icon name="photo" size={20} color="black" />
-                </View>
-                <Text style={[Theme.textCaption, Theme.textCenter]}>
-                  Verify mobile 20%
-                </Text>
-              </View>
+              {profile.emailVerified ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="user" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Verify Email
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <View
-                  style={[
-                    Theme.smallButtonLook,
-                    Theme.alignContentCenter,
-                    Theme.backgroundGray,
-                  ]}>
-                  <Icon name="user" size={20} color="black" />
-                </View>
-                <Text style={[Theme.textCaption, Theme.textCenter]}>
-                  Verify Photo ID 20%
-                </Text>
-              </View>
+              {profile.photos.length > 0 ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="user" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Upload Photo
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              <View style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                <View
-                  style={[
-                    Theme.smallButtonLook,
-                    Theme.alignContentCenter,
-                    Theme.backgroundGray,
-                  ]}>
-                  <Icon name="user" size={20} color="black" />
-                </View>
-                <Text style={[Theme.textCaption, Theme.textCenter]}>
-                  Verify Photo ID 20%
-                </Text>
-              </View>
+              {profile.photoID ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="user" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Verify Photo ID
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
@@ -460,7 +493,11 @@ const Profile = ({ navigation, route }) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    {profile.partnerpref.skin.length === 0 ? "Doesn't Matter" : profile.partnerpref.skin.toString()}
+                    {profile.partnerpref.skin.length === 0
+                      ? "Doesn't Matter"
+                      : profile.partnerpref.skin
+                          .toString()
+                          .replace(/,/g, ' , ')}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -472,9 +509,12 @@ const Profile = ({ navigation, route }) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    {profile.partnerpref.marital.length === 0 ? "Dosen't Matter" : profile.partnerpref.marital.toString()}
+                    {profile.partnerpref.marital.length === 0
+                      ? "Dosen't Matter"
+                      : profile.partnerpref.marital
+                          .toString()
+                          .replace(/,/g, ' , ')}
                   </Text>
-
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('age')}>
                   <Icon name="pencil" size={25} color="orange" />
@@ -498,7 +538,11 @@ const Profile = ({ navigation, route }) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    {profile.partnerpref.country.length === 0 ? "Doesn't Matter" : profile.partnerpref.country.toString()}
+                    {profile.partnerpref.country.length === 0
+                      ? "Doesn't Matter"
+                      : profile.partnerpref.country
+                          .toString()
+                          .replace(/,/g, ' , ')}
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -551,6 +595,14 @@ const Profile = ({ navigation, route }) => {
                 ]}>
                 <View style={[Theme.flexStart]}>
                   <Text style={[Theme.textBody]}>About me</Text>
+                  <Text
+                    style={[
+                      Theme.textCaption,
+                      Theme.grey,
+                      Theme.paddingVertical5p,
+                    ]}>
+                    {profile.aboutme}
+                  </Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => navigation.navigate('aboutme')}>
@@ -599,7 +651,7 @@ const Profile = ({ navigation, route }) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    {profile.dob}
+                    {moment(new Date(profile.dob)).format('DD-MM-YYYY')}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -625,24 +677,21 @@ const Profile = ({ navigation, route }) => {
                     ]}>
                     {profile.marital}
                   </Text>
-                  {
-                    profile.children ?
-                      <>
-                        <Text style={[Theme.textBody, Theme.marginTop10]}>
-                          Children
-                        </Text>
-                        <Text
-                          style={[
-                            Theme.textCaption,
-                            Theme.grey,
-                            Theme.paddingVertical5p,
-                          ]}>
-                          {profile.children}
-                        </Text>
-                      </>
-                      :
-                      null
-                  }
+                  {profile.children ? (
+                    <>
+                      <Text style={[Theme.textBody, Theme.marginTop10]}>
+                        Children
+                      </Text>
+                      <Text
+                        style={[
+                          Theme.textCaption,
+                          Theme.grey,
+                          Theme.paddingVertical5p,
+                        ]}>
+                        {profile.children}
+                      </Text>
+                    </>
+                  ) : null}
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('name')}>
                   <Icon name="pencil" size={25} color="orange" />
@@ -753,7 +802,7 @@ const Profile = ({ navigation, route }) => {
                   Theme.separator,
                   Theme.paddingVertical20p,
                 ]}>
-                <View style={[Theme.flexStart]}>
+                <View style={[Theme.width80p, Theme.flexStart]}>
                   <Text style={[Theme.textBody]}>Interest</Text>
                   <Text
                     style={[
@@ -761,7 +810,9 @@ const Profile = ({ navigation, route }) => {
                       Theme.grey,
                       Theme.paddingVertical5p,
                     ]}>
-                    {profile.interest ? profile.interest.toString() : ''}
+                    {profile.interest
+                      ? profile.interest.toString().replace(/,/g, ' , ')
+                      : ''}
                   </Text>
                 </View>
                 <TouchableOpacity

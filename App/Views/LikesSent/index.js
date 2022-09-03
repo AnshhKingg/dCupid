@@ -1,11 +1,15 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import {Header} from '../../Components';
+import {Header, Loading} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useDispatch, useSelector} from 'react-redux';
+import {ageCalc, dateTime} from '../../service/utils';
+import {useFocusEffect} from '@react-navigation/native';
+import {likeUser} from '../../Redux/actions';
 
-const LikesTile = () => {
+const LikesTile = ({data}) => {
   return (
     <View
       style={[
@@ -36,13 +40,13 @@ const LikesTile = () => {
           ]}>
           <View style={[Theme.width60p]}>
             <Text style={[Theme.textBody, Theme.textBold]} numberOfLines={1}>
-              This is a loooong message. This is a loooong message
+              {data.name} {ageCalc(data.dob)}
             </Text>
           </View>
           <View style={[Theme.width40p]}>
             <Text
               style={[Theme.textCaption, Theme.textBlack, Theme.selfAlignEnd]}>
-              Feb 2021
+              {dateTime(data.createdAt)}
             </Text>
           </View>
         </View>
@@ -54,8 +58,8 @@ const LikesTile = () => {
             Theme.row,
           ]}>
           <View style={[Theme.width80p]}>
-            <Text style={[]} numberOfLines={1}>
-              This is a loooong message. This is a loooong message
+            <Text style={[Theme.textCaption, Theme.textBold]} numberOfLines={1}>
+              {data.city} {data.state}
             </Text>
           </View>
         </View>
@@ -65,19 +69,29 @@ const LikesTile = () => {
 };
 
 const LikesSent = ({navigation}) => {
+  const dis = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      dis(likeUser());
+    }, []),
+  );
+  const likes = useSelector(state => state.likeUser);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        {likes.loading && <Loading />}
         <Header
           left="menuunfold"
           right="home"
-          title="Likes"
+          title="Like Sent"
           leftnav={() => navigation.openDrawer()}
           rightnav={() => navigation.navigate('dashboard')}
         />
         <ScrollView contentContainerStyle={[]}>
           <View style={[Theme.width100p]}>
-            <LikesTile />
+            {likes.data.map((data, i) => {
+              return <LikesTile key={i} data={data.user} />;
+            })}
           </View>
         </ScrollView>
       </SafeAreaView>

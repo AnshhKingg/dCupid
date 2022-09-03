@@ -10,7 +10,8 @@ export const masterData = () => {
         dispatch({type: Constants.SET_DATA, payload: resp.data});
       })
       .catch(er => {
-        console.log(er.response.data);
+        console.log(er);
+        console.log('Master api failed');
       });
   };
 };

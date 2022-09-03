@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {LinearGradient} from '../../Components';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {masterData} from '../../Redux/actions';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import auth from '@react-native-firebase/auth';
@@ -203,7 +203,8 @@ const Slider = () => {
 
 const Homepage = ({navigation}) => {
   const [modal, setModal] = useState(false);
-
+  // const data = useSelector(state => state.auth)
+  // console.log(data);
   const LoginFB = () => {
     LoginManager.logInWithPermissions().then(
       async result => {
@@ -244,7 +245,7 @@ const Homepage = ({navigation}) => {
   };
 
   const dis = useDispatch();
-  //  const masterDataState = useSelector(state => state.masterData.dataSaved)
+  const masterDataState = useSelector(state => state.masterData.data);
   useEffect(() => {
     dis(masterData());
   }, [dis]);

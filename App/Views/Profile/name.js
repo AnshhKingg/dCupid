@@ -1,12 +1,13 @@
-import React, {useCallback, useState} from 'react';
-import {View, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, PickerInput, LinearButton, TextInput} from '../../Components';
-import {useDispatch, useSelector} from 'react-redux';
-import {updateProfile} from '../../Redux/actions/profile';
+import React, { useCallback, useState } from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { Header, PickerInput, LinearButton, TextInput } from '../../Components';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfile } from '../../Redux/actions/profile';
+import moment from 'moment-timezone';
 
-const Name = ({navigation}) => {
+const Name = ({ navigation }) => {
   const dis = useDispatch();
   const profile = useSelector(state => state.profile.user);
   const selecterData = useSelector(state => state.masterData.data);
@@ -58,8 +59,8 @@ const Name = ({navigation}) => {
               <PickerInput
                 title="Date of Birth"
                 disabled={true}
-                value={profile.dob}
-                items={[{value: profile.dob, label: profile.dob}]}
+                value={moment(new Date(profile.dob)).format('DD-MM-YYYY')}
+                items={[{ value: moment(new Date(profile.dob)).format('DD-MM-YYYY'), label: moment(new Date(profile.dob)).format('DD-MM-YYYY') }]}
                 zIndex={21}
                 zIndexTitle={22}
               />
@@ -69,7 +70,7 @@ const Name = ({navigation}) => {
                 title="Maritial Status"
                 disabled={true}
                 value={profile.marital}
-                items={[{value: profile.marital, label: profile.marital}]}
+                items={[{ value: profile.marital, label: profile.marital }]}
               />
               <PickerInput
                 zIndex={17}
@@ -77,7 +78,7 @@ const Name = ({navigation}) => {
                 title="Skin Condition"
                 disabled={true}
                 value={profile.skin}
-                items={[{value: profile.skin, label: profile.skin}]}
+                items={[{ value: profile.skin, label: profile.skin }]}
               />
 
               <PickerInput
@@ -102,7 +103,7 @@ const Name = ({navigation}) => {
                     title="Save"
                     onPress={() => {
                       dis(
-                        updateProfile({privacy: privacy, children: children}),
+                        updateProfile({ privacy: privacy, children: children }),
                       );
                       navigation.goBack();
                     }}

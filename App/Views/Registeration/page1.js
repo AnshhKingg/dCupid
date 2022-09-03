@@ -131,10 +131,10 @@ const Register = ({navigation}) => {
           navigation.navigate('register2');
         })
         .catch(er => {
+          console.log(er.response.data);
           if (er.response.data.errors.email) {
             setEmailError(er.response.data.errors.email.msg);
           }
-          console.log(er.response.data.errors.email.msg);
           console.log('Er ran');
           Toast.show({
             type: 'error',
@@ -148,17 +148,31 @@ const Register = ({navigation}) => {
       });
     }
   };
-  useEffect(() => {
-    if (profile.firstForm && profile.secondForm) {
-      navigation.navigate('dashboard');
-    } else if (profile.firstForm) {
-      navigation.navigate('register2');
-    }
-  }, [navigation]);
+
+  // useEffect(() => {
+  //   if (profile.firstForm && profile.secondForm) {
+  //     navigation.navigate('dashboard');
+  //   } else if (profile.firstForm && !profile.secondForm) {
+  //     navigation.navigate('register2');
+  //   }
+  // }, [navigation, profile.firstForm, profile.secondForm]);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (profile.firstForm && profile.secondForm) {
+        navigation.replace('dashboard');
+      } else if (profile.firstForm) {
+        navigation.replace('register2');
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, profile.firstForm, profile.secondForm]);
 
   useFocusEffect(
     React.useCallback(() => {
-      const onBackPress = () => {
+      const onBackPress = async () => {
+        await fireAuth().signOut();
         dis(logout());
         return true;
       };

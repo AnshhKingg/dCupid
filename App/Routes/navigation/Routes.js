@@ -32,8 +32,13 @@ import {
   SearchMenuContainer,
   LikesSentContainer,
   LikesReceivedContainer,
+  ChatRequestedContainer,
+  DeclinedRequestContainer,
+  VerifyEmailContainer,
+  PaymentContainer,
 } from '../../Views';
 import {DrawerView} from '../../Components';
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -63,6 +68,7 @@ export const MainStack = () => {
       <Stack.Screen name={'message'} component={MessagesContainer} />
       <Stack.Screen name={'trustscore'} component={TrustScoreContainer} />
       <Stack.Screen name={'membership'} component={MembershipContainer} />
+      <Stack.Screen name={'payment'} component={PaymentContainer} />
       <Stack.Screen name={'settings'} component={SettingsContainer} />
       <Stack.Screen name={'delete'} component={DeleteContainer} />
       <Stack.Screen
@@ -72,6 +78,12 @@ export const MainStack = () => {
       <Stack.Screen name={'searchmenu'} component={SearchMenuContainer} />
       <Stack.Screen name={'likes'} component={LikesSentContainer} />
       <Stack.Screen name={'likesreceived'} component={LikesReceivedContainer} />
+      <Stack.Screen name={'chatrequested'} component={ChatRequestedContainer} />
+      <Stack.Screen
+        name={'chatdeclined'}
+        component={DeclinedRequestContainer}
+      />
+      <Stack.Screen name={'verifyemail'} component={VerifyEmailContainer} />
     </Stack.Navigator>
   );
 };

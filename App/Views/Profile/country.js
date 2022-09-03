@@ -27,41 +27,52 @@ const Country = ({navigation}) => {
   const [cityError, setCityError] = useState(null);
 
   useEffect(() => {
+    // useCallback(() => {
+
+    // }, [])
     axiosService(auth.token)
       .get('/location/country')
       .then(resp => {
         setCountryItems(resp.data.data);
+        getState(profile.country);
+        getCity(profile.state);
       })
       .catch(er => {
         console.log(er.response.data);
       });
-    getState(profile.country);
-    getCity(profile.state);
-  }, []);
+  }, [auth.token, getCity, getState, profile, profile.country]);
 
-  const getState = data => {
-    axiosService(auth.token)
-      .get(`/location/state/${data}`)
-      .then(resp => {
-        setStateItems(resp.data.data);
-      })
-      .catch(er => {
-        console.log('State failed');
-        console.log(er.response.data);
-      });
-  };
+  const getState = useCallback(
+    data => {
+      axiosService(auth.token)
+        .get(`/location/state/${data}`)
+        .then(resp => {
+          setStateItems(resp.data.data);
+        })
+        .catch(er => {
+          console.log('State failed');
+          console.log(er.response.data);
+        });
+    },
+    [auth.token],
+  );
 
-  const getCity = data => {
-    axiosService(auth.token)
-      .get(`/location/city/${data}`)
-      .then(resp => {
-        setCityItems(resp.data.data);
-      })
-      .catch(er => {
-        console.log('City failed');
-        console.log(er.response.data);
-      });
-  };
+  const getCity = useCallback(
+    data => {
+      {
+        axiosService(auth.token)
+          .get(`/location/city/${data}`)
+          .then(resp => {
+            setCityItems(resp.data.data);
+          })
+          .catch(er => {
+            console.log('City failed');
+            console.log(er.response.data);
+          });
+      }
+    },
+    [auth.token],
+  );
 
   const countryOpens = useCallback(() => {
     setStateOpen(false);
@@ -149,14 +160,34 @@ const Country = ({navigation}) => {
                 <LinearButton
                   title="Save"
                   onPress={() => {
-                    dis(
-                      updateProfile({
-                        country: country,
-                        city: city,
-                        state: state,
-                      }),
-                    );
-                    navigation.goBack();
+                    if (country.length === 0) {
+                      setCountryError('Country is required');
+                    }
+
+                    if (state.length === 0) {
+                      setStateError('State is required');
+                    }
+
+                    if (city.length === 0) {
+                      setCityError('City is required');
+                    }
+                    if (
+                      !countryError &&
+                      country.length !== 0 &&
+                      !stateError &&
+                      state.length !== 0 &&
+                      !cityError &&
+                      city.length !== 0
+                    ) {
+                      dis(
+                        updateProfile({
+                          country: country,
+                          city: city,
+                          state: state,
+                        }),
+                      );
+                      navigation.goBack();
+                    }
                   }}
                 />
               </View>

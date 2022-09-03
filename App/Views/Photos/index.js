@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,15 +10,21 @@ import {
   Alert,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton, LinearGradient} from '../../Components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
+import { Header, LinearButton, LinearGradient } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconCircle from 'react-native-vector-icons/Feather';
-import {colors} from '../../Assets/Colors';
+import { colors } from '../../Assets/Colors';
 import ImagePicker from 'react-native-image-crop-picker';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from '../../service/axios';
+import { ip } from '../../Components/ipAddress';
+import { getProfile } from '../../Redux/actions/profile'
+import qs from 'qs'
 
-const GuidelinesModal = ({state, setState}) => {
+
+const GuidelinesModal = ({ state, setState }) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -64,7 +70,8 @@ const GuidelinesModal = ({state, setState}) => {
   );
 };
 
-const PhotoModal = ({state, setState, setPath}) => {
+const PhotoModal = ({ state, setState, token }) => {
+  const dis = useDispatch()
   return (
     <Modal visible={state} animationType="slide" transparent={true}>
       <TouchableOpacity
@@ -103,14 +110,43 @@ const PhotoModal = ({state, setState, setPath}) => {
                   width: 300,
                   height: 400,
                   cropping: true,
+                  compressImageQuality: 0.2
                 }).then(image => {
-                  setPath(image.path);
                   console.log(image);
-                  setState();
-                  Alert.alert(
-                    'Alert',
-                    'Your photo has been uploaded successfully. It will go live after screening',
-                  );
+                  let data = new FormData();
+                  data.append('photo', {
+                    uri: image.path,
+                    name: 'image.jpg',
+                    type: 'image/jpeg'
+                  });
+                  data.append('type','photo')
+                  try {
+                    console.log('i tried');
+                    fetch(`${ip}/api/v1/user/upload-photos`,
+                      {
+                        method: 'POST', headers: {
+                          'Content-Type': 'multipart/form-data',
+                          'Authorization': `${token}`
+                        }, body: data,
+                      }).then((resp) => {
+                        if (resp.status === 201) {
+                          dis(getProfile())
+                          Alert.alert(
+                            'Upload Photo',
+                            'Your photo has been uploaded successfully. It will go live after screening',
+                          );
+                          setState()
+                        } else {
+                          Alert.alert(
+                            'Upload Photo',
+                            'Error is uploading photo. PLease try again.',
+                          );
+                          setState()
+                        }
+                      })
+                  } catch (er) {
+                    console.log(er);
+                  }
                 });
               }}>
               <Icon name="photo" size={25} color={colors.purpledark} />
@@ -137,19 +173,44 @@ const PhotoModal = ({state, setState, setPath}) => {
                     width: 300,
                     height: 400,
                     cropping: true,
+                    compressImageQuality: 0.2
                   }).then(image => {
-                    setPath(image.path);
                     console.log(image);
-                    setState();
-                    Alert.alert(
-                      'Alert',
-                      'Your photo has been uploaded successfully. It will go live after screening',
-                    );
-                  });
+                    let data = new FormData();
+                    data.append('photo', {
+                      uri: image.path,
+                      name: 'image.jpg',
+                      type: 'image/jpeg'
+                    });
+                    data.append('type','photo')
+                    try {
+                      fetch(`${ip}/api/v1/user/upload-photos`,
+                        {
+                          method: 'POST', headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': `${token}`
+                          }, body: data,
+                        }).then((resp) => {
+                          console.log(resp);
+                          if (resp.status === 201) {
+                            dis(getProfile())
+                            Alert.alert(
+                              'Upload Photo',
+                              'Your photo has been uploaded successfully. It will go live after screening',
+                            );
+                            setState()
+                          } else {
+                            Alert.alert(
+                              'Upload Photo',
+                              'Error is uploading photo. PLease try again.',
+                            );
+                          }
+                        })
+                    } catch (er) {
+                      console.log(er);
+                    }
+                  })
                 }
-                // else {
-                //     Alert.alert('Please allow camera permission.')
-                // }
               }}>
               <Icon name="camera" size={25} color={colors.purpledark} />
               <Text style={[Theme.textCaption, Theme.paddingHorizonal10p]}>
@@ -159,14 +220,16 @@ const PhotoModal = ({state, setState, setPath}) => {
           </View>
         </TouchableWithoutFeedback>
       </TouchableOpacity>
-    </Modal>
+    </Modal >
   );
 };
 
-const Photos = ({navigation}) => {
+const Photos = ({ navigation }) => {
+  const dis = useDispatch()
   const [guideline, setGuideline] = useState(false);
   const [photo, setPhoto] = useState(false);
-  const [path, setPath] = useState('');
+  const profile = useSelector(state => state.profile.user)
+  const token = useSelector(state => state.auth.token)
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -177,7 +240,7 @@ const Photos = ({navigation}) => {
         <PhotoModal
           state={photo}
           setState={() => setPhoto(!photo)}
-          setPath={image => setPath(image)}
+          token={token}
         />
         <Header
           left="arrowleft"
@@ -195,9 +258,10 @@ const Photos = ({navigation}) => {
           ]}>
           <View
             style={[
+              Theme.flex1,
               Theme.width100p,
               Theme.alignContentCenter,
-              Theme.separator,
+
               Theme.padding10,
               Theme.marginTop10,
             ]}>
@@ -266,33 +330,98 @@ const Photos = ({navigation}) => {
                 PHOTOS GUIDELINES
               </Text>
             </TouchableOpacity>
-
-            <View style={[Theme.width50p]}>
-              <LinearButton
-                title="Upload Photo"
-                onPress={() => setPhoto(!photo)}
-              />
-            </View>
-          </View>
-
-          {path === '' ? null : (
-            <View style={[Theme.width80p, Theme.alignCenter]}>
-              <Image
-                style={[Theme.width100p, Theme.heightImage]}
-                source={{uri: path}}
-              />
-              <View style={Theme.trashPos}>
-                <IconCircle
-                  name="trash-2"
-                  size={25}
-                  color={colors.purpledark}
+            <View style={[Theme.width100p, Theme.alignContentCenter, Theme.separator]}>
+              <View style={[Theme.width50p]}>
+                <LinearButton
+                  title="Upload Photo"
+                  onPress={() => {
+                    if (profile.photos.length === 6) {
+                      Alert.alert('Alert', 'Maximum 6 photos are allowed. To upload more photos, please delete any of the existing photos.')
+                    } else {
+                      setPhoto(!photo)
+                    }
+                  }}
                 />
               </View>
-              <View style={Theme.pendingButtonPos}>
-                <LinearButton title="Pending approval" flat={true} />
-              </View>
             </View>
-          )}
+            {
+              profile.photos.map((data) => {
+                return <View key={data.photo} style={[Theme.width80p, Theme.alignCenter, Theme.padding5]}>
+                  <Image
+                    style={[Theme.width100p, Theme.heightImage]}
+                    source={{ uri: data.photo }}
+                  />
+                  <TouchableOpacity onPress={() => {
+                    Alert.alert(
+                      "Delete Photo",
+                      "Are you sure u want to delete this photo?",
+                      [
+                        {
+                          text: "Cancel",
+                          onPress: () => console.log("Cancel Pressed"),
+                          style: "cancel"
+                        },
+                        {
+                          text: "OK", onPress: () => {
+                            try {
+                              fetch(`${ip}/api/v1/user/delete-photos/${data._id}`,
+                                {
+                                  method: 'DELETE', headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                    'Authorization': `${token}`
+                                  }
+                                }).then((resp) => {
+                                  console.log(resp);
+                                  if (resp.status === 201) {
+                                    dis(getProfile())
+                                  }
+                                })
+                            } catch (er) {
+                              console.log(er);
+                            }
+                          }
+                        }
+                      ]
+                    );
+                  }} style={Theme.trashPos}>
+                    <IconCircle
+                      name="trash-2"
+                      size={25}
+                      color={colors.purpledark}
+                    />
+                  </TouchableOpacity>
+                  {data.photoApproved ?
+                    <View style={Theme.pendingButtonPos}>
+                      <LinearButton title="Make profile photo" flat={true} disabled={true}
+                      onPress={()=>{
+                        try {
+                          fetch(`${ip}/api/v1/user/make-profile-photo/${data._id}`,
+                            {
+                              method: 'GET', headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Authorization': `${token}`
+                              }
+                            }).then((resp) => {
+                              console.log(resp);
+                              if (resp.status === 201) {
+                                dis(getProfile())
+                              }
+                            })
+                        } catch (er) {
+                          console.log(er);
+                        }
+                      }}
+                      />
+                   </View>
+                    :
+                    <View style={Theme.pendingButtonPos}>
+                      <LinearButton title="Pending approval" flat={true} disabled={true} />
+                    </View>
+                  }
+                </View>
+              })
+            }
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
-import {updateProfile} from '../../Redux/actions/profile';
-import {Theme} from '../../Assets/Styles';
+import React, { useEffect, useState } from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfile } from '../../Redux/actions/profile';
+import { Theme } from '../../Assets/Styles';
 import {
   Header,
   LinearButton,
@@ -12,7 +12,7 @@ import {
 } from '../../Components';
 import axiosService from '../../service/axios';
 
-const Location = ({navigation}) => {
+const Location = ({ navigation }) => {
   const dis = useDispatch();
   const auth = useSelector(state => state.auth);
   const profile = useSelector(state => state.profile.user);
@@ -40,6 +40,7 @@ const Location = ({navigation}) => {
           leftnav={() => navigation.goBack()}
         />
         <MultiSelect
+          title="Location"
           state={countryOpen}
           array={countryItems}
           selectedItems={profile.partnerpref.country}
@@ -54,7 +55,7 @@ const Location = ({navigation}) => {
             <View style={[Theme.selectedItems, Theme.padding10]}>
               <DropDownButton
                 title="Location"
-                text={country.toString()}
+                text={country.length === 0 ? "Doesn't matter" : country.toString().replace(/,/g, ' , ')}
                 onPress={() => setCountryOpen(!countryOpen)}
               />
               <View

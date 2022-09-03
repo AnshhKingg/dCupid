@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,23 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { TextInput, LinearButton, LinearGradient, Loading } from '../../Components';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {
+  TextInput,
+  LinearButton,
+  LinearGradient,
+  Loading,
+} from '../../Components';
 import CountryPicker from 'react-native-country-picker-modal';
-import { useDispatch } from 'react-redux';
-import { login, logout } from '../../Redux/actions/auth';
-import { removeProfile } from '../../Redux/actions/profile';
+import {useDispatch} from 'react-redux';
+import {login, logout} from '../../Redux/actions/auth';
+import {removeProfile} from '../../Redux/actions/profile';
 import auth from '@react-native-firebase/auth';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import messaging from '@react-native-firebase/messaging';
 
-const Otp = ({ navigation }) => {
+const Otp = ({navigation}) => {
   const dis = useDispatch();
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
@@ -29,24 +35,33 @@ const Otp = ({ navigation }) => {
   const [confirmation, setConfirmation] = useState(null);
   const [otpSent, setOtpSent] = useState(false);
   const timer = useRef(null);
-  const [count, setCount] = useState(60);
+  const [count, setCount] = useState(0);
   // const state = useSelector(state => state.auth)
 
-  const onAuthStateChanged = user => {
-    if (user) {
-      dis(login(user.uid, `+${countryCode}${mobile}`));
-    } else {
-      dis(removeProfile());
-      dis(logout());
-    }
-  };
+  // const onAuthStateChanged = user => {
+  //   if (user) {
+  //     dis(login(user.uid, user.phoneNumber));
+  //   } else {
+  //     dis(removeProfile());
+  //     dis(logout());
+  //   }
+  // };
 
   useEffect(() => {
-    const listener = auth().onAuthStateChanged(onAuthStateChanged);
+    const listener = auth().onAuthStateChanged(async user => {
+      if (user) {
+        var token = await auth().currentUser.getIdToken();
+        const deviceId = await messaging().getToken();
+        dis(login(user.uid, user.phoneNumber, token, deviceId));
+      } else {
+        dis(removeProfile());
+        dis(logout());
+      }
+    });
     return () => {
       listener();
     };
-  }, []);
+  }, [dis]);
 
   useEffect(() => {
     if (otpSent && count !== 0) {
@@ -66,11 +81,11 @@ const Otp = ({ navigation }) => {
 
   // Handle the button press
   function signInWithPhoneNumber(phoneNumber) {
-    setLoading(true)
+    setLoading(true);
     auth()
       .signInWithPhoneNumber(phoneNumber)
       .then(resp => {
-        setLoading(false)
+        setLoading(false);
         console.log('OTP send.');
         setOtpSent(true);
         setConfirmation(resp);
@@ -80,23 +95,25 @@ const Otp = ({ navigation }) => {
         );
       })
       .catch(err => {
-        setLoading(false)
+        setLoading(false);
         const firebaseerr = err.message.split('] ');
         Alert.alert('Error', firebaseerr[1]);
       });
   }
 
   async function confirmCode(number) {
-    setLoading(true)
+    setLoading(true);
     try {
-      const { user } = await confirmation.confirm(otp);
-      console.log(number);
-      dis(login(user.uid, number));
-      setLoading(false)
+      const {user} = await confirmation.confirm(otp);
+      console.log(user.providerData);
+      var token = await auth().currentUser.getIdToken();
+      const deviceId = await messaging().getToken();
+      dis(login(user.uid, number, token, deviceId));
+      setLoading(false);
     } catch (err) {
       const firebaseerr = err.message.split('] ');
       Alert.alert('Error', firebaseerr[1]);
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -170,9 +187,13 @@ const Otp = ({ navigation }) => {
                       multiline={false}
                       keyboardType="numeric"
                       value={mobile}
-                      onChangeText={text =>
-                        setMobile(text.replace(/[^0-9]/g, ''))
-                      }
+                      onChangeText={text => {
+                        if (text[0] === '0') {
+                          setMobile('');
+                        } else {
+                          setMobile(text.replace(/[^0-9]/g, ''));
+                        }
+                      }}
                       error={error}
                     />
                   </View>

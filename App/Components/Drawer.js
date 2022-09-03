@@ -1,10 +1,12 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from './LinearGradient';
 import LinearGradientButton from './LinearGradientButton';
+import {useSelector} from 'react-redux';
+import {trustscore} from '../service/utils';
 
 const DrawerComponent = ({text, onPress, seperator}) => {
   const style =
@@ -40,7 +42,7 @@ const DrawerComponent = ({text, onPress, seperator}) => {
   );
 };
 
-const DrawerExtendedComponent = ({text, onPress, seperator}) => {
+const DrawerExtendedComponent = ({text, onPress, seperator, num}) => {
   const style =
     seperator === false
       ? [
@@ -70,20 +72,27 @@ const DrawerExtendedComponent = ({text, onPress, seperator}) => {
       <View style={[Theme.smallButtonLook, Theme.backgroundWhite]} />
       <View style={style}>
         <Text style={[Theme.textBody]}>{text}</Text>
-        <View
-          style={[
-            Theme.smallButtonLook,
-            Theme.alignContentCenter,
-            Theme.backgroundBlue,
-          ]}>
-          <Text style={[Theme.textBody, Theme.white]}>9</Text>
-        </View>
+
+        {num ? (
+          <View
+            style={[
+              Theme.smallButtonLook,
+              Theme.alignContentCenter,
+              Theme.backgroundBlue,
+            ]}>
+            <Text style={[Theme.textBody, Theme.white]}>{num}</Text>
+          </View>
+        ) : null}
       </View>
     </TouchableOpacity>
   );
 };
 
 const Drawer = props => {
+  const profile = useSelector(state => state.profile.user);
+  const like = useSelector(state => state.likesReceived.data);
+  const chatReq = useSelector(state => state.chatRequested.data);
+  const trust = trustscore(profile);
   return (
     <View style={[Theme.flex1]}>
       <ScrollView
@@ -111,16 +120,37 @@ const Drawer = props => {
                 Theme.padding5,
                 Theme.row,
               ]}>
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate('photo');
+                }}>
+                {profile.photos.length === 0 ? (
+                  <View
+                    style={[
+                      Theme.alignContentCenter,
+                      Theme.profileIcon,
+                      Theme.blackFaded,
+                    ]}>
+                    <Icon name={'user-friends'} size={25} color="white" />
+                  </View>
+                ) : (
+                  <Image
+                    style={{width: 70, height: 70, borderRadius: 35}}
+                    source={{uri: profile.photos[0].photo}}
+                  />
+                )}
+              </TouchableOpacity>
+              <Text
                 style={[
-                  Theme.alignContentCenter,
-                  Theme.profileIcon,
-                  Theme.backgroundWhite,
-                ]}>
-                <Icon name={'user-friends'} size={25} color="white" />
-              </View>
-              <Text style={[Theme.textBody, Theme.textHeader, Theme.white]}>
-                Nothing
+                  Theme.textBody,
+                  Theme.paddingLeft,
+                  Theme.textHeader,
+                  Theme.white,
+                ]}
+                onPress={() =>
+                  props.navigation.navigate('profile', {change: false})
+                }>
+                {profile.name}
               </Text>
             </View>
             <View
@@ -143,7 +173,7 @@ const Drawer = props => {
         <View
           style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
           <LinearGradientButton
-            title="Trust score 40%"
+            title={`Trust score ${trust}%`}
             onPress={() => props.navigation.navigate('trustscore')}
           />
         </View>
@@ -155,18 +185,44 @@ const Drawer = props => {
           />
           <DrawerComponent
             text="Search"
-            onPress={() => props.navigation.navigate('search')}
+            onPress={() => props.navigation.navigate('searchmenu')}
           />
           <DrawerComponent
             text="Likes "
             seperator={false}
             onPress={() => props.navigation.navigate('likesreceived')}
           />
-          <DrawerExtendedComponent text="Regular" seperator={false} />
-          <DrawerExtendedComponent text="Filtered out" />
-          <DrawerComponent text="Chat Request" seperator={false} />
-          <DrawerExtendedComponent text="Regular" seperator={false} />
-          <DrawerExtendedComponent text="Filtered out" />
+          <DrawerExtendedComponent
+            text="Regular"
+            seperator={false}
+            num={like.regular.length}
+            onPress={() => props.navigation.navigate('likesreceived')}
+          />
+          <DrawerExtendedComponent
+            text="Filtered out"
+            num={like.filterOut.length}
+            onPress={() =>
+              props.navigation.navigate('likesreceived', {change: true})
+            }
+          />
+          <DrawerComponent
+            text="Chat Request"
+            seperator={false}
+            onPress={() => props.navigation.navigate('chatrequested')}
+          />
+          <DrawerExtendedComponent
+            text="Regular"
+            seperator={false}
+            num={chatReq.regular.length}
+            onPress={() => props.navigation.navigate('chatrequested')}
+          />
+          <DrawerExtendedComponent
+            text="Filtered out"
+            num={chatReq.filterOut.length}
+            onPress={() =>
+              props.navigation.navigate('chatrequested', {change: true})
+            }
+          />
           <DrawerComponent
             text="Messages"
             onPress={() => props.navigation.navigate('message')}
@@ -175,7 +231,10 @@ const Drawer = props => {
             text="Likes Sent"
             onPress={() => props.navigation.navigate('likes')}
           />
-          <DrawerComponent text="Declined Profiles" />
+          <DrawerComponent
+            text="Declined Profiles"
+            onPress={() => props.navigation.navigate('chatdeclined')}
+          />
         </View>
       </ScrollView>
       <View

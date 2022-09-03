@@ -16,6 +16,10 @@ import LikesSent from './LikesSent';
 import LikesRecived from './LikesRecived';
 import {Otp, Otp2} from './Otp';
 import {Register, Register2} from './Registeration';
+import ChatRequest from './ChatRequest';
+import DeclinedRequest from './DeclinedRequest';
+import VerifyEmail from './VerifyEmail';
+import Payment from './Payment';
 import {
   Profile,
   Age,
@@ -48,6 +52,7 @@ export const NameContainer = Name;
 export const CountryContainer = Country;
 export const EducationContainer = Education;
 export const DrinkContainer = Drink;
+export const VerifyEmailContainer = VerifyEmail;
 
 export const MatchingProfileContainer = MatchingProfile;
 export const ChatContainer = Chat;
@@ -60,3 +65,6 @@ export const OtherUsersProfileContainer = OtherUsersProfile;
 export const SearchMenuContainer = SearchMenu;
 export const LikesSentContainer = LikesSent;
 export const LikesReceivedContainer = LikesRecived;
+export const ChatRequestedContainer = ChatRequest;
+export const DeclinedRequestContainer = DeclinedRequest;
+export const PaymentContainer = Payment;

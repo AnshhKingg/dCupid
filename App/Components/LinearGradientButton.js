@@ -11,6 +11,7 @@ const LinearGradientButton = ({
   color,
   flat,
   disabled,
+  border,
 }) => {
   return (
     <TouchableOpacity
@@ -37,6 +38,7 @@ const LinearGradientButton = ({
             flat ? Theme.flatButton : Theme.buttonLook,
             Theme.alignContentCenter,
             Theme.textBold,
+            border ? Theme.borderButton : null,
           ]}>
           <View style={[Theme.width100p, Theme.alignContentCenter]}>
             <Text style={[Theme.textBody, Theme.white]}>{title}</Text>

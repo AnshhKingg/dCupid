@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,8 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '../../Assets/Styles';
 import {
   Header,
   PickerInput,
@@ -18,11 +18,13 @@ import {
   LinearGradient,
 } from '../../Components';
 import Toast from 'react-native-toast-message';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axiosService from '../../service/axios';
-import {setProfile} from '../../Redux/actions/profile';
+import { setProfile } from '../../Redux/actions/profile';
+import { logout } from '../../Redux/actions/auth';
+import fireAuth from '@react-native-firebase/auth';
 
-const ProfessionModal = ({state, onPress, onPressCancel, array}) => {
+const ProfessionModal = ({ state, onPress, onPressCancel, array }) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -65,6 +67,7 @@ const ProfessionModal = ({state, onPress, onPressCancel, array}) => {
                       {array[data].map(profession => {
                         return (
                           <View
+                            key={profession}
                             style={[
                               Theme.width100p,
                               Theme.row,
@@ -100,7 +103,7 @@ const ProfessionModal = ({state, onPress, onPressCancel, array}) => {
   );
 };
 
-const Register2 = ({navigation}) => {
+const Register2 = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
   const selecterData = useSelector(state => state.masterData.data);
   const dis = useDispatch();
@@ -381,7 +384,10 @@ const Register2 = ({navigation}) => {
         <Header
           title="Registration"
           left="arrowleft"
-          leftnav={() => navigation.goBack()}
+          leftnav={async () => {
+            await fireAuth().signOut();
+            dis(logout());
+          }}
         />
         <ProfessionModal
           array={selecterData.profession}
