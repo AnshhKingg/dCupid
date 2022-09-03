@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   TextInput,
   LinearButton,
@@ -16,13 +16,14 @@ import {
   Loading,
 } from '../../Components';
 import CountryPicker from 'react-native-country-picker-modal';
-import { useDispatch } from 'react-redux';
-import { login, logout } from '../../Redux/actions/auth';
-import { removeProfile } from '../../Redux/actions/profile';
+import {useDispatch} from 'react-redux';
+import {login, logout} from '../../Redux/actions/auth';
+import {removeProfile} from '../../Redux/actions/profile';
 import auth from '@react-native-firebase/auth';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import messaging from '@react-native-firebase/messaging';
 
-const Otp = ({ navigation }) => {
+const Otp = ({navigation}) => {
   const dis = useDispatch();
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
@@ -50,8 +51,8 @@ const Otp = ({ navigation }) => {
     const listener = auth().onAuthStateChanged(async user => {
       if (user) {
         var token = await auth().currentUser.getIdToken();
-        console.log(token);
-        dis(login(user.uid, user.phoneNumber, token));
+        const deviceId = await messaging().getToken();
+        dis(login(user.uid, user.phoneNumber, token, deviceId));
       } else {
         dis(removeProfile());
         dis(logout());
@@ -103,10 +104,11 @@ const Otp = ({ navigation }) => {
   async function confirmCode(number) {
     setLoading(true);
     try {
-      const { user } = await confirmation.confirm(otp);
+      const {user} = await confirmation.confirm(otp);
       console.log(user.providerData);
       var token = await auth().currentUser.getIdToken();
-      dis(login(user.uid, number, token));
+      const deviceId = await messaging().getToken();
+      dis(login(user.uid, number, token, deviceId));
       setLoading(false);
     } catch (err) {
       const firebaseerr = err.message.split('] ');

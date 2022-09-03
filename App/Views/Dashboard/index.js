@@ -30,6 +30,7 @@ import {
 import {SocketContext} from '../../Components/Socket';
 import axios from '../../service/axios';
 import {trustscore} from '../../service/utils';
+import axiosServ from '../../service/axios';
 
 const Dashboard = ({navigation}) => {
   const socket = useContext(SocketContext);
@@ -39,13 +40,23 @@ const Dashboard = ({navigation}) => {
   const token = useSelector(state => state.auth.token);
   const like = useSelector(state => state.likesReceived.data);
   const conversationRequestedData = useSelector(
-    state => state.chatRequested.data.length,
+    state => state.chatRequested.data.regular.length,
   );
 
   const trust = trustscore(profile);
 
   useFocusEffect(
     React.useCallback(() => {
+      axios(token)
+        .get('/chat/get-unread-count')
+        .then(resp => {
+          console.log(resp.data.data);
+          setCount(resp.data.data);
+        })
+        .catch(er => console.log(er));
+      dis(getConversationsDeclined());
+      dis(getConversationsRequested());
+      dis(getLikedReceivedUsers());
       dis(getProfile());
       dis(likeUser());
       dis(getConversations());
@@ -55,6 +66,12 @@ const Dashboard = ({navigation}) => {
           .get('/chat/get-unread-count')
           .then(resp => setCount(resp.data.data))
           .catch(er => console.log(er));
+        dis(getConversationsDeclined());
+        dis(getConversationsRequested());
+        dis(getLikedReceivedUsers());
+        dis(getProfile());
+        dis(likeUser());
+        dis(getConversations());
       });
       const onBackPress = () => {
         return true;
@@ -69,13 +86,6 @@ const Dashboard = ({navigation}) => {
 
   useEffect(() => {
     socket.emit('join', profile._id);
-    axios(token)
-      .get('/chat/get-unread-count')
-      .then(resp => setCount(resp.data.data))
-      .catch(er => console.log(er));
-    dis(getConversationsDeclined());
-    dis(getConversationsRequested());
-    dis(getLikedReceivedUsers());
   }, []);
 
   return (
@@ -194,7 +204,7 @@ const Dashboard = ({navigation}) => {
                     <Icon name="photo" size={20} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
-                    Verify mobile 20%
+                    Verify mobile
                   </Text>
                 </TouchableOpacity>
               )}
@@ -212,7 +222,7 @@ const Dashboard = ({navigation}) => {
                     <Icon name="user" size={20} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
-                    Verify Email 20%
+                    Verify Email
                   </Text>
                 </TouchableOpacity>
               )}
@@ -230,7 +240,7 @@ const Dashboard = ({navigation}) => {
                     <Icon name="user" size={20} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
-                    Upload Photo 20%
+                    Upload Photo
                   </Text>
                 </TouchableOpacity>
               )}
@@ -248,7 +258,7 @@ const Dashboard = ({navigation}) => {
                     <Icon name="user" size={20} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
-                    Verify Photo ID 20%
+                    Verify Photo ID
                   </Text>
                 </TouchableOpacity>
               )}
@@ -259,18 +269,30 @@ const Dashboard = ({navigation}) => {
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.flex1, Theme.alignCenter, Theme.padding5]}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('likesreceived')}>
+                  onPress={() => {
+                    axiosServ(token)
+                      .get('user/seen-like')
+                      .then(resp => {
+                        console.log(resp);
+                      })
+                      .catch(er => {
+                        console.log(er);
+                      });
+                    navigation.navigate('likesreceived');
+                  }}>
                   <Icon name="heart-o" size={50} color="grey" />
-                  <View
-                    style={[
-                      Theme.notificationLook,
-                      Theme.alignContentCenter,
-                      Theme.backgroundBlue,
-                    ]}>
-                    <Text style={[Theme.textCaption, Theme.white]}>
-                      {like.regular.length}
-                    </Text>
-                  </View>
+                  {like.regular.length ? (
+                    <View
+                      style={[
+                        Theme.notificationLook,
+                        Theme.alignContentCenter,
+                        Theme.backgroundBlue,
+                      ]}>
+                      <Text style={[Theme.textCaption, Theme.white]}>
+                        {like.regular.length}
+                      </Text>
+                    </View>
+                  ) : null}
                 </TouchableOpacity>
                 <Text style={[Theme.textCaption, Theme.textCenter]}>Likes</Text>
               </View>
@@ -312,7 +334,7 @@ const Dashboard = ({navigation}) => {
                     size={50}
                     color="grey"
                   />
-                  {count === 0 ? null : (
+                  {conversationRequestedData === 0 ? null : (
                     <View
                       style={[
                         Theme.notificationLook,

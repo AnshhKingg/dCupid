@@ -1,11 +1,13 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { Header } from '../../Components';
+import React, {useCallback} from 'react';
+import {View, Text, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {Header, Loading} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useSelector } from 'react-redux';
-import { ageCalc,dateTime } from '../../service/utils';
+import {useDispatch, useSelector} from 'react-redux';
+import {ageCalc, dateTime} from '../../service/utils';
+import {useFocusEffect} from '@react-navigation/native';
+import {likeUser} from '../../Redux/actions';
 
 const LikesTile = ({data}) => {
   return (
@@ -38,7 +40,7 @@ const LikesTile = ({data}) => {
           ]}>
           <View style={[Theme.width60p]}>
             <Text style={[Theme.textBody, Theme.textBold]} numberOfLines={1}>
-              {data.likedUser.name} {ageCalc(data.likedUser.dob)}
+              {data.name} {ageCalc(data.dob)}
             </Text>
           </View>
           <View style={[Theme.width40p]}>
@@ -57,7 +59,7 @@ const LikesTile = ({data}) => {
           ]}>
           <View style={[Theme.width80p]}>
             <Text style={[Theme.textCaption, Theme.textBold]} numberOfLines={1}>
-            {data.likedUser.city} {data.likedUser.state}
+              {data.city} {data.state}
             </Text>
           </View>
         </View>
@@ -66,25 +68,30 @@ const LikesTile = ({data}) => {
   );
 };
 
-const LikesSent = ({ navigation }) => {
-  const likes = useSelector(state => state.likeUser)
+const LikesSent = ({navigation}) => {
+  const dis = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      dis(likeUser());
+    }, []),
+  );
+  const likes = useSelector(state => state.likeUser);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        {likes.loading && <Loading />}
         <Header
           left="menuunfold"
           right="home"
-          title="Likes"
+          title="Like Sent"
           leftnav={() => navigation.openDrawer()}
           rightnav={() => navigation.navigate('dashboard')}
         />
         <ScrollView contentContainerStyle={[]}>
           <View style={[Theme.width100p]}>
-            {
-              likes.data.map((data,i)=>{
-                return  <LikesTile key={i} data={data}  />
-              })
-            }
+            {likes.data.map((data, i) => {
+              return <LikesTile key={i} data={data.user} />;
+            })}
           </View>
         </ScrollView>
       </SafeAreaView>

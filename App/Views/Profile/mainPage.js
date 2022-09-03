@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,8 @@ import {
   Modal,
   Image,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   Header,
   LinearButton,
@@ -20,14 +20,13 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../../Assets/Colors';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile } from '../../Redux/actions/profile';
+import {colors} from '../../Assets/Colors';
+import {useSelector, useDispatch} from 'react-redux';
+import {updateProfile} from '../../Redux/actions/profile';
 import moment from 'moment-timezone';
-import { trustscore } from '../../service/utils';
+import {trustscore} from '../../service/utils';
 
-
-const Tiles = ({ text, icon }) => {
+const Tiles = ({text, icon}) => {
   return (
     <View style={[Theme.alignContentCenter, Theme.row]}>
       {icon}
@@ -175,25 +174,25 @@ const InterestModal = ({
   );
 };
 
-const Profile = ({ navigation, route }) => {
+const Profile = ({navigation, route}) => {
   const dis = useDispatch();
   const [toggle, setToggle] = useState(false);
   const selecterData = useSelector(state => state.masterData.data);
   const [interestModal, setInterestModal] = useState(false);
   const profile = useSelector(state => state.profile.user);
-  const trust = trustscore(profile)
+  const trust = trustscore(profile);
   const bottom = useRef(null);
 
-  const ageCalc = (date) => {
-    const newdate = new Date()
-    const age = moment(newdate).diff(moment(date), 'years')
+  const ageCalc = date => {
+    const newdate = new Date();
+    const age = moment(newdate).diff(moment(date), 'years');
     return age;
   };
 
   useEffect(() => {
     if (route.params.change) {
       setToggle(true);
-      bottom.current.scrollToEnd({ animated: true });
+      bottom.current.scrollToEnd({animated: true});
     }
   }, [route.params.change]);
 
@@ -211,7 +210,7 @@ const Profile = ({ navigation, route }) => {
           array={selecterData.interest}
           selectedItems={profile.interest}
           onPress={data => {
-            dis(updateProfile({ interest: data }));
+            dis(updateProfile({interest: data}));
             setInterestModal(false);
           }}
           onPressCancel={() => setInterestModal(!interestModal)}
@@ -224,37 +223,39 @@ const Profile = ({ navigation, route }) => {
                 onPress={() => {
                   navigation.navigate('photo');
                 }}>
-                {
-                  profile.photos.length === 0 ?
-                    <LinearGradient
+                {profile.photos.length === 0 ? (
+                  <LinearGradient
+                    style={[
+                      Theme.profileIcon,
+                      Theme.alignContentCenter,
+                      Theme.backgroundBlue,
+                    ]}>
+                    <Icon name="user" size={30} color="white" />
+                    <View
                       style={[
-                        Theme.profileIcon,
+                        Theme.profileIconNotification,
                         Theme.alignContentCenter,
                         Theme.backgroundBlue,
                       ]}>
-                      <Icon name="user" size={30} color="white" />
-                      <View
-                        style={[
-                          Theme.profileIconNotification,
-                          Theme.alignContentCenter,
-                          Theme.backgroundBlue,
-                        ]}>
-                        <Icon name="camera" size={20} color="white" />
-                      </View>
-                    </LinearGradient> :
-                    <>
-                      <Image style={{ width: 70, height: 70, borderRadius: 35 }} source={{ uri: profile.photos[0].photo }} />
-                      <View
-                        style={[
-                          Theme.profileIconNotification,
-                          Theme.alignContentCenter,
-                          Theme.backgroundBlue,
-                        ]}>
-                        <Icon name="camera" size={20} color="white" />
-                      </View>
-                    </>
-                }
-
+                      <Icon name="camera" size={20} color="white" />
+                    </View>
+                  </LinearGradient>
+                ) : (
+                  <>
+                    <Image
+                      style={{width: 70, height: 70, borderRadius: 35}}
+                      source={{uri: profile.photos[0].photo}}
+                    />
+                    <View
+                      style={[
+                        Theme.profileIconNotification,
+                        Theme.alignContentCenter,
+                        Theme.backgroundBlue,
+                      ]}>
+                      <Icon name="camera" size={20} color="white" />
+                    </View>
+                  </>
+                )}
               </TouchableOpacity>
               <Text style={[Theme.textHeader, Theme.textFontWeight0]}>
                 {profile.name}
@@ -356,81 +357,77 @@ const Profile = ({ navigation, route }) => {
 
           <View style={[Theme.width100p, Theme.separator, Theme.marginBottom0]}>
             <View style={[Theme.width100p, Theme.row]}>
-              {
-                profile.mobileVerified ? null :
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('trustscore')}
-                    style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                    <View
-                      style={[
-                        Theme.smallButtonLook,
-                        Theme.alignContentCenter,
-                        Theme.backgroundGray,
-                      ]}>
-                      <Icon name="photo" size={20} color="black" />
-                    </View>
-                    <Text style={[Theme.textCaption, Theme.textCenter]}>
-                      Verify mobile 20%
-                    </Text>
-                  </TouchableOpacity>
-              }
+              {profile.mobileVerified ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="photo" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Verify mobile
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              {
-                profile.emailVerified ? null :
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('trustscore')}
-                    style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                    <View
-                      style={[
-                        Theme.smallButtonLook,
-                        Theme.alignContentCenter,
-                        Theme.backgroundGray,
-                      ]}>
-                      <Icon name="user" size={20} color="black" />
-                    </View>
-                    <Text style={[Theme.textCaption, Theme.textCenter]}>
-                      Verify Email 20%
-                    </Text>
-                  </TouchableOpacity>
-              }
+              {profile.emailVerified ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="user" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Verify Email
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              {
-                profile.photos.length > 0 ? null :
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('trustscore')}
-                    style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                    <View
-                      style={[
-                        Theme.smallButtonLook,
-                        Theme.alignContentCenter,
-                        Theme.backgroundGray,
-                      ]}>
-                      <Icon name="user" size={20} color="black" />
-                    </View>
-                    <Text style={[Theme.textCaption, Theme.textCenter]}>
-                      Upload Photo 20%
-                    </Text>
-                  </TouchableOpacity>
-              }
+              {profile.photos.length > 0 ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="user" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Upload Photo
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              {
-                profile.photoID ? null :
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('trustscore')}
-                    style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                    <View
-                      style={[
-                        Theme.smallButtonLook,
-                        Theme.alignContentCenter,
-                        Theme.backgroundGray,
-                      ]}>
-                      <Icon name="user" size={20} color="black" />
-                    </View>
-                    <Text style={[Theme.textCaption, Theme.textCenter]}>
-                      Verify Photo ID 20%
-                    </Text>
-                  </TouchableOpacity>
-              }
+              {profile.photoID ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('trustscore')}
+                  style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                  <View
+                    style={[
+                      Theme.smallButtonLook,
+                      Theme.alignContentCenter,
+                      Theme.backgroundGray,
+                    ]}>
+                    <Icon name="user" size={20} color="black" />
+                  </View>
+                  <Text style={[Theme.textCaption, Theme.textCenter]}>
+                    Verify Photo ID
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
@@ -499,8 +496,8 @@ const Profile = ({ navigation, route }) => {
                     {profile.partnerpref.skin.length === 0
                       ? "Doesn't Matter"
                       : profile.partnerpref.skin
-                        .toString()
-                        .replace(/,/g, ' , ')}
+                          .toString()
+                          .replace(/,/g, ' , ')}
                   </Text>
 
                   <Text style={[Theme.textBody, Theme.marginTop10]}>
@@ -515,8 +512,8 @@ const Profile = ({ navigation, route }) => {
                     {profile.partnerpref.marital.length === 0
                       ? "Dosen't Matter"
                       : profile.partnerpref.marital
-                        .toString()
-                        .replace(/,/g, ' , ')}
+                          .toString()
+                          .replace(/,/g, ' , ')}
                   </Text>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('age')}>
@@ -544,8 +541,8 @@ const Profile = ({ navigation, route }) => {
                     {profile.partnerpref.country.length === 0
                       ? "Doesn't Matter"
                       : profile.partnerpref.country
-                        .toString()
-                        .replace(/,/g, ' , ')}
+                          .toString()
+                          .replace(/,/g, ' , ')}
                   </Text>
                 </View>
                 <TouchableOpacity

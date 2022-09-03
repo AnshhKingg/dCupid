@@ -17,7 +17,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import axios from '../service/axios';
 import {getProfile} from '../Redux/actions/profile';
 import Carousel from './Carousel';
-import {dateTime} from '../service/utils';
+import {dateTime, trustscore} from '../service/utils';
 
 const ProfileComponent = ({
   onPress,
@@ -32,12 +32,7 @@ const ProfileComponent = ({
   const [like, setLike] = useState(
     profile.userLikes.find(e => data._id === e.likedUser) ? true : false,
   );
-  const trust =
-    ((data.photos.length > 0 ? 1 : 0) +
-      (data.mobileVerifed ? 1 : 0) +
-      (data.photoID ? 1 : 0) +
-      (data.emailVerified ? 1 : 0)) *
-    25;
+  const trust = trustscore(data);
   const ageCalc = date => {
     const newdate = new Date();
     const age = moment(newdate).diff(moment(date), 'years');

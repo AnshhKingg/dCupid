@@ -83,6 +83,7 @@ const Chat = ({navigation, route}) => {
     axiosServ(token)
       .post(`/chat/get-user-conversation`, {userId: route.params.receiverId})
       .then(resp => {
+        console.log(resp.data);
         setLoading(false);
         setConversation(resp.data.conversation);
         setMsgs(resp.data.data);
@@ -146,7 +147,7 @@ const Chat = ({navigation, route}) => {
           if (er.response?.data?.error === 'Sender is not the paid user') {
             Alert.alert('Error', 'You are not a paid user');
           }
-          console.log(er);
+          console.log(er.response.data);
         });
     } catch (er) {
       console.log(er);
@@ -164,6 +165,9 @@ const Chat = ({navigation, route}) => {
         setCreatedBy(resp.data.createdBy);
         dis(getConversationsDeclined());
         dis(getConversationsRequested());
+        if (status === 2) {
+          navigation.goBack();
+        }
       })
       .catch(er => {
         Alert.alert('Error', 'Unable to perform this action.');
@@ -286,18 +290,16 @@ const Chat = ({navigation, route}) => {
             {createdBy !== id && (conversation === 0 || conversation === 2) ? (
               <View
                 style={[Theme.width100p, Theme.row, Theme.alignContentCenter]}>
-                {createdBy !== id && conversation === 2 ? (
-                  <View
-                    style={[
-                      Theme.width50p,
-                      Theme.selfAlignCenter,
-                      Theme.marginBottom10,
-                      ,
-                      Theme.padding10,
-                    ]}>
-                    <LinearButton title="Reply" onPress={() => accept(1)} />
-                  </View>
-                ) : null}
+                <View
+                  style={[
+                    Theme.width50p,
+                    Theme.selfAlignCenter,
+                    Theme.marginBottom10,
+                    ,
+                    Theme.padding10,
+                  ]}>
+                  <LinearButton title="Reply" onPress={() => accept(1)} />
+                </View>
                 {createdBy !== id && conversation === 2 ? null : (
                   <View
                     style={[

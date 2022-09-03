@@ -11,7 +11,7 @@ import {
   getConversations,
   getConversationsDeclined,
 } from '../Redux/actions';
-import {dateTime} from '../service/utils';
+import {dateTime, trustscore} from '../service/utils';
 import axiosServ from '../service/axios';
 
 const ChatRequestComponent = ({
@@ -25,15 +25,7 @@ const ChatRequestComponent = ({
   const dis = useDispatch();
   const profile = useSelector(state => state.profile.user);
   const token = useSelector(state => state.auth.token);
-  const [like, setLike] = useState(
-    profile.userLikes.includes(data._id) ? true : false,
-  );
-  const trust =
-    ((data.photos.length > 0 ? 1 : 0) +
-      (data.mobileVerifed ? 1 : 0) +
-      (data.photoID ? 1 : 0) +
-      (data.emailVerified ? 1 : 0)) *
-    25;
+  const trust = trustscore(data);
   const ageCalc = date => {
     const newdate = new Date();
     const age = moment(newdate).diff(moment(date), 'years');

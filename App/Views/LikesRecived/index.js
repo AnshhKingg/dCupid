@@ -1,16 +1,29 @@
-import React, {useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton, ProfileComp} from '../../Components';
+import {Header, LinearButton, Loading, ProfileComp} from '../../Components';
+import {getLikedReceivedUsers} from '../../Redux/actions';
 
-const LikesReceived = ({navigation}) => {
+const LikesReceived = ({navigation, route}) => {
   const data = useSelector(state => state.likesReceived.data);
+  const loading = useSelector(state => state.likesReceived.loading);
   const [toggle, setToggle] = useState(false);
+  const dis = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      if (route?.params?.change) {
+        setToggle(true);
+      }
+      dis(getLikedReceivedUsers());
+    }, []),
+  );
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        {loading && <Loading />}
         <Header
           left="menuunfold"
           right="home"
@@ -51,7 +64,7 @@ const LikesReceived = ({navigation}) => {
               return (
                 <ProfileComp
                   key={index}
-                  data={data.user}
+                  data={data}
                   time={data.requestedTime}
                   onPress={() =>
                     navigation.navigate('chat', {

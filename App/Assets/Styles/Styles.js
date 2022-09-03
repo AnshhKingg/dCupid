@@ -213,23 +213,23 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
   textHeader: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '700',
     color: 'black',
   },
   textTitle: {
-    fontSize: 22,
+    fontSize: 20,
     color: 'black',
   },
   textBody: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'black',
   },
   textBlack: {
     color: 'black',
   },
   textCaption: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'black',
   },
   textBold: {
@@ -342,13 +342,13 @@ const Styles = StyleSheet.create({
   },
   buttonLook: {
     backgroundColor: 'gray',
-    height: 60,
+    height: 50,
     margin: 10,
     borderRadius: 30,
   },
   flatButton: {
     backgroundColor: 'gray',
-    height: 60,
+    height: 50,
     margin: 10,
     borderRadius: 5,
   },

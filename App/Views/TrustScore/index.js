@@ -100,7 +100,7 @@ const TrustScore = ({navigation}) => {
                     : 'Profile photo is under verification'
                   : ''
               }
-              header="Add your recent photo (25%)"
+              header="Add your recent photo (30%)"
               title={'Add Photo'}
               onPress={() => navigation.navigate('photo')}
             />
@@ -108,7 +108,7 @@ const TrustScore = ({navigation}) => {
             <MessageTile
               toggle={profile.mobileVerified ? true : false}
               togglemsg="Mobile verified"
-              header="Verify your mobile number (25%)"
+              header="Verify your mobile number (20%)"
               title={'Verify mobile'}
               onPress={() => {}}
             />
@@ -120,7 +120,7 @@ const TrustScore = ({navigation}) => {
             <MessageTile
               toggle={profile.emailVerified ? true : false}
               togglemsg="Email id verified"
-              header="Verify your email (25%)"
+              header="Verify your email (20%)"
               des="We will never share your email with other users."
               title="Verify email"
               onPress={() => {
@@ -135,7 +135,7 @@ const TrustScore = ({navigation}) => {
                   ? 'Photo Id verified'
                   : 'Photo Id under verification.'
               }
-              header="Verify your photo id (25%)"
+              header="Verify your photo id (30%)"
               des="Upload a copy of your driving licence , passport or any other photo id that has your photo ,date of birth and name mentioned on it."
               title="Upload"
               onPress={async () => {
@@ -143,7 +143,7 @@ const TrustScore = ({navigation}) => {
                   PermissionsAndroid.PERMISSIONS.CAMERA,
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                  ImagePicker.openCamera({
+                  ImagePicker.openPicker({
                     width: 300,
                     height: 400,
                     cropping: true,

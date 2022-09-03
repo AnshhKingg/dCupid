@@ -1,19 +1,22 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
-import { Header } from '../../Components';
+import React, {useCallback, useEffect, useRef} from 'react';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
+import {Header, Loading} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import { connect } from 'socket.io-client'
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment-timezone';
+import {dateTime} from '../../service/utils';
+import {useFocusEffect} from '@react-navigation/native';
+import {getConversations} from '../../Redux/actions';
 
-const MessageTile = ({ onPress, data }) => {
-  let dateData = moment(data.createdAt).isSame(new Date(), "day");
+const MessageTile = ({onPress, data}) => {
+  let dateData = moment(data.createdAt).isSame(new Date(), 'day');
   if (dateData) {
-    dateData = moment(data.createdAt).format('hh:mm')
+    dateData = moment(data.createdAt).format('hh:mm');
   } else {
-    dateData = moment(data.createdAt).format('DD-MM-YYYY')
+    dateData = moment(data.createdAt).format('DD-MM-YYYY');
   }
   return (
     <TouchableOpacity
@@ -50,7 +53,7 @@ const MessageTile = ({ onPress, data }) => {
             </Text>
           </View>
           <View style={[Theme.width40p]}>
-            <Text style={[Theme.selfAlignEnd]}>{dateData}</Text>
+            <Text style={[Theme.selfAlignEnd]}>{dateTime(date.createdAt)}</Text>
           </View>
         </View>
         <View
@@ -66,39 +69,35 @@ const MessageTile = ({ onPress, data }) => {
             </Text>
           </View>
 
-          {
-            data.conversationData.unread === 0 ?
-              null
-              :
-              <View
-                style={[
-                  Theme.width20p,
-                  Theme.backgroundBlue,
-                  Theme.alignContentCenter,
-                  Theme.vsmallButtonLook,
-                ]}>
-                <Text style={[Theme.white]}>{data.conversationData.unread}</Text>
-              </View>
-          }
-
+          {data.conversationData.unread === 0 ? null : (
+            <View
+              style={[
+                Theme.width20p,
+                Theme.backgroundBlue,
+                Theme.alignContentCenter,
+                Theme.vsmallButtonLook,
+              ]}>
+              <Text style={[Theme.white]}>{data.conversationData.unread}</Text>
+            </View>
+          )}
         </View>
       </View>
     </TouchableOpacity>
   );
 };
 
-const Message = ({ navigation }) => {
-  const msglist = useSelector(state => state.chat.data)
-  // const socket = useRef(connect("http://ec2-3-110-117-121.ap-south-1.compute.amazonaws.com:5000"))
-  useEffect(() => {
-    // socket.current.on('connect', () => {
-    //   console.log(socket.current.id)
-    // })
-
-  }, [])
+const Message = ({navigation}) => {
+  const msglist = useSelector(state => state.chat);
+  const dis = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      dis(getConversations());
+    }, []),
+  );
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        {msglist.loading && <Loading />}
         <Header
           left="menuunfold"
           right="home"
@@ -108,16 +107,31 @@ const Message = ({ navigation }) => {
         />
         <ScrollView contentContainerStyle={[]}>
           <View style={[Theme.width100p]}>
-            {msglist.length === 0 ?
-              <Text style={[Theme.textBody, Theme.selfAlignCenter, Theme.paddingVertical20p]}>No messages found !</Text>
-              :
-              msglist.map((data, index) => {
-                return <MessageTile
-                  data={data}
-                  key={index}
-                  onPress={() => navigation.navigate('chat', { receiverId: data.userData._id, name: data.userData.name })} />
+            {msglist.data.length === 0 ? (
+              <Text
+                style={[
+                  Theme.textBody,
+                  Theme.selfAlignCenter,
+                  Theme.paddingVertical20p,
+                ]}>
+                No messages found !
+              </Text>
+            ) : (
+              msglist.data.map((data, index) => {
+                return (
+                  <MessageTile
+                    data={data}
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate('chat', {
+                        receiverId: data.userData._id,
+                        name: data.userData.name,
+                      })
+                    }
+                  />
+                );
               })
-            }
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

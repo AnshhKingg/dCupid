@@ -1,13 +1,6 @@
-import {
-  ActivityIndicator,
-  Alert,
-  Linking,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Alert, Linking} from 'react-native';
 import React from 'react';
-import WebView from 'react-native-webview';
+import {WebView} from 'react-native-webview';
 import {useDispatch, useSelector} from 'react-redux';
 import {getProfile} from '../../Redux/actions';
 import axiosServ from '../../service/axios';
@@ -34,7 +27,6 @@ const Payment = ({navigation}) => {
     requestSalt: '8E41C78439831010F81F61C344B7BFC7',
     responseEncypritonKey: '8E41C78439831010F81F61C344B7BFC7',
     responseSalt: '8E41C78439831010F81F61C344B7BFC7',
-    ru: 'https://0c86-103-46-203-163.in.ngrok.io/api/v1/payment/complete-pay',
   };
   const LoadingIndicatorView = () => {
     return (
@@ -111,6 +103,9 @@ const Payment = ({navigation}) => {
       navigation.navigate('membership');
     }
   };
+  const INJECTED_JAVASCRIPT = `(function() {
+    window.ReactNativeWebView.postMessage(JSON.stringify(window.location));
+})();`;
   return (
     <WebView
       source={{
@@ -150,14 +145,15 @@ const Payment = ({navigation}) => {
           '&responseEncypritonKey=' +
           state.responseEncypritonKey +
           '&responseSalt=' +
-          state.responseSalt +
-          '&returnUrl=' +
-          state.ru,
+          state.responseSalt,
       }}
+      incognito
       originWhitelist={['https://*', 'upi://*']}
       javaScriptEnabled={true}
+      domStorageEnabled={true}
       renderLoading={LoadingIndicatorView}
       startInLoadingState={true}
+      scalesPageToFit={true}
       onShouldStartLoadWithRequest={request => {
         let url = request.url;
         console.log(url);

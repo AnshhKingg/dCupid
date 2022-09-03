@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import {Header, ChatReqComp, LinearButton} from '../../Components';
+import {Header, ChatReqComp, LinearButton, Loading} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment-timezone';
+import {useFocusEffect} from '@react-navigation/native';
+import {getConversationsRequested} from '../../Redux/actions';
 
 const MessageTile = ({onPress, data}) => {
   let dateData = moment(data.createdAt).isSame(new Date(), 'day');
@@ -89,12 +91,22 @@ const MessageTile = ({onPress, data}) => {
   );
 };
 
-const ChatRequests = ({navigation}) => {
-  const msglist = useSelector(state => state.chatRequested.data);
+const ChatRequests = ({navigation, route}) => {
+  const dis = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      if (route?.params?.change) {
+        setToggle(true);
+      }
+      dis(getConversationsRequested());
+    }, [route]),
+  );
+  const msglist = useSelector(state => state.chatRequested);
   const [toggle, setToggle] = useState(false);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        {msglist.loading && <Loading />}
         <Header
           left="menuunfold"
           right="home"
@@ -136,7 +148,7 @@ const ChatRequests = ({navigation}) => {
               Theme.flexGrow,
               Theme.padding10,
             ]}
-            data={msglist.regular}
+            data={msglist.data.regular}
             showsVerticalScrollIndicator={true}
             key={data => data._id}
             renderItem={data => {
@@ -168,7 +180,7 @@ const ChatRequests = ({navigation}) => {
               Theme.flexGrow,
               Theme.padding10,
             ]}
-            data={msglist.filterOut}
+            data={msglist.data.filterOut}
             showsVerticalScrollIndicator={true}
             key={data => data._id}
             renderItem={data => {

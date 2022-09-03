@@ -72,14 +72,17 @@ const DrawerExtendedComponent = ({text, onPress, seperator, num}) => {
       <View style={[Theme.smallButtonLook, Theme.backgroundWhite]} />
       <View style={style}>
         <Text style={[Theme.textBody]}>{text}</Text>
-        <View
-          style={[
-            Theme.smallButtonLook,
-            Theme.alignContentCenter,
-            Theme.backgroundBlue,
-          ]}>
-          <Text style={[Theme.textBody, Theme.white]}>{num}</Text>
-        </View>
+
+        {num ? (
+          <View
+            style={[
+              Theme.smallButtonLook,
+              Theme.alignContentCenter,
+              Theme.backgroundBlue,
+            ]}>
+            <Text style={[Theme.textBody, Theme.white]}>{num}</Text>
+          </View>
+        ) : null}
       </View>
     </TouchableOpacity>
   );
@@ -90,7 +93,6 @@ const Drawer = props => {
   const like = useSelector(state => state.likesReceived.data);
   const chatReq = useSelector(state => state.chatRequested.data);
   const trust = trustscore(profile);
-  console.log(chatReq);
   return (
     <View style={[Theme.flex1]}>
       <ScrollView
@@ -118,28 +120,36 @@ const Drawer = props => {
                 Theme.padding5,
                 Theme.row,
               ]}>
-              {profile.photos.length === 0 ? (
-                <View
-                  style={[
-                    Theme.alignContentCenter,
-                    Theme.profileIcon,
-                    Theme.blackFaded,
-                  ]}>
-                  <Icon name={'user-friends'} size={25} color="white" />
-                </View>
-              ) : (
-                <Image
-                  style={{width: 70, height: 70, borderRadius: 35}}
-                  source={{uri: profile.photos[0].photo}}
-                />
-              )}
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate('photo');
+                }}>
+                {profile.photos.length === 0 ? (
+                  <View
+                    style={[
+                      Theme.alignContentCenter,
+                      Theme.profileIcon,
+                      Theme.blackFaded,
+                    ]}>
+                    <Icon name={'user-friends'} size={25} color="white" />
+                  </View>
+                ) : (
+                  <Image
+                    style={{width: 70, height: 70, borderRadius: 35}}
+                    source={{uri: profile.photos[0].photo}}
+                  />
+                )}
+              </TouchableOpacity>
               <Text
                 style={[
                   Theme.textBody,
                   Theme.paddingLeft,
                   Theme.textHeader,
                   Theme.white,
-                ]}>
+                ]}
+                onPress={() =>
+                  props.navigation.navigate('profile', {change: false})
+                }>
                 {profile.name}
               </Text>
             </View>
@@ -186,20 +196,32 @@ const Drawer = props => {
             text="Regular"
             seperator={false}
             num={like.regular.length}
+            onPress={() => props.navigation.navigate('likesreceived')}
           />
           <DrawerExtendedComponent
             text="Filtered out"
             num={like.filterOut.length}
+            onPress={() =>
+              props.navigation.navigate('likesreceived', {change: true})
+            }
           />
-          <DrawerComponent text="Chat Request" seperator={false} />
+          <DrawerComponent
+            text="Chat Request"
+            seperator={false}
+            onPress={() => props.navigation.navigate('chatrequested')}
+          />
           <DrawerExtendedComponent
             text="Regular"
             seperator={false}
             num={chatReq.regular.length}
+            onPress={() => props.navigation.navigate('chatrequested')}
           />
           <DrawerExtendedComponent
             text="Filtered out"
             num={chatReq.filterOut.length}
+            onPress={() =>
+              props.navigation.navigate('chatrequested', {change: true})
+            }
           />
           <DrawerComponent
             text="Messages"

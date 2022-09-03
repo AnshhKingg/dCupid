@@ -1,12 +1,19 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import {Header, ChatDeclinedComp, LinearButton} from '../../Components';
+import {
+  Header,
+  ChatDeclinedComp,
+  LinearButton,
+  Loading,
+} from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment-timezone';
 import {dateTime} from '../../service/utils';
+import {useFocusEffect} from '@react-navigation/native';
+import {getConversationsDeclined} from '../../Redux/actions';
 
 const MessageTile = ({data, time}) => {
   return (
@@ -65,12 +72,20 @@ const MessageTile = ({data, time}) => {
 };
 
 const DeclinedRequests = ({navigation}) => {
-  const msglist = useSelector(state => state.chatDeclined.data);
+  const dis = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      dis(getConversationsDeclined());
+    }, []),
+  );
+
+  const msglist = useSelector(state => state.chatDeclined);
   const [toggle, setToggle] = useState(false);
-  console.log(msglist.byOther);
+  console.log(msglist.loading);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        {msglist.loading && <Loading />}
         <Header
           left="menuunfold"
           right="home"
@@ -107,7 +122,7 @@ const DeclinedRequests = ({navigation}) => {
               Theme.flexGrow,
               Theme.padding10,
             ]}
-            data={msglist.byOther}
+            data={msglist.data.byOther}
             showsVerticalScrollIndicator={true}
             key={data => data._id}
             renderItem={data => {
@@ -138,7 +153,7 @@ const DeclinedRequests = ({navigation}) => {
               Theme.flexGrow,
               Theme.padding10,
             ]}
-            data={msglist.byMe}
+            data={msglist.data.byMe}
             showsVerticalScrollIndicator={true}
             key={data => data._id}
             renderItem={data => {
@@ -146,6 +161,7 @@ const DeclinedRequests = ({navigation}) => {
                 <ChatDeclinedComp
                   data={data.item.user}
                   time={data.item.requestedTime}
+                  conversationData={data.item.lastMessage}
                   contentContainerStyle={[
                     Theme.width100p,
                     Theme.flexGrow,
