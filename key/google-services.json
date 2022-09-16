@@ -1,0 +1,159 @@
+{
+  "project_info": {
+    "project_number": "613215646162",
+    "firebase_url": "https://derma-cupid-94d0a.firebaseio.com",
+    "project_id": "derma-cupid-94d0a",
+    "storage_bucket": "derma-cupid-94d0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613215646162:android:adc5dfe8b71ac410a0980b",
+        "android_client_info": {
+          "package_name": "com.dcupid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613215646162-84i5ppikk5art3t2is629qnp441vj92m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dcupid",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "613215646162-skvu81obaaf7pgq5vhef71pdbclspkr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2u4Z2rN_H1m621XQ0rv1S2ryufSOY4V0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613215646162-skvu81obaaf7pgq5vhef71pdbclspkr9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "613215646162-80ii1upg3qpd57ueagqmkci820v1todf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dermacupid"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613215646162:android:216ce6cba2d1a766a0980b",
+        "android_client_info": {
+          "package_name": "com.derma.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613215646162-1lpe4e9ihb9iuq15ec59hsgveibi6mbp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.derma.app",
+            "certificate_hash": "fc87a406daea7ee26cfd015576e89fb7eb7f5569"
+          }
+        },
+        {
+          "client_id": "613215646162-5rlmbim1vqon9dspavr26bq7kvfj4rd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.derma.app",
+            "certificate_hash": "43d8916a9a40a2f1db5cfc9c5d67a63f5e735d58"
+          }
+        },
+        {
+          "client_id": "613215646162-h464idtkd1e6oschre3uqq56vh5icrkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.derma.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "613215646162-skvu81obaaf7pgq5vhef71pdbclspkr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2u4Z2rN_H1m621XQ0rv1S2ryufSOY4V0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613215646162-skvu81obaaf7pgq5vhef71pdbclspkr9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "613215646162-80ii1upg3qpd57ueagqmkci820v1todf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dermacupid"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613215646162:android:a6e05001f9733d26a0980b",
+        "android_client_info": {
+          "package_name": "com.derma_dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613215646162-66oikm3fjkkkcqmjaopbqfs82kcu34ln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.derma_dev",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "613215646162-skvu81obaaf7pgq5vhef71pdbclspkr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2u4Z2rN_H1m621XQ0rv1S2ryufSOY4V0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613215646162-skvu81obaaf7pgq5vhef71pdbclspkr9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "613215646162-80ii1upg3qpd57ueagqmkci820v1todf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dermacupid"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
