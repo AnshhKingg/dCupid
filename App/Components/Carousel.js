@@ -1,23 +1,23 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React from 'react';
 import {
-  Text,
   View,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  PermissionsAndroid,
-  TextInput,
   Dimensions,
-  Alert,
   Image,
+  TouchableOpacity,
+  Text,
 } from 'react-native';
-// import { ip } from './IpAddress';
+import ImageView from 'react-native-image-viewing';
+import {Theme} from '../Assets/Styles';
+
 class Carousel extends React.Component {
   scrollRef = React.createRef();
   constructor() {
     super();
     this.state = {
       selectedIndex: 0,
+      visible: false,
     };
   }
   componentDidMount = () => {
@@ -37,20 +37,41 @@ class Carousel extends React.Component {
   }
   render() {
     const {selectedIndex} = this.state;
-    const {images, text} = this.props;
+    const {images} = this.props;
     const width = Dimensions.get('window').width;
     const height = Dimensions.get('window').height;
     const setSelectedIndex = event => {
       const contentOffset = event.nativeEvent.contentOffset;
       const viewSize = event.nativeEvent.layoutMeasurement;
-
       // Divide the horizontal offset by the width of the view to see which page is visible
       const selectedIndex = Math.ceil(contentOffset.x / viewSize.width);
-      this.setState({selectedIndex});
+      this.setState({...this.state, selectedIndex: selectedIndex});
     };
-    // console.log(images);
+    const view = images.map(data => {
+      return {
+        uri: data.photo,
+      };
+    });
+    const Count = ({imageIndex}) => {
+      return (
+        <View
+          style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
+          <Text style={[Theme.textHeader, Theme.white]}>
+            {imageIndex + 1}/{view.length}
+          </Text>
+        </View>
+      );
+    };
     return (
       <View>
+        <ImageView
+          images={view}
+          imageIndex={0}
+          visible={this.state.visible}
+          onRequestClose={() => this.setState({...this.state, visible: false})}
+          doubleTapToZoomEnabled
+          FooterComponent={Count}
+        />
         <ScrollView
           horizontal
           pagingEnabled
@@ -59,19 +80,26 @@ class Carousel extends React.Component {
           ref={this.scrollRef}>
           {images.map((item, i) => {
             return (
-              <View key={i}>
+              <TouchableOpacity
+                // onPress={() => this.setState({...this.state, visible: true})}
+                activeOpacity={1}
+                onPress={() =>
+                  !this.props.disabled
+                    ? this.props.onPress()
+                    : this.setState({...this.state, visible: true})
+                }
+                key={i}>
                 <Image
                   resizeMethod="scale"
                   resizeMode="stretch"
-                  // source={{ uri: `${ip}${item.image}` }}
                   source={{uri: `${item.photo}`}}
                   style={{
-                    width: width - 20,
-                    height: 300,
+                    width: width - 22,
+                    height: 350,
                   }}
                   key={i}
                 />
-              </View>
+              </TouchableOpacity>
             );
           })}
         </ScrollView>

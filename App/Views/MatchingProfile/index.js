@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 import {Theme} from '../../Assets/Styles';
 import {Header, ProfileComp} from '../../Components';
 import axios from '../../service/axios';
+import {namePrivacy} from '../../service/utils';
 
 const MatchingProfile = ({navigation, route}) => {
   const token = useSelector(state => state.auth.token);
@@ -25,7 +26,6 @@ const MatchingProfile = ({navigation, route}) => {
       setData([]);
     };
   }, []);
-  console.log(route.params);
 
   const userApi = () => {
     setLoading(true);
@@ -70,7 +70,7 @@ const MatchingProfile = ({navigation, route}) => {
       <SafeAreaView style={[Theme.height100p]}>
         <Header
           left="arrowleft"
-          title={route.params ? 'Search Results' : 'Member Profile'}
+          title={route.params ? 'Search Results' : 'My Matches'}
           leftnav={() => {
             navigation.goBack();
           }}
@@ -115,7 +115,8 @@ const MatchingProfile = ({navigation, route}) => {
                   onPress={() =>
                     navigation.navigate('chat', {
                       receiverId: data.item._id,
-                      name: data.item.name,
+                      name: namePrivacy(data.item),
+                      data: data.item,
                     })
                   }
                   onPressProfile={() =>

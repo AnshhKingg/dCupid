@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
+import IconMenu from 'react-native-vector-icons/SimpleLineIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import LinearGradient from './LinearGradient';
 
 const HeaderBar = ({title, left, right, leftnav, rightnav}) => {
@@ -16,9 +18,12 @@ const HeaderBar = ({title, left, right, leftnav, rightnav}) => {
             Theme.justifySpcBtw,
           ]}>
           <View style={[Theme.width60p, Theme.row, Theme.alignCenter]}>
-            {left ? (
+            {left === 'menuunfold' && (
+              <IconMenu name="menu" size={30} color="white" onPress={leftnav} />
+            )}
+            {left === 'arrowleft' && (
               <Icon name={left} size={30} color="white" onPress={leftnav} />
-            ) : null}
+            )}
 
             <Text
               style={[Theme.textTitle, Theme.white, Theme.paddingHorizonal10p]}>
@@ -26,9 +31,11 @@ const HeaderBar = ({title, left, right, leftnav, rightnav}) => {
             </Text>
           </View>
           <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
-            {right ? (
+            {right === 'home' ? (
+              <Entypo name="home" color="white" size={30} onPress={rightnav} />
+            ) : (
               <Icon name={right} size={30} color="white" onPress={rightnav} />
-            ) : null}
+            )}
           </View>
         </View>
       </LinearGradient>

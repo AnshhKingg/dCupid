@@ -9,11 +9,12 @@ import {colors} from '../../Assets/Colors';
 import {Menu, MenuItem} from 'react-native-material-menu';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
-import {trustscore} from '../../service/utils';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {imageFilter, namePrivacy, trustscore} from '../../service/utils';
 
 const OtherUsersProfile = ({navigation, route}) => {
   const [visible, setVisible] = useState(false);
-  const {data} = route.params;
+  const {data, change} = route?.params;
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
   return (
@@ -43,55 +44,65 @@ const OtherUsersProfile = ({navigation, route}) => {
                 User Profile
               </Text>
             </View>
-            <View style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
-              <Menu
-                visible={visible}
-                anchor={
-                  <IconMaterial
-                    name="do-not-disturb"
-                    onPress={showMenu}
-                    size={30}
-                    color="white"
-                  />
-                }
-                onRequestClose={hideMenu}>
-                <MenuItem
-                  style={[Theme.textBold, Theme.textBody]}
-                  onPress={hideMenu}>
-                  Block
-                </MenuItem>
-                <MenuItem
-                  style={[Theme.textBold, Theme.textBody]}
-                  onPress={hideMenu}>
-                  Report
-                </MenuItem>
-              </Menu>
-            </View>
+            {change ? null : (
+              <View
+                style={[Theme.width40p, Theme.flexEnd, Theme.justifyCenter]}>
+                <Menu
+                  visible={visible}
+                  anchor={
+                    <IconMaterial
+                      name="do-not-disturb"
+                      onPress={showMenu}
+                      size={30}
+                      color="white"
+                    />
+                  }
+                  onRequestClose={hideMenu}>
+                  <MenuItem
+                    style={[Theme.textBold, Theme.textBody]}
+                    textStyle={[Theme.textBlack]}
+                    onPress={hideMenu}>
+                    Block
+                  </MenuItem>
+                  <MenuItem
+                    style={[Theme.textBold, Theme.textBody]}
+                    textStyle={[Theme.textBlack]}
+                    onPress={hideMenu}>
+                    Report
+                  </MenuItem>
+                </Menu>
+              </View>
+            )}
           </View>
         </LinearGradient>
         <ScrollView>
           <View style={[Theme.width100p]}>
             <View style={[Theme.width100p, Theme.padding10, Theme.alignCenter]}>
-              <ProfileComp
-                data={data}
-                onPress={() => navigation.navigate('chat')}
-                disableButton={true}
-              />
+              <ProfileComp data={data} disableButton={true} />
               <View style={[Theme.paddingVertical20p]}>
                 <SemiCircularBar
-                  progressWidth={20}
+                  progressWidth={15}
                   percentage={trustscore(data)}
                   interiorCircleColor="#f2f2f2"
                   progressColor="purple"
                   progressShadowColor="grey">
-                  <Text style={[Theme.textHeader]}>{trustscore(data)}%</Text>
+                  <Text style={[Theme.textHeader, Theme.purple]}>
+                    {trustscore(data)}%
+                  </Text>
+                  <Text style={[Theme.textHeader, Theme.purple]}>
+                    Trust Score
+                  </Text>
                 </SemiCircularBar>
               </View>
               <View
                 style={[Theme.width100p, Theme.separator, Theme.marginBottom0]}>
                 <View style={[Theme.width100p, Theme.row]}>
                   <View
-                    style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                    style={[
+                      Theme.width25p,
+                      Theme.padding10,
+                      Theme.alignCenter,
+                    ]}>
                     <View
                       style={[
                         Theme.smallButtonLook,
@@ -108,40 +119,101 @@ const OtherUsersProfile = ({navigation, route}) => {
                         <Icon name="check" size={15} color="white" />
                       </View>
                     </View>
-                    <Text style={[Theme.textBody, Theme.textCenter]}>
+                    <Text
+                      adjustsFontSizeToFit
+                      style={[Theme.textBody, Theme.textCenter]}>
                       Mobile Number Verified
                     </Text>
                   </View>
 
-                  <View
-                    style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                    {/* <View
-                                            style={[
-                                                Theme.smallButtonLook,
-                                                Theme.alignContentCenter,
-                                                Theme.backgroundGray,
-                                            ]}>
-                                            <Icon name="photo" size={20} color="black" />
-                                        </View>
-                                        <Text style={[Theme.textBody, Theme.textCenter]}>
-                                            Verify mobile 20%
-                                        </Text> */}
-                  </View>
+                  {data.emailVerified ? (
+                    <View
+                      style={[
+                        Theme.width25p,
+                        Theme.padding10,
+                        Theme.alignCenter,
+                      ]}>
+                      <View
+                        style={[
+                          Theme.smallButtonLook,
+                          Theme.alignContentCenter,
+                          Theme.backgroundGray,
+                        ]}>
+                        <Entypo name="mail" size={25} color="black" />
+                        <View
+                          style={[
+                            Theme.notificationLook,
+                            Theme.alignContentCenter,
+                            Theme.backgroundBlue,
+                          ]}>
+                          <Icon name="check" size={15} color="white" />
+                        </View>
+                      </View>
+                      <Text
+                        adjustsFontSizeToFit
+                        style={[Theme.textBody, Theme.textCenter]}>
+                        Email Verified
+                      </Text>
+                    </View>
+                  ) : null}
 
-                  <View
-                    style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
-                    {/* <View
-                                            style={[
-                                                Theme.smallButtonLook,
-                                                Theme.alignContentCenter,
-                                                Theme.backgroundGray,
-                                            ]}>
-                                            <Icon name="user" size={25} color="black" />
-                                        </View>
-                                        <Text style={[Theme.textBody, Theme.textCenter]}>
-                                            Verify Photo ID 20%
-                                        </Text> */}
-                  </View>
+                  {imageFilter(data.photos).length > 0 ? (
+                    <View
+                      style={[
+                        Theme.width25p,
+                        Theme.padding10,
+                        Theme.alignCenter,
+                      ]}>
+                      <View
+                        style={[
+                          Theme.smallButtonLook,
+                          Theme.alignContentCenter,
+                          Theme.backgroundGray,
+                        ]}>
+                        <Icon name="photo" size={25} color="black" />
+                        <View
+                          style={[
+                            Theme.notificationLook,
+                            Theme.alignContentCenter,
+                            Theme.backgroundBlue,
+                          ]}>
+                          <Icon name="check" size={15} color="white" />
+                        </View>
+                      </View>
+                      <Text
+                        adjustsFontSizeToFit
+                        style={[Theme.textBody, Theme.textCenter]}>
+                        Photo Verified
+                      </Text>
+                    </View>
+                  ) : null}
+
+                  {data.photoIDApproved === 1 ? (
+                    <View
+                      style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
+                      <View
+                        style={[
+                          Theme.smallButtonLook,
+                          Theme.alignContentCenter,
+                          Theme.backgroundGray,
+                        ]}>
+                        <Icon name="user" size={25} color="black" />
+                        <View
+                          style={[
+                            Theme.notificationLook,
+                            Theme.alignContentCenter,
+                            Theme.backgroundBlue,
+                          ]}>
+                          <Icon name="check" size={15} color="white" />
+                        </View>
+                      </View>
+                      <Text
+                        adjustsFontSizeToFit
+                        style={[Theme.textBody, Theme.textCenter]}>
+                        Photo ID Verified
+                      </Text>
+                    </View>
+                  ) : null}
                 </View>
               </View>
 
@@ -153,9 +225,11 @@ const OtherUsersProfile = ({navigation, route}) => {
                   Theme.padding10,
                 ]}>
                 <Text style={[Theme.textTitle]}>About me</Text>
-                <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  {data.aboutme}
-                </Text>
+                {data.aboutmeVerified === true ? (
+                  <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                    {data.aboutme}
+                  </Text>
+                ) : null}
               </View>
 
               <View
@@ -190,7 +264,7 @@ const OtherUsersProfile = ({navigation, route}) => {
                 ]}>
                 <Text style={[Theme.textTitle]}>Education</Text>
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
-                  {data.education}
+                  {data.highestEdu} - {data.education}
                 </Text>
               </View>
 
@@ -235,40 +309,51 @@ const OtherUsersProfile = ({navigation, route}) => {
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
                   {data.smoke}
                 </Text>
+                {data?.diet && (
+                  <>
+                    <Text style={[Theme.textTitle]}>Diet</Text>
+                    <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
+                      {data.diet}
+                    </Text>
+                  </>
+                )}
               </View>
             </View>
           </View>
         </ScrollView>
-        <LinearGradient style={[Theme.width100p]}>
-          <View
-            style={[
-              Theme.width50p,
-              Theme.paddingHorizonal10p,
-              Theme.alignCenter,
-              Theme.selfAlignCenter,
-            ]}>
-            <TouchableOpacity
+        {change ? null : (
+          <LinearGradient style={[Theme.width100p]}>
+            <View
               style={[
-                Theme.width100p,
-                Theme.buttonLook,
-                Theme.alignContentCenter,
-                Theme.textBold,
-                Theme.backgroundWhite,
-              ]}
-              onPress={() =>
-                navigation.navigate('chat', {
-                  receiverId: data._id,
-                  name: data.name,
-                })
-              }>
-              <IconMat
-                name={'message-processing'}
-                size={30}
-                color={colors.purpledark}
-              />
-            </TouchableOpacity>
-          </View>
-        </LinearGradient>
+                Theme.width50p,
+                Theme.paddingHorizonal10p,
+                Theme.alignCenter,
+                Theme.selfAlignCenter,
+              ]}>
+              <TouchableOpacity
+                style={[
+                  Theme.width100p,
+                  Theme.buttonLook,
+                  Theme.alignContentCenter,
+                  Theme.textBold,
+                  Theme.backgroundWhite,
+                ]}
+                onPress={() =>
+                  navigation.navigate('chat', {
+                    receiverId: data._id,
+                    name: namePrivacy(data),
+                    data: data,
+                  })
+                }>
+                <IconMat
+                  name={'message-processing'}
+                  size={30}
+                  color={colors.purpledark}
+                />
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
+        )}
       </SafeAreaView>
     </>
   );

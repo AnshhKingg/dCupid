@@ -5,6 +5,7 @@ import {
   ScrollView,
   BackHandler,
   TouchableOpacity,
+  Linking,
   // Alert,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
@@ -17,6 +18,7 @@ import {
   TextInput,
   PickerInput,
   LinearButton,
+  Loading,
 } from '../../Components';
 import {logout} from '../../Redux/actions/auth';
 import {setProfile} from '../../Redux/actions/profile';
@@ -24,7 +26,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import axiosService from '../../service/axios';
 import fireAuth from '@react-native-firebase/auth';
-// import { Profile } from 'react-native-fbsdk-next';
 
 const Register = ({navigation}) => {
   const dis = useDispatch();
@@ -34,6 +35,7 @@ const Register = ({navigation}) => {
   const [gender, setGender] = useState(0);
   const [dob, setDob] = useState(new Date());
   const [dobChange, setDobChange] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [skinOpen, setSkinOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
@@ -117,6 +119,7 @@ const Register = ({navigation}) => {
       skin.length !== 0 &&
       gender !== 0
     ) {
+      setLoading(true);
       axiosService(auth.token)
         .post('/register/first', {
           gender: gender === 1 ? 'Female' : 'Male',
@@ -127,15 +130,16 @@ const Register = ({navigation}) => {
           email: email,
         })
         .then(resp => {
+          setLoading(false);
           dis(setProfile(resp.data.user));
           navigation.navigate('register2');
         })
         .catch(er => {
+          setLoading(false);
           console.log(er.response.data);
-          if (er.response.data.errors.email) {
+          if (er?.response?.data?.errors?.email) {
             setEmailError(er.response.data.errors.email.msg);
           }
-          console.log('Er ran');
           Toast.show({
             type: 'error',
             text1: 'Please check all the fields',
@@ -185,6 +189,7 @@ const Register = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        <Loading visible={loading} />
         <Header
           left={'arrowleft'}
           title="Registration"
@@ -266,9 +271,14 @@ const Register = ({navigation}) => {
                   <Icon
                     name={'female'}
                     size={25}
-                    color={gender === 1 ? 'purple' : 'black'}
+                    color={gender === 1 ? 'orange' : 'black'}
                   />
-                  <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
+                  <Text
+                    style={[
+                      Theme.textBody,
+                      Theme.paddingHorizonal10p,
+                      gender === 1 ? Theme.purple : Theme.textBlack,
+                    ]}>
                     Female
                   </Text>
                 </TouchableOpacity>
@@ -286,9 +296,14 @@ const Register = ({navigation}) => {
                   <Icon
                     name={'male'}
                     size={25}
-                    color={gender === 2 ? 'purple' : 'black'}
+                    color={gender === 2 ? 'orange' : 'black'}
                   />
-                  <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
+                  <Text
+                    style={[
+                      Theme.textBody,
+                      Theme.paddingHorizonal10p,
+                      gender === 2 ? Theme.purple : Theme.textBlack,
+                    ]}>
                     Male
                   </Text>
                 </TouchableOpacity>
@@ -373,11 +388,19 @@ const Register = ({navigation}) => {
                   By clicking continue , you agree to our
                 </Text>
                 <Text style={[Theme.textCaption]}>
-                  <Text style={[Theme.textCaption, Theme.blue]}>
+                  <Text
+                    style={[Theme.textCaption, Theme.blue]}
+                    onPress={() => {
+                      Linking.openURL('https://dermacupid.com/terms-of-use');
+                    }}>
                     Terms and conditions
                   </Text>{' '}
                   {'&'}{' '}
-                  <Text style={[Theme.textCaption, Theme.blue]}>
+                  <Text
+                    style={[Theme.textCaption, Theme.blue]}
+                    onPress={() => {
+                      Linking.openURL('https://dermacupid.com/privacy-policy');
+                    }}>
                     Privacy policy
                   </Text>
                 </Text>

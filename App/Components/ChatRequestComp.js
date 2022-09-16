@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,8 +11,9 @@ import {
   getConversations,
   getConversationsDeclined,
 } from '../Redux/actions';
-import {dateTime, trustscore} from '../service/utils';
+import {dateTime, imageFilter, namePrivacy, trustscore} from '../service/utils';
 import axiosServ from '../service/axios';
+import {useNavigation} from '@react-navigation/native';
 
 const ChatRequestComponent = ({
   onPress,
@@ -31,10 +32,11 @@ const ChatRequestComponent = ({
     const age = moment(newdate).diff(moment(date), 'years');
     return age;
   };
+  const navigation = useNavigation();
   const accept = status => {
     axiosServ(token)
-      .post(`/chat/accept`, {
-        userId: data._id,
+      .post('/chat/accept', {
+        userId: data?._id,
         status: status,
       })
       .then(resp => {
@@ -47,31 +49,49 @@ const ChatRequestComponent = ({
       });
   };
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={1}
       style={[
         Theme.width100p,
         Theme.borderRadius10,
         Theme.marginBottom10,
         Theme.borderRed,
       ]}>
-      {data.photos.length === 0 ? (
-        <View
+      {imageFilter(data?.photos).length === 0 ? (
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate('otherprofile', {data: data});
+          }}
           style={[Theme.imageMatchingProfileWidth, Theme.alignContentCenter]}>
           <Icon name="user" size={230} color="black" />
-        </View>
+        </TouchableOpacity>
       ) : (
-        <Carousel images={data.photos} />
+        <Carousel
+          images={imageFilter(data?.photos)}
+          onPress={() => {
+            navigation.navigate('otherprofile', {data: data});
+          }}
+          disabled={disableButton}
+        />
       )}
       <LinearGradient
         style={[
           Theme.imageMatchingVerticalComponent,
           Theme.alignContentCenter,
         ]}>
-        <Text style={[Theme.textTitle, Theme.white, Theme.textCenter]}>
+        <Text
+          adjustsFontSizeToFit
+          style={[
+            Theme.textBody,
+            Theme.white,
+            Theme.textCenter,
+            Theme.padding5,
+          ]}>
           {trust}% Trust Score
         </Text>
       </LinearGradient>
-      {profile.userLikes.includes(data._id) ? (
+      {/* {profile.userLikes.includes(data?._id) ? (
         <LinearGradient
           style={[
             Theme.imageMatchingHorizontalComponent,
@@ -79,7 +99,7 @@ const ChatRequestComponent = ({
           ]}>
           <Text style={[Theme.textTitle, Theme.white]}>He likes you</Text>
         </LinearGradient>
-      ) : null}
+      ) : null} */}
       <LinearGradient
         style={[Theme.imageTimeComponent, Theme.alignContentCenter]}>
         <Text style={[Theme.textCaption, Theme.white]}>{dateTime(time)}</Text>
@@ -87,14 +107,16 @@ const ChatRequestComponent = ({
       <LinearGradient
         style={[Theme.width100p, Theme.padding10, Theme.alignContentCenter]}>
         <TouchableOpacity
+          activeOpacity={1}
           onPress={onPressProfile}
           disabled={disableButton ? true : false}>
           <Text style={[Theme.textCaption, Theme.white]}>
-            {data.name} {ageCalc(data.dob)}
+            {namePrivacy(data)} , ({ageCalc(data?.dob)}) , {data?.city} ,{'  '}
+            {data?.country}
           </Text>
-          <Text style={[Theme.textCaption, Theme.white]}>
-            {data.skin} {data.marital} {data.religion}
-          </Text>
+          <Text style={[Theme.textCaption, Theme.white]}>{data?.skin}</Text>
+          <Text style={[Theme.textCaption, Theme.white]}>{data?.marital}</Text>
+          <Text style={[Theme.textCaption, Theme.white]}>{data?.religion}</Text>
 
           <View style={[Theme.width100p, Theme.marginVertical10]}>
             <Text style={[Theme.textBody, Theme.white]} numberOfLines={1}>
@@ -136,7 +158,7 @@ const ChatRequestComponent = ({
           </View>
         </TouchableOpacity>
       </LinearGradient>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment-timezone';
 import {useFocusEffect} from '@react-navigation/native';
 import {getConversationsRequested} from '../../Redux/actions';
+import {namePrivacy} from '../../service/utils';
 
 const MessageTile = ({onPress, data}) => {
   let dateData = moment(data.createdAt).isSame(new Date(), 'day');
@@ -78,7 +79,7 @@ const MessageTile = ({onPress, data}) => {
             <View
               style={[
                 Theme.width20p,
-                Theme.backgroundBlue,
+                Theme.backgroundPurple,
                 Theme.alignContentCenter,
                 Theme.vsmallButtonLook,
               ]}>
@@ -106,7 +107,7 @@ const ChatRequests = ({navigation, route}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        {msglist.loading && <Loading />}
+        <Loading visible={msglist.loading} />
         <Header
           left="menuunfold"
           right="home"
@@ -156,11 +157,12 @@ const ChatRequests = ({navigation, route}) => {
                 <ChatReqComp
                   data={data.item.user}
                   conversationData={data.item.lastMessage}
-                  time={data.item.requestedTime}
+                  time={data.item.messageDateAndTime}
                   onPress={() =>
                     navigation.navigate('chat', {
                       receiverId: data.item.user._id,
-                      name: data.item.user.name,
+                      name: namePrivacy(data.item.user),
+                      data: data.item.user,
                     })
                   }
                   onPressProfile={() =>
@@ -187,12 +189,13 @@ const ChatRequests = ({navigation, route}) => {
               return (
                 <ChatReqComp
                   data={data.item.user}
-                  time={data.item.requestedTime}
+                  time={data.item.messageDateAndTime}
                   conversationData={data.item.lastMessage}
                   onPress={() =>
                     navigation.navigate('chat', {
                       receiverId: data.item.user._id,
-                      name: data.item.user.name,
+                      name: namePrivacy(data.item.user),
+                      data: data.item.user,
                     })
                   }
                   onPressProfile={() =>

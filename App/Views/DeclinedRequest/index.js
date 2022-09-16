@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {
@@ -10,8 +10,7 @@ import {
 } from '../../Components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
-import moment from 'moment-timezone';
-import {dateTime} from '../../service/utils';
+import {ageCalc, dateTime, imageFilter, namePrivacy} from '../../service/utils';
 import {useFocusEffect} from '@react-navigation/native';
 import {getConversationsDeclined} from '../../Redux/actions';
 
@@ -24,10 +23,20 @@ const MessageTile = ({data, time}) => {
         Theme.separator,
         Theme.alignContentCenter,
       ]}>
-      <View style={[Theme.width20p]}>
-        <View style={[Theme.alignContentCenter, Theme.profileIcon]}>
-          <Icon name={'user-circle'} size={50} color="black" />
-        </View>
+      <View style={[Theme.width20p, Theme.alignContentCenter]}>
+        {imageFilter(data.photos).length === 0 ? (
+          <Icon
+            style={[Theme.paddingLeft]}
+            name={'user-circle'}
+            size={50}
+            color="black"
+          />
+        ) : (
+          <Image
+            style={[{width: 50, height: 50, borderRadius: 25}]}
+            source={{uri: imageFilter(data.photos)[0].photo}}
+          />
+        )}
       </View>
       <View
         style={[
@@ -46,7 +55,7 @@ const MessageTile = ({data, time}) => {
           ]}>
           <View style={[Theme.width60p]}>
             <Text style={[Theme.textBody, Theme.textBold]} numberOfLines={1}>
-              {data.name}
+              {namePrivacy(data)} {ageCalc(data?.dob)}
             </Text>
           </View>
           <View style={[Theme.width40p]}>
@@ -62,7 +71,7 @@ const MessageTile = ({data, time}) => {
           ]}>
           <View style={[Theme.width80p]}>
             <Text style={[Theme.textCaption]} numberOfLines={1}>
-              {data?.city} {data?.state} {data?.country}
+              {data?.city} {data?.country}
             </Text>
           </View>
         </View>
@@ -78,14 +87,12 @@ const DeclinedRequests = ({navigation}) => {
       dis(getConversationsDeclined());
     }, []),
   );
-
   const msglist = useSelector(state => state.chatDeclined);
   const [toggle, setToggle] = useState(false);
-  console.log(msglist.loading);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        {msglist.loading && <Loading />}
+        <Loading visible={msglist.loading} />
         <Header
           left="menuunfold"
           right="home"
@@ -129,11 +136,12 @@ const DeclinedRequests = ({navigation}) => {
               return (
                 <MessageTile
                   data={data.item.user}
-                  time={data.item.requestedTime}
+                  time={data.item.messageDateAndTime}
                   onPress={() =>
                     navigation.navigate('chat', {
                       receiverId: data.item.user._id,
-                      name: data.item.user.name,
+                      name: namePrivacy(data.item.user),
+                      data: data.item.user,
                     })
                   }
                   onPressProfile={() =>
@@ -170,7 +178,8 @@ const DeclinedRequests = ({navigation}) => {
                   onPress={() =>
                     navigation.navigate('chat', {
                       receiverId: data.item.user._id,
-                      name: data.item.user.name,
+                      name: namePrivacy(data.item.user),
+                      data: data.item.user,
                     })
                   }
                   onPressProfile={() =>

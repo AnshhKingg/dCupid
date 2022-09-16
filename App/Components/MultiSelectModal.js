@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,12 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Modal,
-  FlatList
+  FlatList,
 } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { LinearButton, LinearGradient } from '.';
-import { Theme } from '../Assets/Styles';
+import {LinearButton, LinearGradient} from '.';
+import {Theme} from '../Assets/Styles';
 
 const ConditionModal = ({
   state,
@@ -19,7 +19,7 @@ const ConditionModal = ({
   onPressCancel,
   array,
   selectedItems,
-  title
+  title,
 }) => {
   const [arr, setArr] = useState(selectedItems);
   return (
@@ -58,7 +58,7 @@ const ConditionModal = ({
                   Theme.flexWrap,
                   Theme.padding10,
                 ]}>
-                {arr.map((data,index) => {
+                {arr.map((data, index) => {
                   return (
                     <View
                       key={index}
@@ -107,9 +107,11 @@ const ConditionModal = ({
                   </Text>
                 </View>
               </View>
-              {array.map((data,index) => {
+              {array.map((data, index) => {
                 return (
-                  <View key={index} style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
+                  <View
+                    key={index}
+                    style={[Theme.row, Theme.alignCenter, Theme.padding10]}>
                     <View style={[Theme.width10p]}>
                       <BouncyCheckbox
                         disableBuiltInState={true}
@@ -270,7 +272,7 @@ export default ConditionModal;
 //             <FlatList
 //               keyExtractor={item => item.label}
 //               data={array}
-//               windowSize={100}             
+//               windowSize={100}
 //               renderItem={data => {
 //                 return (
 //                   <View

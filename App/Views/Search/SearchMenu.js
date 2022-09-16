@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import React, {useCallback, useEffect, useState} from 'react';
+import {View, Text} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   Header,
   PickerInput,
@@ -9,10 +9,10 @@ import {
   DropDownButton,
   MultiSelect,
 } from '../../Components';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import axiosService from '../../service/axios';
 
-const SearchMenu = ({ navigation }) => {
+const SearchMenu = ({navigation}) => {
   const auth = useSelector(state => state.auth);
   const [country, setCountry] = useState([]);
   const [countryItems, setCountryItems] = useState([]);
@@ -37,23 +37,19 @@ const SearchMenu = ({ navigation }) => {
   const [skin, setSkin] = useState([]);
   const [marital, setMartital] = useState([]);
 
-  const age1 = [...Array(71).keys()]
-    .splice(parseInt(18, 10))
-    .map(data => {
-      return { value: data, label: data };
-    });
-  const age2 = [...Array(71).keys()]
-    .splice(parseInt(22, 10))
-    .map(data => {
-      return { value: data, label: data };
-    });
+  const age1 = [...Array(71).keys()].splice(parseInt(18, 10)).map(data => {
+    return {value: data, label: data};
+  });
+  const age2 = [...Array(71).keys()].splice(parseInt(22, 10)).map(data => {
+    return {value: data, label: data};
+  });
 
   const [ageFromOpen, setAgeFromOpen] = useState(false);
   const [ageFrom, setAgeFrom] = useState(parseInt(18, 10));
   const [ageFromItems, setAgeFromItems] = useState(age1);
 
   const [ageToOpen, setAgeToOpen] = useState(false);
-  const [ageTo, setAgeTo] = useState(parseInt(22, 10));
+  const [ageTo, setAgeTo] = useState(parseInt(70, 10));
   const [ageToItems, setAgeToItems] = useState(age2);
 
   const onAgeToOpen = useCallback(() => {
@@ -63,7 +59,6 @@ const SearchMenu = ({ navigation }) => {
   const onAgeFromOpen = useCallback(() => {
     setAgeToOpen(false);
   }, []);
-
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -118,13 +113,29 @@ const SearchMenu = ({ navigation }) => {
                   value={ageFrom}
                   setValue={data => {
                     setAgeFrom(data());
-                    setAgeTo(data() + 4);
-                    const newageArray = [...Array(71).keys()]
-                      .splice(data() + 4)
-                      .map(val => {
-                        return { value: val, label: val };
+                    if (data() + 4 > ageTo) {
+                      setAgeTo(() => {
+                        return data() + 4 > 70
+                          ? 70
+                          : data() > ageTo
+                          ? data() + 4
+                          : data() + 4;
                       });
-                    setAgeToItems(newageArray);
+                    }
+                    setAgeToItems(() => {
+                      const newageArray = [...Array(71).keys()]
+                        .splice(
+                          data() + 4 > 70
+                            ? 70
+                            : data() > ageTo
+                            ? data() + 4
+                            : data() + 4,
+                        )
+                        .map(val => {
+                          return {value: val, label: val};
+                        });
+                      return newageArray;
+                    });
                   }}
                   items={ageFromItems}
                   setItems={setAgeFromItems}
@@ -154,16 +165,28 @@ const SearchMenu = ({ navigation }) => {
             <DropDownButton
               title="Skin Condition"
               onPress={() => SetSkinCondition(!skinCondition)}
-              text={skin.toString().replace(/,/g, ' , ')}
+              text={
+                skin.length === 0
+                  ? "Doesn't matter"
+                  : skin.toString().replace(/,/g, ' , ')
+              }
             />
             <DropDownButton
               title="Maritial Status"
               onPress={() => setMartitalStatus(!maritalStatus)}
-              text={marital.toString().replace(/,/g, ' , ')}
+              text={
+                marital.length === 0
+                  ? "Doesn't matter"
+                  : marital.toString().replace(/,/g, ' , ')
+              }
             />
             <DropDownButton
               title="Location"
-              text={country.toString().replace(/,/g, ' , ')}
+              text={
+                country.length === 0
+                  ? "Doesn't matter"
+                  : country.toString().replace(/,/g, ' , ')
+              }
               onPress={() => setCountryOpen(!countryOpen)}
             />
             <View

@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   BackHandler,
+  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
@@ -14,9 +15,11 @@ import {
   LinearButton,
   LinearGradient,
 } from '../../Components';
+import IconAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {useFocusEffect} from '@react-navigation/native';
 import {getProfile} from '../../Redux/actions/profile';
 import {useDispatch, useSelector} from 'react-redux';
@@ -26,34 +29,31 @@ import {
   getLikedReceivedUsers,
   getConversationsDeclined,
   getConversationsRequested,
+  getNotification,
 } from '../../Redux/actions/index';
 import {SocketContext} from '../../Components/Socket';
-import axios from '../../service/axios';
-import {trustscore} from '../../service/utils';
+import {imageFilter, imageUserFilter, trustscore} from '../../service/utils';
 import axiosServ from '../../service/axios';
 
 const Dashboard = ({navigation}) => {
   const socket = useContext(SocketContext);
   const dis = useDispatch();
-  const [count, setCount] = useState(0);
+  const count = useSelector(state => state.notification);
   const profile = useSelector(state => state.profile.user);
   const token = useSelector(state => state.auth.token);
-  const like = useSelector(state => state.likesReceived.data);
+  const likes = useSelector(state => state.likesReceived.data);
+  const like = likes.regular.filter(
+    data => data.userLikes.isSeen === false,
+  ).length;
+  // console.log(useSelector(state => state.auth.token));
   const conversationRequestedData = useSelector(
     state => state.chatRequested.data.regular.length,
   );
-
   const trust = trustscore(profile);
 
   useFocusEffect(
     React.useCallback(() => {
-      axios(token)
-        .get('/chat/get-unread-count')
-        .then(resp => {
-          console.log(resp.data.data);
-          setCount(resp.data.data);
-        })
-        .catch(er => console.log(er));
+      dis(getNotification());
       dis(getConversationsDeclined());
       dis(getConversationsRequested());
       dis(getLikedReceivedUsers());
@@ -61,11 +61,7 @@ const Dashboard = ({navigation}) => {
       dis(likeUser());
       dis(getConversations());
       socket.on('update_unread_count', resp => {
-        console.log(resp);
-        axios(token)
-          .get('/chat/get-unread-count')
-          .then(resp => setCount(resp.data.data))
-          .catch(er => console.log(er));
+        dis(getNotification());
         dis(getConversationsDeclined());
         dis(getConversationsRequested());
         dis(getLikedReceivedUsers());
@@ -85,8 +81,10 @@ const Dashboard = ({navigation}) => {
   );
 
   useEffect(() => {
-    socket.emit('join', profile._id);
-  }, []);
+    socket.on('connect', () => {
+      socket.emit('join', profile._id);
+    });
+  }, [profile._id]);
 
   return (
     <>
@@ -113,7 +111,7 @@ const Dashboard = ({navigation}) => {
                   style={[
                     Theme.mediumButtonLook,
                     Theme.alignContentCenter,
-                    Theme.backgroundBlue,
+                    Theme.backgroundPurple,
                   ]}>
                   <Icon name="user" size={30} color="white" />
                 </LinearGradient>
@@ -135,7 +133,7 @@ const Dashboard = ({navigation}) => {
                   style={[
                     Theme.mediumButtonLook,
                     Theme.alignContentCenter,
-                    Theme.backgroundBlue,
+                    Theme.backgroundPurple,
                   ]}>
                   <Icon name="photo" size={30} color="white" />
                 </LinearGradient>
@@ -153,7 +151,7 @@ const Dashboard = ({navigation}) => {
                   style={[
                     Theme.mediumButtonLook,
                     Theme.alignContentCenter,
-                    Theme.backgroundBlue,
+                    Theme.backgroundPurple,
                   ]}>
                   <Icon name="user" size={30} color="white" />
                 </LinearGradient>
@@ -184,7 +182,12 @@ const Dashboard = ({navigation}) => {
                 </Text>
               </View>
             </View>
-            <Text style={[Theme.textCaption, Theme.textCenter]}>
+            <Text
+              style={[
+                Theme.textCaption,
+                Theme.textCenter,
+                Theme.marginBottom10,
+              ]}>
               Trust score determines your profile credibility
             </Text>
           </View>
@@ -219,7 +222,7 @@ const Dashboard = ({navigation}) => {
                       Theme.alignContentCenter,
                       Theme.backgroundGray,
                     ]}>
-                    <Icon name="user" size={20} color="black" />
+                    <Entypo name="mail" size={25} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
                     Verify Email
@@ -227,7 +230,7 @@ const Dashboard = ({navigation}) => {
                 </TouchableOpacity>
               )}
 
-              {profile.photos.length > 0 ? null : (
+              {imageFilter(profile.photos).length > 0 ? null : (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('trustscore')}
                   style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
@@ -237,7 +240,7 @@ const Dashboard = ({navigation}) => {
                       Theme.alignContentCenter,
                       Theme.backgroundGray,
                     ]}>
-                    <Icon name="user" size={20} color="black" />
+                    <Icon name="camera" size={20} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
                     Upload Photo
@@ -245,7 +248,7 @@ const Dashboard = ({navigation}) => {
                 </TouchableOpacity>
               )}
 
-              {profile.photoID ? null : (
+              {profile.photoIDApproved === 1 ? null : (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('trustscore')}
                   style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
@@ -255,7 +258,7 @@ const Dashboard = ({navigation}) => {
                       Theme.alignContentCenter,
                       Theme.backgroundGray,
                     ]}>
-                    <Icon name="user" size={20} color="black" />
+                    <Icon name="user" size={25} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
                     Verify Photo ID
@@ -281,15 +284,15 @@ const Dashboard = ({navigation}) => {
                     navigation.navigate('likesreceived');
                   }}>
                   <Icon name="heart-o" size={50} color="grey" />
-                  {like.regular.length ? (
+                  {like !== 0 ? (
                     <View
                       style={[
                         Theme.notificationLook,
                         Theme.alignContentCenter,
-                        Theme.backgroundBlue,
+                        Theme.backgroundPurple,
                       ]}>
                       <Text style={[Theme.textCaption, Theme.white]}>
-                        {like.regular.length}
+                        {like}
                       </Text>
                     </View>
                   ) : null}
@@ -313,7 +316,7 @@ const Dashboard = ({navigation}) => {
                       style={[
                         Theme.notificationLook,
                         Theme.alignContentCenter,
-                        Theme.backgroundBlue,
+                        Theme.backgroundPurple,
                       ]}>
                       <Text style={[Theme.textCaption, Theme.white]}>
                         {count}
@@ -339,7 +342,7 @@ const Dashboard = ({navigation}) => {
                       style={[
                         Theme.notificationLook,
                         Theme.alignContentCenter,
-                        Theme.backgroundBlue,
+                        Theme.backgroundPurple,
                       ]}>
                       <Text style={[Theme.textCaption, Theme.white]}>
                         {conversationRequestedData}
@@ -361,9 +364,9 @@ const Dashboard = ({navigation}) => {
                   style={[
                     Theme.smallButtonLook,
                     Theme.alignContentCenter,
-                    Theme.backgroundBlue,
+                    Theme.backgroundPurple,
                   ]}>
-                  <Icon name="user" size={25} color="white" />
+                  <IconAwesome5 name="user-friends" size={20} color="white" />
                 </LinearGradient>
                 <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
                   My Matches
@@ -391,7 +394,7 @@ const Dashboard = ({navigation}) => {
                   style={[
                     Theme.smallButtonLook,
                     Theme.alignContentCenter,
-                    Theme.backgroundBlue,
+                    Theme.backgroundPurple,
                   ]}>
                   <Icon name="search" size={25} color="white" />
                 </LinearGradient>
@@ -400,7 +403,7 @@ const Dashboard = ({navigation}) => {
                 </Text>
               </View>
               <Text style={[Theme.textBody, Theme.paddingHorizonal10p]}>
-                View all profiles who matches your partner preferences.{' '}
+                Search profiles of your choice.
               </Text>
               <View style={[Theme.padding10]}>
                 <LinearButton

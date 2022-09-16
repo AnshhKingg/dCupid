@@ -6,11 +6,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Theme} from '../../Assets/Styles';
 import {Header, LinearButton, Loading, ProfileComp} from '../../Components';
 import {getLikedReceivedUsers} from '../../Redux/actions';
+import {namePrivacy} from '../../service/utils';
 
 const LikesReceived = ({navigation, route}) => {
   const data = useSelector(state => state.likesReceived.data);
   const loading = useSelector(state => state.likesReceived.loading);
   const [toggle, setToggle] = useState(false);
+  const id = useSelector(state => state.profile.user._id);
   const dis = useDispatch();
   useFocusEffect(
     useCallback(() => {
@@ -23,11 +25,11 @@ const LikesReceived = ({navigation, route}) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        {loading && <Loading />}
+        <Loading visible={loading} />
         <Header
           left="menuunfold"
           right="home"
-          title="Likes"
+          title="Likes Received"
           leftnav={() => navigation.openDrawer()}
           rightnav={() => navigation.navigate('dashboard')}
         />
@@ -65,11 +67,12 @@ const LikesReceived = ({navigation, route}) => {
                 <ProfileComp
                   key={index}
                   data={data}
-                  time={data.requestedTime}
+                  time={data.userLikes.createdAt}
                   onPress={() =>
                     navigation.navigate('chat', {
-                      receiverId: data._id,
-                      name: data.name,
+                      receiverId: data?._id,
+                      name: namePrivacy(data),
+                      data: data,
                     })
                   }
                   onPressProfile={() =>
@@ -84,11 +87,12 @@ const LikesReceived = ({navigation, route}) => {
                 <ProfileComp
                   key={index}
                   data={data}
-                  time={data.requestedTime}
+                  time={data?.userLikes?.createdAt}
                   onPress={() =>
                     navigation.navigate('chat', {
-                      receiverId: data._id,
-                      name: data.name,
+                      receiverId: data?._id,
+                      name: namePrivacy(data),
+                      data: data,
                     })
                   }
                   onPressProfile={() =>

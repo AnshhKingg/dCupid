@@ -28,7 +28,14 @@ const Age = ({navigation}) => {
     return {value: data, label: data};
   });
   const age2 = [...Array(71).keys()]
-    .splice(parseInt(profile.partnerpref.ageTo, 10))
+    .splice(
+      parseInt(
+        profile.partnerpref.ageTo > profile.partnerpref.ageFrom + 4
+          ? profile.partnerpref.ageFrom + 4
+          : profile.partnerpref.ageTo,
+        10,
+      ),
+    )
     .map(data => {
       return {value: data, label: data};
     });
@@ -42,7 +49,7 @@ const Age = ({navigation}) => {
   const [ageToOpen, setAgeToOpen] = useState(false);
   const [ageTo, setAgeTo] = useState(parseInt(profile.partnerpref.ageTo, 10));
   const [ageToItems, setAgeToItems] = useState(age2);
-
+  console.log(profile.partnerpref.ageTo);
   const onAgeToOpen = useCallback(() => {
     setAgeFromOpen(false);
   }, []);
@@ -94,13 +101,29 @@ const Age = ({navigation}) => {
                   value={ageFrom}
                   setValue={data => {
                     setAgeFrom(data());
-                    setAgeTo(data() + 4);
-                    const newageArray = [...Array(71).keys()]
-                      .splice(data() + 4)
-                      .map(val => {
-                        return {value: val, label: val};
+                    if (data() + 4 > ageTo) {
+                      setAgeTo(() => {
+                        return data() + 4 > 70
+                          ? 70
+                          : data() > ageTo
+                          ? data() + 4
+                          : data() + 4;
                       });
-                    setAgeToItems(newageArray);
+                    }
+                    setAgeToItems(() => {
+                      const newageArray = [...Array(71).keys()]
+                        .splice(
+                          data() + 4 > 70
+                            ? 70
+                            : data() > ageTo
+                            ? data() + 4
+                            : data() + 4,
+                        )
+                        .map(val => {
+                          return {value: val, label: val};
+                        });
+                      return newageArray;
+                    });
                   }}
                   items={ageFromItems}
                   setItems={setAgeFromItems}

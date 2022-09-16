@@ -1,5 +1,10 @@
 import Help from './Help';
 import Faqs from './Faq';
+import About from './About';
+import Safety from './Safety';
+import Bettermatch from './Bettermatch';
+import Privacy from './Privacy';
+import TermsConditions from './TermsConditions';
 import Homepage from './Homepage';
 import Dashboard from './Dashboard';
 import Photos from './Photos';
@@ -20,6 +25,7 @@ import ChatRequest from './ChatRequest';
 import DeclinedRequest from './DeclinedRequest';
 import VerifyEmail from './VerifyEmail';
 import Payment from './Payment';
+import ImageView from './ImageView';
 import {
   Profile,
   Age,
@@ -34,6 +40,11 @@ import {
 
 export const FaqContainer = Faqs;
 export const HelpContainer = Help;
+export const SafetyContainer = Safety;
+export const AboutContainer = About;
+export const BettermatchContainer = Bettermatch;
+export const PrivacyContainer = Privacy;
+export const TermsConditionsContainer = TermsConditions;
 export const RegisterContainer = Register;
 export const RegisterContainer2 = Register2;
 export const HomepageContainer = Homepage;
@@ -68,3 +79,4 @@ export const LikesReceivedContainer = LikesRecived;
 export const ChatRequestedContainer = ChatRequest;
 export const DeclinedRequestContainer = DeclinedRequest;
 export const PaymentContainer = Payment;
+export const ImageContainer = ImageView;

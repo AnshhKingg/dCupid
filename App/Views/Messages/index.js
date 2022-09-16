@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {Header, Loading} from '../../Components';
@@ -7,17 +7,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import { connect } from 'socket.io-client'
 import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment-timezone';
-import {dateTime} from '../../service/utils';
+import {dateTime, imageFilter, namePrivacy} from '../../service/utils';
 import {useFocusEffect} from '@react-navigation/native';
 import {getConversations} from '../../Redux/actions';
 
 const MessageTile = ({onPress, data}) => {
-  let dateData = moment(data.createdAt).isSame(new Date(), 'day');
-  if (dateData) {
-    dateData = moment(data.createdAt).format('hh:mm');
-  } else {
-    dateData = moment(data.createdAt).format('DD-MM-YYYY');
-  }
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -27,10 +21,20 @@ const MessageTile = ({onPress, data}) => {
         Theme.separator,
         Theme.alignContentCenter,
       ]}>
-      <View style={[Theme.width20p]}>
-        <View style={[Theme.alignContentCenter, Theme.profileIcon]}>
-          <Icon name={'user-circle'} size={50} color="black" />
-        </View>
+      <View style={[Theme.width20p, Theme.alignContentCenter]}>
+        {imageFilter(data.userData.photos).length === 0 ? (
+          <Icon
+            style={[Theme.paddingLeft]}
+            name={'user-circle'}
+            size={50}
+            color="black"
+          />
+        ) : (
+          <Image
+            style={[{width: 50, height: 50, borderRadius: 25}]}
+            source={{uri: imageFilter(data.userData.photos)[0].photo}}
+          />
+        )}
       </View>
       <View
         style={[
@@ -49,11 +53,13 @@ const MessageTile = ({onPress, data}) => {
           ]}>
           <View style={[Theme.width60p]}>
             <Text style={[Theme.textBody, Theme.textBold]} numberOfLines={1}>
-              {data.userData.name}
+              {namePrivacy(data.userData)}
             </Text>
           </View>
           <View style={[Theme.width40p]}>
-            <Text style={[Theme.selfAlignEnd]}>{dateTime(date.createdAt)}</Text>
+            <Text style={[Theme.selfAlignEnd, Theme.textBlack]}>
+              {dateTime(data.conversationData.createdAt)}
+            </Text>
           </View>
         </View>
         <View
@@ -64,7 +70,12 @@ const MessageTile = ({onPress, data}) => {
             Theme.row,
           ]}>
           <View style={[Theme.width80p]}>
-            <Text style={[]} numberOfLines={1}>
+            <Text
+              style={[
+                Theme.textCaption,
+                data.conversationData.unread === 0 ? null : Theme.textBold,
+              ]}
+              numberOfLines={1}>
               {data.conversationData.lastMessage}
             </Text>
           </View>
@@ -89,15 +100,15 @@ const MessageTile = ({onPress, data}) => {
 const Message = ({navigation}) => {
   const msglist = useSelector(state => state.chat);
   const dis = useDispatch();
-  useFocusEffect(
-    useCallback(() => {
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
       dis(getConversations());
-    }, []),
-  );
+    });
+    return unsubscribe;
+  }, []);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
-        {msglist.loading && <Loading />}
         <Header
           left="menuunfold"
           right="home"
@@ -125,7 +136,8 @@ const Message = ({navigation}) => {
                     onPress={() =>
                       navigation.navigate('chat', {
                         receiverId: data.userData._id,
-                        name: data.userData.name,
+                        name: namePrivacy(data.userData),
+                        data: data.userData,
                       })
                     }
                   />

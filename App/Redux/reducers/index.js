@@ -9,6 +9,7 @@ import likesReceived from './likeReceived';
 import chat from './chat';
 import chatRequested from './chatRequest';
 import chatDeclined from './chatDeclined';
+import notification from './message';
 
 const appReducer = combineReducers({
   appEnv,
@@ -21,6 +22,7 @@ const appReducer = combineReducers({
   chatRequested,
   chatDeclined,
   likesReceived,
+  notification,
 });
 
 const rootReducer = (state, action) => {

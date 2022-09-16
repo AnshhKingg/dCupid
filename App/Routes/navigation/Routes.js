@@ -36,6 +36,12 @@ import {
   DeclinedRequestContainer,
   VerifyEmailContainer,
   PaymentContainer,
+  PrivacyContainer,
+  TermsConditionsContainer,
+  AboutContainer,
+  BettermatchContainer,
+  SafetyContainer,
+  ImageContainer,
 } from '../../Views';
 import {DrawerView} from '../../Components';
 
@@ -59,7 +65,13 @@ export const MainStack = () => {
       <Stack.Screen name={'drink'} component={DrinkContainer} />
       <Stack.Screen name={'help'} component={HelpContainer} />
       <Stack.Screen name={'faq'} component={FaqContainer} />
+      <Stack.Screen name={'about'} component={AboutContainer} />
+      <Stack.Screen name={'safety'} component={SafetyContainer} />
+      <Stack.Screen name={'better'} component={BettermatchContainer} />
+      <Stack.Screen name={'privacy'} component={PrivacyContainer} />
+      <Stack.Screen name={'terms'} component={TermsConditionsContainer} />
       <Stack.Screen name={'photo'} component={PhotosContainer} />
+      <Stack.Screen name={'image'} component={ImageContainer} />
       <Stack.Screen
         name={'matchingprofile'}
         component={MatchingProfileContainer}
@@ -92,6 +104,10 @@ export const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName={'homepage'} screenOptions={screenOption}>
       <Stack.Screen name={'homepage'} component={HomepageContainer} />
+      <Stack.Screen name={'help'} component={HelpContainer} />
+      <Stack.Screen name={'faq'} component={FaqContainer} />
+      <Stack.Screen name={'privacy'} component={PrivacyContainer} />
+      <Stack.Screen name={'terms'} component={TermsConditionsContainer} />
       <Stack.Screen name={'otp'} component={OtpContainer} />
       <Stack.Screen name={'otp2'} component={Otp2Container} />
     </Stack.Navigator>
