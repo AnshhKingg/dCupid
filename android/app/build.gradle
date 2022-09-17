@@ -135,8 +135,8 @@ android {
         applicationId "com.derma.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.1"
+        versionCode 11
+        versionName "2.1"
         vectorDrawables.useSupportLibrary = true
     }
     splits {
@@ -197,8 +197,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-analytics'
-    
-    // implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
 
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"

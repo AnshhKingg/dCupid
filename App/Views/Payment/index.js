@@ -9,45 +9,45 @@ import axios from 'axios';
 const Payment = ({navigation}) => {
   const dis = useDispatch();
   const token = useSelector(state => state.auth.token);
-  // const profile = useSelector(state => state.profile.user);
-  // const state = {
-  //   login: '122645',
-  //   password: '2f927320',
-  //   prodid: 'MATRIMONY',
-  //   currency: 'INR',
-  //   amount: '51.00',
-  //   usersname: profile.name,
-  //   emailId: profile.email,
-  //   phone: profile.mobile,
-  //   address: `${profile.city} ${profile.country}`,
-  //   clientcode: '007', //uid
-  //   reqhashKey: '017ab63aa26ce18e5d',
-  //   resenckey: 'cfaf5b588053c44451',
-  //   seturl: 'https://payment.atomtech.in/paynetz/epi/fts',
-  //   requestEncypritonKey: 'E4F2D026009F76FF577CE6896C6DCB35',
-  //   requestSalt: 'E4F2D026009F76FF577CE6896C6DCB35',
-  //   responseEncypritonKey: 'DE0BF85D80206846F29EE162E6846789',
-  //   responseSalt: 'DE0BF85D80206846F29EE162E6846789',
-  // };
+  const profile = useSelector(state => state.profile.user);
   const state = {
-    login: '192',
-    password: 'Test@123',
-    prodid: 'NSE',
+    login: '122645',
+    password: '2f927320',
+    prodid: 'MATRIMONY',
     currency: 'INR',
-    amount: '1000.00',
-    usersname: 'Demo Name',
-    emailId: 'abc@xyz.com',
-    phone: '8888888888',
-    address: 'India',
-    clientcode: '007',
-    reqhashKey: 'KEY123657234',
-    resenckey: 'KEYRESP123657234',
-    seturl: 'https://paynetzuat.atomtech.in/paynetz/epi/fts',
-    requestEncypritonKey: '8E41C78439831010F81F61C344B7BFC7',
-    requestSalt: '8E41C78439831010F81F61C344B7BFC7',
-    responseEncypritonKey: '8E41C78439831010F81F61C344B7BFC7',
-    responseSalt: '8E41C78439831010F81F61C344B7BFC7',
+    amount: '399.00',
+    usersname: profile.name,
+    emailId: profile.email,
+    phone: profile.mobile,
+    address: `${profile.city} ${profile.country}`,
+    clientcode: '007', //uid
+    reqhashKey: '017ab63aa26ce18e5d',
+    resenckey: 'cfaf5b588053c44451',
+    seturl: 'https://payment.atomtech.in/paynetz/epi/fts',
+    requestEncypritonKey: 'E4F2D026009F76FF577CE6896C6DCB35',
+    requestSalt: 'E4F2D026009F76FF577CE6896C6DCB35',
+    responseEncypritonKey: 'DE0BF85D80206846F29EE162E6846789',
+    responseSalt: 'DE0BF85D80206846F29EE162E6846789',
   };
+  // const state = {
+  //   login: '192',
+  //   password: 'Test@123',
+  //   prodid: 'NSE',
+  //   currency: 'INR',
+  //   amount: '1000.00',
+  //   usersname: 'Demo Name',
+  //   emailId: 'abc@xyz.com',
+  //   phone: '8888888888',
+  //   address: 'India',
+  //   clientcode: '007',
+  //   reqhashKey: 'KEY123657234',
+  //   resenckey: 'KEYRESP123657234',
+  //   seturl: 'https://paynetzuat.atomtech.in/paynetz/epi/fts',
+  //   requestEncypritonKey: '8E41C78439831010F81F61C344B7BFC7',
+  //   requestSalt: '8E41C78439831010F81F61C344B7BFC7',
+  //   responseEncypritonKey: '8E41C78439831010F81F61C344B7BFC7',
+  //   responseSalt: '8E41C78439831010F81F61C344B7BFC7',
+  // };
   const LoadingIndicatorView = () => {
     return (
       <ActivityIndicator
