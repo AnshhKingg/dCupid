@@ -309,14 +309,14 @@ const OtherUsersProfile = ({navigation, route}) => {
                 <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
                   {data.smoke}
                 </Text>
-                {data?.diet !== '' && (
+                {data?.diet !== '' ? (
                   <View>
                     <Text style={[Theme.textTitle]}>Diet</Text>
                     <Text style={[Theme.textCaption, Theme.paddingBottom10]}>
                       {data.diet}
                     </Text>
                   </View>
-                )}
+                ) : null}
               </View>
             </View>
           </View>
