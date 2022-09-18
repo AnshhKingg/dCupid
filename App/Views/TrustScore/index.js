@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, Alert, PermissionsAndroid} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
-import {Header, LinearButton} from '../../Components';
+import {Header, LinearButton, Loading} from '../../Components';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import {ip} from '../../Components/ipAddress';
-import {trustscore} from '../../service/utils';
+import {imageFilter, imageUserFilter, trustscore} from '../../service/utils';
 import {getProfile} from '../../Redux/actions';
+import axios from 'axios';
 
 const MessageTile = ({toggle, togglemsg, header, des, title, onPress}) => {
   return (
@@ -61,10 +62,12 @@ const MessageTile = ({toggle, togglemsg, header, des, title, onPress}) => {
 const TrustScore = ({navigation}) => {
   const profile = useSelector(state => state.profile.user);
   const token = useSelector(state => state.auth.token);
+  const [loading, setLoading] = useState(false);
   const dis = useDispatch();
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        <Loading visible={loading} />
         <Header
           left="menuunfold"
           title="Trust Score"
@@ -92,13 +95,11 @@ const TrustScore = ({navigation}) => {
               </Text>
             </View>
             <MessageTile
-              toggle={profile.photos.length > 0}
+              toggle={imageUserFilter(profile.photos).length > 0}
               togglemsg={
-                profile.photos.length > 0
-                  ? profile.photos[0].photoApproved
-                    ? 'Photograph verified'
-                    : 'Profile photo is under verification'
-                  : ''
+                imageFilter(profile.photos).length > 0
+                  ? 'Photograph verified'
+                  : 'Profile photo is under verification'
               }
               header="Add your recent photo (30%)"
               title={'Add Photo'}
@@ -129,62 +130,133 @@ const TrustScore = ({navigation}) => {
             />
 
             <MessageTile
-              toggle={profile.photoID ? true : false}
+              toggle={
+                profile.photoID &&
+                (profile.photoIDApproved === 0 || profile.photoIDApproved === 1)
+                  ? true
+                  : false
+              }
               togglemsg={
-                profile.photoIDApproved
+                profile.photoIDApproved === 1
                   ? 'Photo Id verified'
-                  : 'Photo Id under verification.'
+                  : profile.photoIDApproved === 0
+                  ? 'Photo Id under verification.'
+                  : ''
               }
               header="Verify your photo id (30%)"
               des="Upload a copy of your driving licence , passport or any other photo id that has your photo ,date of birth and name mentioned on it."
               title="Upload"
-              onPress={async () => {
-                const granted = await PermissionsAndroid.request(
-                  PermissionsAndroid.PERMISSIONS.CAMERA,
-                );
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                  ImagePicker.openPicker({
-                    width: 300,
-                    height: 400,
-                    cropping: true,
-                    compressImageQuality: 0.2,
-                  }).then(image => {
-                    console.log(image);
-                    let data = new FormData();
-                    data.append('photo', {
-                      uri: image.path,
-                      name: 'image.jpg',
-                      type: 'image/jpeg',
-                    });
-                    data.append('type', 'photoId');
-                    try {
-                      fetch(`${ip}/api/v1/user/upload-photos`, {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'multipart/form-data',
-                          Authorization: `${token}`,
-                        },
-                        body: data,
-                      }).then(resp => {
-                        console.log(resp);
-                        if (resp.status === 201) {
-                          dis(getProfile());
-                          Alert.alert(
-                            'Upload Photo ID',
-                            'Your photo Id has been uploaded successfully.',
-                          );
-                        } else {
-                          Alert.alert(
-                            'Upload Photo',
-                            'Error is uploading photo. PLease try again.',
-                          );
-                        }
-                      });
-                    } catch (er) {
-                      console.log(er);
-                    }
+              onPress={() => {
+                ImagePicker.openPicker({
+                  width: 300,
+                  height: 400,
+                  cropping: false,
+                  compressImageQuality: 0.2,
+                }).then(image => {
+                  console.log(image);
+                  let data = new FormData();
+                  data.append('photo', {
+                    uri: image.path,
+                    name: image.path.split('/').pop(),
+                    type: image.mime,
                   });
-                }
+                  data.append('type', 'photoId');
+                  setLoading(true);
+
+                  // fetch(`${ip}/api/v1/user/upload-photos`, {
+                  //   method: 'POST',
+                  //   headers: {
+                  //     'Content-Type': 'multipart/form-data',
+                  //     Authorization: `${token}`,
+                  //   },
+                  //   body: data,
+                  // }) // .then(resp => resp.json())
+                  //   .then(resp => {
+                  //     console.log(resp);
+                  //     if (resp.status === 201) {
+                  //       setLoading(false);
+                  //       dis(getProfile());
+                  //       Alert.alert(
+                  //         'Upload Photo ID',
+                  //         'Your photo Id has been uploaded successfully.',
+                  //       );
+                  //     } else {
+                  //       setLoading(false);
+                  //       Alert.alert(
+                  //         `Upload Photo Error - ${resp.status}`,
+                  //         'Error is uploading photo. Please try again.',
+                  //       );
+                  //     }
+                  //   })
+                  //   .catch(er => {
+                  //     setLoading(false);
+                  //   });
+                  axios
+                    .post(`${ip}/api/v1/user/upload-photos`, data, {
+                      headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `${token}`,
+                      },
+                    })
+                    .then(resp => {
+                      if (resp.status === 201) {
+                        setLoading(false);
+                        dis(getProfile());
+                        Alert.alert(
+                          'Upload Photo',
+                          'Your photo has been uploaded successfully. It will go live after screening',
+                        );
+                      }
+                    })
+                    .catch(er => {
+                      console.log(er);
+                      setLoading(false);
+                      Alert.alert(
+                        'Upload Photo',
+                        'Error is uploading photo. Please try again.',
+                      );
+                    });
+                  // var data = new FormData();
+                  // data.append('photo', {
+                  //   uri: image.path,
+                  //   name: image.path.split('/').pop(),
+                  //   type: image.mime,
+                  // });
+                  // data.append('type', 'photo');
+                  // setLoadingTrue();
+                  // try {
+                  //   const response = await axios.post(
+                  //     `${ip}/api/v1/user/upload-photos`,
+                  //     data,
+                  //     {
+                  //       headers: {
+                  //         'Content-Type': 'multipart/form-data',
+                  //         Authorization: `${token}`,
+                  //       },
+                  //     },
+                  //   );
+                  //   if (response.status === 201) {
+                  //     setLoadingFalse();
+                  //     dis(getProfile());
+                  //     Alert.alert(
+                  //       'Upload Photo',
+                  //       'Your photo has been uploaded successfully. It will go live after screening',
+                  //     );
+                  //     setState();
+                  //   } else {
+                  //     setLoadingFalse();
+                  //     Alert.alert(
+                  //       'Upload Photo',
+                  //       'Error is uploading photo. Please try again.',
+                  //     );
+                  //     setState();
+                  //   }
+                  // } catch (error) {
+                  //   setLoadingFalse();
+                  //   console.log(error);
+                  //   Alert.alert('Error', 'Please try again later.');
+                  // }
+                });
               }}
             />
           </View>

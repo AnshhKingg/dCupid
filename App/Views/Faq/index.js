@@ -1,40 +1,112 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Theme} from '../../Assets/Styles';
+import {View, ScrollView, Text, StyleSheet} from 'react-native';
+import md from './faq';
+import Markdown, {getUniqueID, openUrl} from 'react-native-markdown-renderer';
+import {Header} from '../../Components';
 
-const Faqs = ({navigation}) => {
+const FAQ = ({navigation}) => {
+  const rules = {
+    textgroup: (node, children, parent, styles) => {
+      return (
+        <Text key={node.key} style={styles.text}>
+          {children}
+        </Text>
+      );
+    },
+    heading1: (node, children, parent, styles) => (
+      <Text key={getUniqueID()} style={[styles.heading1, styles.heading]}>
+        {children}
+      </Text>
+    ),
+    blockquote: (node, children, parent, styles) => (
+      <View key={node.key} style={styles.blockquote}>
+        {children}
+      </View>
+    ),
+    em: (node, children, parent, styles) => {
+      // implement navigation here
+      return (
+        <Text key={node.key} style={styles.em}>
+          {children}
+        </Text>
+      );
+    },
+    strong: (node, children, parent, styles) => {
+      return (
+        <Text key={node.key} style={[styles.strong]}>
+          {children}
+        </Text>
+      );
+    },
+    softbreak: (node, children, parent, styles) => (
+      <Text key={node.key}> </Text>
+    ),
+
+    link: (node, children, parent, styles) => {
+      return (
+        <Text
+          key={node.key}
+          style={styles.link}
+          onPress={() => openUrl(node.attributes.href)}>
+          {children}
+        </Text>
+      );
+    },
+  };
+
   return (
-    <>
-      <SafeAreaView style={[Theme.height100p]}>
-        <ScrollView contentContainerStyle={[Theme.alignContentCenter]}>
-          <View style={[Theme.width100p, Theme.spacingViewHorizontal]}>
-            <View
-              style={[
-                Theme.width100p,
-                Theme.paddingVertical10p,
-                Theme.flexStart,
-              ]}>
-              <Text
-                style={[
-                  Theme.textTitle,
-                  Theme.textBold,
-                  Theme.paddingVertical5p,
-                  Theme.red,
-                ]}>
-                General queries
-              </Text>
-            </View>
-
-            <Text style={[Theme.textBody, Theme.textBold]}>
-              Q : Why is why?
-            </Text>
-            <Text style={[Theme.textBody]}>Q : Why is why?</Text>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <View>
+      <ScrollView>
+        <Header
+          title="About me"
+          left="arrowleft"
+          leftnav={() => navigation.goBack()}
+        />
+        <View style={style.container}>
+          <Markdown style={mdStyle} rules={rules}>
+            {md}
+          </Markdown>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
-export default Faqs;
+const mdStyle = StyleSheet.create({
+  heading1: {
+    color: 'red',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 20,
+    marginBottom: 30,
+  },
+  strong: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  text: {
+    textAlign: 'justify',
+    lineHeight: 25,
+    padding: 5,
+    marginBottom: 10,
+    color: 'black',
+  },
+  link: {
+    color: '#ec407a',
+  },
+  paragraph: {
+    color: 'red',
+  },
+  em: {
+    color: '#ec407a',
+  },
+});
+
+const style = StyleSheet.create({
+  container: {
+    padding: 20,
+    paddingTop: 0,
+    marginBottom: 20,
+  },
+});
+export default FAQ;

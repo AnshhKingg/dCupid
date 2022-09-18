@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Theme } from '../Assets/Styles';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {Theme} from '../Assets/Styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/Entypo';
 import moment from 'moment-timezone';
 
-const CustomDateTimeInput = ({ title, error, dobChange, onChangeDate }) => {
+const CustomDateTimeInput = ({title, error, dobChange, onChangeDate}) => {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const currDate = new Date();

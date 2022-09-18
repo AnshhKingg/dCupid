@@ -1,5 +1,6 @@
 import {Constants} from '../constants';
 import axiosService from '../../service/axios';
+import auth from '@react-native-firebase/auth';
 
 export const setProfile = data => {
   return dispatch => {
@@ -7,7 +8,7 @@ export const setProfile = data => {
   };
 };
 
-export const getProfile = data => {
+export const getProfile = () => {
   return (dispatch, getState) => {
     axiosService(getState().auth.token)
       .get('/user/get-profile')
@@ -16,7 +17,10 @@ export const getProfile = data => {
         dispatch({type: Constants.SET_PROFILE, payload: resp.data.data});
       })
       .catch(er => {
-        console.log('Profile update err', er.response.data);
+        if (er?.response?.data?.status === 'Unauthorized') {
+          dispatch({type: Constants.LOGOUT});
+          auth().signOut();
+        }
       });
   };
 };

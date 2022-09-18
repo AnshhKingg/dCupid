@@ -3,12 +3,15 @@ import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from './LinearGradient';
-import LinearGradientButton from './LinearGradientButton';
+// import LinearGradientButton from './LinearGradientButton';
 import {useSelector} from 'react-redux';
-import {trustscore} from '../service/utils';
+import {imageUserFilter, trustscore} from '../service/utils';
+import axiosServ from '../service/axios';
 
-const DrawerComponent = ({text, onPress, seperator}) => {
+const DrawerComponent = ({text, onPress, seperator, num, icon}) => {
   const style =
     seperator === false
       ? [Theme.width90p, Theme.paddingVertical5p, Theme.flexStart]
@@ -16,7 +19,10 @@ const DrawerComponent = ({text, onPress, seperator}) => {
           Theme.width90p,
           Theme.paddingVertical5p,
           Theme.flexStart,
+          Theme.row,
+          Theme.justifySpcBtw,
           Theme.drawerSeparator,
+          Theme.alignCenter,
         ];
   return (
     <TouchableOpacity
@@ -33,10 +39,20 @@ const DrawerComponent = ({text, onPress, seperator}) => {
           Theme.alignContentCenter,
           Theme.smallButtonLook,
         ]}>
-        <Icon name={'user-friends'} size={15} color="white" />
+        {icon ? icon : <Icon name={'user-friends'} size={15} color="white" />}
       </LinearGradient>
       <View style={style}>
         <Text style={[Theme.textBody]}>{text}</Text>
+        {num ? (
+          <View
+            style={[
+              Theme.smallButtonLook,
+              Theme.alignContentCenter,
+              Theme.backgroundPurple,
+            ]}>
+            <Text style={[Theme.textBody, Theme.white]}>{num}</Text>
+          </View>
+        ) : null}
       </View>
     </TouchableOpacity>
   );
@@ -78,7 +94,7 @@ const DrawerExtendedComponent = ({text, onPress, seperator, num}) => {
             style={[
               Theme.smallButtonLook,
               Theme.alignContentCenter,
-              Theme.backgroundBlue,
+              Theme.backgroundPurple,
             ]}>
             <Text style={[Theme.textBody, Theme.white]}>{num}</Text>
           </View>
@@ -89,10 +105,18 @@ const DrawerExtendedComponent = ({text, onPress, seperator, num}) => {
 };
 
 const Drawer = props => {
+  const token = useSelector(state => state.auth.token);
   const profile = useSelector(state => state.profile.user);
-  const like = useSelector(state => state.likesReceived.data);
+  const likes = useSelector(state => state.likesReceived.data);
+  const like = likes.regular.filter(
+    data => data.userLikes.isSeen === false,
+  ).length;
+  const likeFilter = likes.filterOut.filter(
+    data => data.userLikes.isSeen === false,
+  ).length;
   const chatReq = useSelector(state => state.chatRequested.data);
-  const trust = trustscore(profile);
+  const count = useSelector(state => state.notification);
+  // const trust = trustscore(profile);
   return (
     <View style={[Theme.flex1]}>
       <ScrollView
@@ -105,6 +129,7 @@ const Drawer = props => {
             Theme.alignContentCenter,
             Theme.paddingHorizonal20p,
             Theme.padding10,
+            Theme.paddingVertical20p,
           ]}>
           <View
             style={[
@@ -124,7 +149,7 @@ const Drawer = props => {
                 onPress={() => {
                   props.navigation.navigate('photo');
                 }}>
-                {profile.photos.length === 0 ? (
+                {imageUserFilter(profile.photos).length === 0 ? (
                   <View
                     style={[
                       Theme.alignContentCenter,
@@ -136,12 +161,13 @@ const Drawer = props => {
                 ) : (
                   <Image
                     style={{width: 70, height: 70, borderRadius: 35}}
-                    source={{uri: profile.photos[0].photo}}
+                    source={{uri: imageUserFilter(profile.photos)[0].photo}}
                   />
                 )}
               </TouchableOpacity>
               <Text
                 style={[
+                  Theme.width120,
                   Theme.textBody,
                   Theme.paddingLeft,
                   Theme.textHeader,
@@ -149,7 +175,8 @@ const Drawer = props => {
                 ]}
                 onPress={() =>
                   props.navigation.navigate('profile', {change: false})
-                }>
+                }
+                numberOfLines={1}>
                 {profile.name}
               </Text>
             </View>
@@ -170,14 +197,14 @@ const Drawer = props => {
           </View>
         </LinearGradient>
 
-        <View
+        {/* <View
           style={[Theme.width100p, Theme.alignContentCenter, Theme.padding10]}>
           <LinearGradientButton
             title={`Trust score ${trust}%`}
             onPress={() => props.navigation.navigate('trustscore')}
           />
         </View>
-        <View style={[Theme.drawerSeparator]} />
+        <View style={[Theme.drawerSeparator]} /> */}
         <View style={[Theme.flex1, Theme.width100p, Theme.paddingHorizonal20p]}>
           <DrawerComponent
             text="My Matches"
@@ -186,29 +213,59 @@ const Drawer = props => {
           <DrawerComponent
             text="Search"
             onPress={() => props.navigation.navigate('searchmenu')}
+            icon={<Icon name="search" size={20} color="white" />}
           />
           <DrawerComponent
             text="Likes "
+            icon={<AntIcon name="heart" size={20} color="white" />}
             seperator={false}
-            onPress={() => props.navigation.navigate('likesreceived')}
+            onPress={() => {
+              axiosServ(token)
+                .get('user/seen-like')
+                .then(resp => {
+                  props.navigation.navigate('likesreceived');
+                })
+                .catch(er => {
+                  console.log(er);
+                });
+            }}
           />
           <DrawerExtendedComponent
             text="Regular"
             seperator={false}
-            num={like.regular.length}
-            onPress={() => props.navigation.navigate('likesreceived')}
+            num={like}
+            onPress={() => {
+              axiosServ(token)
+                .get('user/seen-like')
+                .then(resp => {
+                  props.navigation.navigate('likesreceived');
+                })
+                .catch(er => {
+                  console.log(er);
+                });
+            }}
           />
           <DrawerExtendedComponent
             text="Filtered out"
-            num={like.filterOut.length}
-            onPress={() =>
-              props.navigation.navigate('likesreceived', {change: true})
-            }
+            num={likeFilter}
+            onPress={() => {
+              axiosServ(token)
+                .get('user/seen-like')
+                .then(() => {
+                  props.navigation.navigate('likesreceived', {change: true});
+                })
+                .catch(er => {
+                  console.log(er);
+                });
+            }}
           />
           <DrawerComponent
             text="Chat Request"
             seperator={false}
             onPress={() => props.navigation.navigate('chatrequested')}
+            icon={
+              <IonIcon name="ios-chatbubbles-sharp" size={20} color="white" />
+            }
           />
           <DrawerExtendedComponent
             text="Regular"
@@ -225,15 +282,25 @@ const Drawer = props => {
           />
           <DrawerComponent
             text="Messages"
+            icon={
+              <MaterialCommunityIcon
+                name="message-processing"
+                size={20}
+                color="white"
+              />
+            }
             onPress={() => props.navigation.navigate('message')}
+            num={count}
           />
           <DrawerComponent
             text="Likes Sent"
             onPress={() => props.navigation.navigate('likes')}
+            icon={<AntIcon name="heart" size={20} color="white" />}
           />
           <DrawerComponent
             text="Declined Profiles"
             onPress={() => props.navigation.navigate('chatdeclined')}
+            icon={<Icon name="user-slash" size={20} color="white" />}
           />
         </View>
       </ScrollView>
@@ -243,7 +310,7 @@ const Drawer = props => {
           style={[
             Theme.width100p,
             Theme.flatButton,
-            Theme.backgroundPink,
+            Theme.backgroundPurple,
             Theme.alignContentCenter,
           ]}
           onPress={() => props.navigation.navigate('membership')}>

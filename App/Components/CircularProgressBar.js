@@ -1,13 +1,14 @@
 import React from 'react';
-import { Image, View } from 'react-native';
-import { Theme } from '../Assets/Styles';
+import {Image, View} from 'react-native';
+import {Theme} from '../Assets/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import {imageUserFilter} from '../service/utils';
 
 const propStyle = (percent, base_degrees) => {
   const rotateBy = base_degrees + percent * 3.6;
   return {
-    transform: [{ rotateZ: `${rotateBy}deg` }],
+    transform: [{rotateZ: `${rotateBy}deg`}],
   };
 };
 
@@ -21,8 +22,8 @@ const renderThirdLayer = percent => {
   }
 };
 
-const CircularProgress = ({ percent }) => {
-  const profile = useSelector(state => state.profile.user)
+const CircularProgress = ({percent}) => {
+  const profile = useSelector(state => state.profile.user);
   let firstProgressLayerStyle;
   if (percent > 50) {
     firstProgressLayerStyle = propStyle(50, -135);
@@ -34,12 +35,19 @@ const CircularProgress = ({ percent }) => {
     <View style={Theme.container}>
       <View style={[Theme.firstProgressLayer, firstProgressLayerStyle]} />
       {renderThirdLayer(percent)}
-      {
-        profile.photos.length === 0 ?
-          <Icon style={Theme.absolutePos} name="photo" size={50} color="black" /> :
-          <Image style={{ width: 70, height: 70, borderRadius: 35 }} source={{ uri: profile.photos[0].photo }} />
-      }
-
+      {imageUserFilter(profile.photos).length === 0 ? (
+        <Icon
+          style={Theme.absolutePos}
+          name={'user-circle'}
+          size={60}
+          color="black"
+        />
+      ) : (
+        <Image
+          style={{width: 80, height: 80, borderRadius: 40}}
+          source={{uri: imageUserFilter(profile.photos)[0].photo}}
+        />
+      )}
     </View>
   );
 };

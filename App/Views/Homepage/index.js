@@ -6,6 +6,8 @@ import {
   ScrollView,
   Modal,
   Dimensions,
+  Image,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -15,6 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {masterData} from '../../Redux/actions';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import auth from '@react-native-firebase/auth';
+import {Images} from '../../Assets/Images';
 
 const FaceBookQuestionMarkModal = ({state, setState}) => {
   return (
@@ -106,6 +109,13 @@ const Slider = () => {
             <Text style={[Theme.textBody, Theme.white, Theme.textCenter]}>
               Dating and matchmaking App for people with skin condition.
             </Text>
+            <View style={[Theme.paddingVertical20p]}>
+              <Image
+                source={Images.Logo}
+                resizeMode="contain"
+                style={{width: 300, height: 300}}
+              />
+            </View>
           </View>
           <View
             style={[
@@ -118,6 +128,13 @@ const Slider = () => {
               Discover a partner with similar life experience for better
               understanding , comfort and mutual respect.{' '}
             </Text>
+            <View style={[Theme.paddingVertical20p]}>
+              <Image
+                source={Images.Logo}
+                resizeMode="contain"
+                style={{width: 300, height: 300}}
+              />
+            </View>
           </View>
           <View
             style={[
@@ -131,34 +148,34 @@ const Slider = () => {
             <View style={[Theme.width100p]}>
               <View style={[Theme.width100p, Theme.row]}>
                 <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
+                  <Tiles text="Vitiligo" />
                 </View>
                 <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
-                </View>
-              </View>
-              <View style={[Theme.width100p, Theme.row]}>
-                <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
-                </View>
-                <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
+                  <Tiles text="Psoriasis" />
                 </View>
               </View>
               <View style={[Theme.width100p, Theme.row]}>
                 <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
+                  <Tiles text="Acne" />
                 </View>
                 <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
+                  <Tiles text="Burn/Scar" />
                 </View>
               </View>
               <View style={[Theme.width100p, Theme.row]}>
                 <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
+                  <Tiles text="Eczema" />
                 </View>
                 <View style={[Theme.width50p, Theme.padding5]}>
-                  <Tiles text="Psorisis" />
+                  <Tiles text="Dermatitis" />
+                </View>
+              </View>
+              <View style={[Theme.width100p, Theme.row]}>
+                <View style={[Theme.width50p, Theme.padding5]}>
+                  <Tiles text="Albinism" />
+                </View>
+                <View style={[Theme.width50p, Theme.padding5]}>
+                  <Tiles text="Alopecia" />
                 </View>
               </View>
               <View style={[Theme.width100p, Theme.alignContentCenter]}>
@@ -179,6 +196,13 @@ const Slider = () => {
               People without any skin condition are welcome to join in if they
               are open to date someone with a skin condition.
             </Text>
+            <View style={[Theme.paddingVertical20p]}>
+              <Image
+                source={Images.Logo}
+                resizeMode="contain"
+                style={{width: 300, height: 300}}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -268,57 +292,7 @@ const Homepage = ({navigation}) => {
             </View>
             <View style={[Theme.width100p, Theme.alignContentCenter]}>
               <View style={[Theme.width90p, Theme.alignContentCenter]}>
-                <View style={[Theme.width100p, Theme.alignContentCenter]}>
-                  {/* <TouchableOpacity
-                    style={[
-                      Theme.width100p,
-                      Theme.alignContentCenter,
-                      Theme.buttonLook,
-                      Theme.backgroundBlue,
-                      Theme.row,
-                    ]}
-                    onPress={() => {
-                      // navigation.navigate('help'); facebook-square
-                      LoginFB()
-                    }}>
-                    <Icon
-                      name={'facebook-square'}
-                      size={30}
-                      color="white"
-                      onPress={() => {
-                        console.log('yoo');
-                      }}
-                    />
-                    <Text
-                      style={[
-                        Theme.textCaption,
-                        Theme.white,
-                        Theme.paddingHorizonal10p,
-                      ]}>
-                      CONTINUE WITH FACEBOOK
-                    </Text>
-                  </TouchableOpacity> */}
-
-                  {/* <TouchableOpacity
-                  style={[
-                    Theme.alignContentCenter,
-                    Theme.smallButtonLook,
-                    Theme.row,
-                    Theme.backgroundWhite,
-                  ]}
-                  onPress={() => {
-                    setModal(!modal);
-                  }}>
-                  <Icon
-                    name={'question'}
-                    size={20}
-                    color={colors.purpledark}
-                    onPress={() => {
-                      console.log('yoo');
-                    }}
-                  />
-                </TouchableOpacity> */}
-                </View>
+                <View style={[Theme.width100p, Theme.alignContentCenter]} />
                 <View
                   style={[
                     Theme.width100p,
@@ -359,11 +333,12 @@ const Homepage = ({navigation}) => {
                       Theme.textCaption,
                       Theme.textUnderLine,
                       Theme.white,
-                    ]}>
+                    ]}
+                    onPress={() => navigation.navigate('help')}>
                     Contact Us
                   </Text>
                   <Text style={[Theme.textCaption, Theme.white]}>
-                    By clicking continue , u agree to
+                    By clicking continue , you agree to
                   </Text>
                   <Text style={[Theme.textCaption, Theme.white]}>
                     <Text
@@ -371,11 +346,19 @@ const Homepage = ({navigation}) => {
                         Theme.textCaption,
                         Theme.textUnderLine,
                         Theme.white,
-                      ]}>
+                      ]}
+                      onPress={() => {
+                        Linking.openURL('https://dermacupid.com/terms-of-use');
+                      }}>
                       Terms and condition
                     </Text>{' '}
                     {'&'}{' '}
                     <Text
+                      onPress={() => {
+                        Linking.openURL(
+                          'https://dermacupid.com/privacy-policy',
+                        );
+                      }}
                       style={[
                         Theme.textCaption,
                         Theme.textUnderLine,

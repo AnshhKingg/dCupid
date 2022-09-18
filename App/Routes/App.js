@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import Navigator from './navigation/Navigator';
-import { Provider } from 'react-redux';
-import { store } from '../Redux/store/index';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistStore } from 'redux-persist';
-import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
-import { Theme } from '../Assets/Styles';
-import { socket, SocketContext } from '../Components/Socket'
+import {Provider} from 'react-redux';
+import {store} from '../Redux/store/index';
+import {PersistGate} from 'redux-persist/integration/react';
+import {persistStore} from 'redux-persist';
+import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+import {Theme} from '../Assets/Styles';
+import {socket, SocketContext} from '../Components/Socket';
 
 const persistedStore = persistStore(store);
 

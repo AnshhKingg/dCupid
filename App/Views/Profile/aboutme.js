@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
-import { Theme } from '../../Assets/Styles';
-import { Header, LinearButton, TextInput } from '../../Components';
-import { updateProfile } from '../../Redux/actions/profile';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, Alert} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch, useSelector} from 'react-redux';
+import {Theme} from '../../Assets/Styles';
+import {Header, LinearButton, TextInput} from '../../Components';
+import {updateProfile} from '../../Redux/actions/profile';
 
-const AboutMe = ({ navigation }) => {
+const AboutMe = ({navigation}) => {
   const dis = useDispatch();
   const profile = useSelector(state => state.profile.user);
-  const [aboutme, setaboutme] = useState(profile.aboutme)
+  const [aboutme, setaboutme] = useState(profile.aboutme);
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
@@ -26,7 +26,7 @@ const AboutMe = ({ navigation }) => {
                 multiline={true}
                 numberoflines={5}
                 title="About me"
-                onChangeText={(text) => setaboutme(text)}
+                onChangeText={text => setaboutme(text)}
               />
               <View
                 style={[Theme.width100p, Theme.alignContentCenter, Theme.row]}>
@@ -34,8 +34,16 @@ const AboutMe = ({ navigation }) => {
                   <LinearButton
                     title="Save"
                     onPress={() => {
-                      dis(updateProfile({ aboutme: aboutme }));
-                      Alert.alert('Alert', 'Profile bio has been updated successfully. It will go live after admin approval.')
+                      dis(
+                        updateProfile({
+                          aboutme: aboutme,
+                          aboutmeVerified: false,
+                        }),
+                      );
+                      Alert.alert(
+                        'Alert',
+                        'Profile bio has been updated successfully. It will go live after admin approval.',
+                      );
                       navigation.goBack();
                     }}
                   />

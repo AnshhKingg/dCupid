@@ -24,11 +24,28 @@ const VerifyEmail = ({navigation}) => {
   const dis = useDispatch();
   const token = useSelector(state => state.auth.token);
   const emailid = useSelector(state => state.profile.user.email);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
   const [email, setEmail] = useState(emailid);
   const [error, setError] = useState('');
   const [otpSent, setOtpSent] = useState(false);
+  const timer = useRef(null);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (otpSent && count !== 0) {
+      timer.current = setInterval(() => {
+        setCount(state => state - 1);
+      }, 1000);
+    } else {
+      clearInterval(timer.current);
+    }
+
+    return () => {
+      clearInterval(timer.current);
+    };
+  }, [timer, count, otpSent]);
+
   const validEmailRegex = RegExp(
     /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
   );
@@ -39,12 +56,18 @@ const VerifyEmail = ({navigation}) => {
       })
       .then(resp => {
         console.log(resp.data);
+        setCount(60);
         setError('');
         setOtpSent(true);
+        setError(null);
       })
       .catch(er => {
-        console.log(er.response.data);
-        Alert.alert('Unable to send otp.');
+        if (
+          er?.response?.data?.message ===
+          'User with this email is already exist!'
+        ) {
+          setError('User with this email is already exist!');
+        }
       });
   };
 
@@ -56,7 +79,7 @@ const VerifyEmail = ({navigation}) => {
       .then(resp => {
         navigation.navigate('dashboard');
         dis(getProfile());
-        Alert.alert('Email Verified');
+        Alert.alert('Your email id is verified');
       })
       .catch(er => {
         console.log(er.response.data);
@@ -68,7 +91,7 @@ const VerifyEmail = ({navigation}) => {
     <>
       <LinearGradient>
         <SafeAreaView style={[Theme.height100p]}>
-          <Loading visible={loading} />
+          {/* <Loading visible={loading} /> */}
           <ScrollView contentContainerStyle={Theme.flexGrow}>
             <View style={[Theme.flex1, Theme.totalView]}>
               <Text style={[Theme.textHeader, Theme.purple]}>
@@ -108,7 +131,6 @@ const VerifyEmail = ({navigation}) => {
                     <TextInput
                       placeholder={'Email'}
                       multiline={false}
-                      keyboardType="numeric"
                       value={email}
                       onChangeText={text => {
                         setEmail(text);
@@ -137,9 +159,44 @@ const VerifyEmail = ({navigation}) => {
                       onPress={verifyEmail}
                     />
                   </View>
-
+                  <Text
+                    style={[
+                      Theme.textBody,
+                      Theme.paddingVertical5p,
+                      Theme.textCenter,
+                    ]}>
+                    Didn't receive code? Check spam folder also
+                  </Text>
                   <TouchableOpacity
                     onPress={() => {
+                      if (count === 0) {
+                        setCount(60);
+                        if (email === '') {
+                          setError('Please enter your email id.');
+                        } else if (!error) {
+                          sendEmail();
+                        }
+                      } else {
+                        ToastAndroid.show(
+                          `Please wait for ${count} seconds`,
+                          ToastAndroid.SHORT,
+                        );
+                      }
+                    }}>
+                    <Text
+                      style={[
+                        Theme.textBody,
+                        Theme.textUnderLine,
+                        Theme.blue,
+                        Theme.paddingVertical5p,
+                      ]}>
+                      Resend
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setCount(60);
+                      clearInterval(timer.current);
                       setOtpSent(false);
                       setEmail('');
                       setOtp('');

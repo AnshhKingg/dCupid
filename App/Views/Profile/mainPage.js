@@ -20,11 +20,12 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {colors} from '../../Assets/Colors';
 import {useSelector, useDispatch} from 'react-redux';
 import {updateProfile} from '../../Redux/actions/profile';
 import moment from 'moment-timezone';
-import {trustscore} from '../../service/utils';
+import {imageFilter, imageUserFilter, trustscore} from '../../service/utils';
 
 const Tiles = ({text, icon}) => {
   return (
@@ -204,6 +205,7 @@ const Profile = ({navigation, route}) => {
           right="home"
           title="Profile"
           leftnav={() => navigation.openDrawer()}
+          rightnav={() => navigation.goBack()}
         />
         <InterestModal
           state={interestModal}
@@ -223,7 +225,7 @@ const Profile = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('photo');
                 }}>
-                {profile.photos.length === 0 ? (
+                {imageUserFilter(profile.photos).length === 0 ? (
                   <LinearGradient
                     style={[
                       Theme.profileIcon,
@@ -244,7 +246,7 @@ const Profile = ({navigation, route}) => {
                   <>
                     <Image
                       style={{width: 70, height: 70, borderRadius: 35}}
-                      source={{uri: profile.photos[0].photo}}
+                      source={{uri: imageUserFilter(profile.photos)[0].photo}}
                     />
                     <View
                       style={[
@@ -327,7 +329,7 @@ const Profile = ({navigation, route}) => {
             <View style={[Theme.width100p, Theme.row]}>
               <View style={[Theme.width50p, Theme.padding5, Theme.flexStart]}>
                 <Tiles
-                  text={profile.state}
+                  text={`${profile.city},${profile.country}`}
                   icon={
                     <IconMaterial
                       name="location-on"
@@ -385,7 +387,7 @@ const Profile = ({navigation, route}) => {
                       Theme.alignContentCenter,
                       Theme.backgroundGray,
                     ]}>
-                    <Icon name="user" size={20} color="black" />
+                    <Entypo name="mail" size={20} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
                     Verify Email
@@ -393,7 +395,7 @@ const Profile = ({navigation, route}) => {
                 </TouchableOpacity>
               )}
 
-              {profile.photos.length > 0 ? null : (
+              {imageFilter(profile.photos).length > 0 ? null : (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('trustscore')}
                   style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
@@ -403,7 +405,7 @@ const Profile = ({navigation, route}) => {
                       Theme.alignContentCenter,
                       Theme.backgroundGray,
                     ]}>
-                    <Icon name="user" size={20} color="black" />
+                    <Icon name="photo" size={20} color="black" />
                   </View>
                   <Text style={[Theme.textCaption, Theme.textCenter]}>
                     Upload Photo
@@ -411,7 +413,7 @@ const Profile = ({navigation, route}) => {
                 </TouchableOpacity>
               )}
 
-              {profile.photoID ? null : (
+              {profile.photoIDApproved === 1 ? null : (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('trustscore')}
                   style={[Theme.flex1, Theme.padding10, Theme.alignCenter]}>
@@ -593,7 +595,7 @@ const Profile = ({navigation, route}) => {
                   Theme.separator,
                   Theme.paddingVertical20p,
                 ]}>
-                <View style={[Theme.flexStart]}>
+                <View style={[Theme.flexStart, Theme.maxWidth80]}>
                   <Text style={[Theme.textBody]}>About me</Text>
                   <Text
                     style={[

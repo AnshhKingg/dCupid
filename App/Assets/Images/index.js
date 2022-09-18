@@ -1,4 +1,4 @@
 export const Images = {
-  BG: require('./bg.png'),
-  DEMO: require('./demo.png'),
+  Logo: require('./dc_logo.png'),
+  Splash: require('./splash_screen.png'),
 };

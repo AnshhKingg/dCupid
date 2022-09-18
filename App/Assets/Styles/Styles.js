@@ -35,8 +35,14 @@ const Styles = StyleSheet.create({
   height50p: {
     height: 50,
   },
+  height60p: {
+    height: 60,
+  },
   height3p: {
     height: 3,
+  },
+  maxWidth200: {
+    maxWidth: 200,
   },
   maxWidth80: {
     maxWidth: '80%',
@@ -70,6 +76,9 @@ const Styles = StyleSheet.create({
   },
   width20p: {
     width: '20%',
+  },
+  width25p: {
+    width: '25%',
   },
   width90p: {
     width: '90%',
@@ -149,8 +158,17 @@ const Styles = StyleSheet.create({
   paddingLeft: {
     paddingLeft: 10,
   },
+  paddingRight40: {
+    paddingRight: 40,
+  },
   paddingRight: {
     paddingRight: 10,
+  },
+  paddingRight20: {
+    paddingRight: 20,
+  },
+  paddingLeft20: {
+    paddingLeft: 20,
   },
   paddingBottom30: {
     paddingBottom: 30,
@@ -170,7 +188,7 @@ const Styles = StyleSheet.create({
   textInput: {
     width: '100%',
     borderRadius: 4,
-    borderWidth: 0.6,
+    borderWidth: 1,
     borderColor: 'lightgrey',
     height: 55,
   },
@@ -200,12 +218,14 @@ const Styles = StyleSheet.create({
   },
   chatTextInputStyle: {
     width: '100%',
-    height: 60,
+    // height: 60,
+    maxHeight: 100,
     paddingHorizontal: 20,
     borderWidth: 1.5,
     borderColor: 'orange',
     borderRadius: 40,
     fontSize: 18,
+    color: 'black',
   },
   textXl: {
     fontSize: 28,
@@ -229,7 +249,7 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
   textCaption: {
-    fontSize: 14,
+    fontSize: 16,
     color: 'black',
   },
   textBold: {
@@ -304,7 +324,7 @@ const Styles = StyleSheet.create({
     marginVertical: 5,
   },
   drawerHeight: {
-    height: 60,
+    height: 50,
   },
   totalView: {
     height: 'auto',
@@ -408,16 +428,16 @@ const Styles = StyleSheet.create({
     borderColor: 'red',
   },
   borderBox: {
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: 'lightgrey',
     borderRadius: 5,
   },
   borderLeft: {
-    borderLeftWidth: 0.25,
+    borderLeftWidth: 0.5,
     borderLeftColor: 'black',
   },
   borderRight: {
-    borderRightWidth: 0.25,
+    borderRightWidth: 0.5,
     borderRightColor: 'black',
   },
   borderLineMargin: {
@@ -434,6 +454,10 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 20,
+  },
+  trashIconStyle: {
+    borderRadius: 20,
+    padding: 5,
   },
   pendingButtonPos: {
     position: 'absolute',
@@ -525,11 +549,10 @@ const Styles = StyleSheet.create({
   },
   imageMatchingProfileWidth: {
     width: width - 22,
-    height: 300,
+    height: 350,
   },
   imageMatchingVerticalComponent: {
     width: 60,
-    height: 90,
     position: 'absolute',
     top: 0,
     left: 20,
@@ -554,12 +577,14 @@ const Styles = StyleSheet.create({
   width90: {
     width: width * 0.9,
   },
-
+  width120: {
+    width: 120,
+  },
   //Circular bar
   container: {
     width: 120,
     height: 120,
-    borderWidth: 15,
+    borderWidth: 12,
     borderRadius: 60,
     borderColor: 'lightgrey',
     justifyContent: 'center',
@@ -568,7 +593,7 @@ const Styles = StyleSheet.create({
   firstProgressLayer: {
     width: 120,
     height: 120,
-    borderWidth: 15,
+    borderWidth: 12,
     borderRadius: 60,
     position: 'absolute',
     borderLeftColor: 'transparent',
@@ -580,7 +605,7 @@ const Styles = StyleSheet.create({
   secondProgressLayer: {
     width: 120,
     height: 120,
-    borderWidth: 15,
+    borderWidth: 12,
     borderRadius: 60,
     position: 'absolute',
     borderLeftColor: 'transparent',
@@ -592,7 +617,7 @@ const Styles = StyleSheet.create({
   offsetLayer: {
     width: 120,
     height: 120,
-    borderWidth: 15,
+    borderWidth: 12,
     borderRadius: 60,
     position: 'absolute',
     borderLeftColor: 'transparent',

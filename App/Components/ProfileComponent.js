@@ -17,7 +17,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import axios from '../service/axios';
 import {getProfile} from '../Redux/actions/profile';
 import Carousel from './Carousel';
-import {dateTime, trustscore} from '../service/utils';
+import {dateTime, trustscore, imageFilter, namePrivacy} from '../service/utils';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileComponent = ({
   onPress,
@@ -29,37 +30,53 @@ const ProfileComponent = ({
   const dis = useDispatch();
   const profile = useSelector(state => state.profile.user);
   const token = useSelector(state => state.auth.token);
-  const [like, setLike] = useState(
-    profile.userLikes.find(e => data._id === e.likedUser) ? true : false,
-  );
   const trust = trustscore(data);
+  const navigation = useNavigation();
   const ageCalc = date => {
     const newdate = new Date();
     const age = moment(newdate).diff(moment(date), 'years');
     return age;
   };
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={1}
       style={[
         Theme.width100p,
         Theme.borderRadius10,
         Theme.marginBottom10,
         Theme.borderRed,
       ]}>
-      {data.photos.length === 0 ? (
-        <View
+      {imageFilter(data?.photos).length === 0 ? (
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate('otherprofile', {data: data});
+          }}
           style={[Theme.imageMatchingProfileWidth, Theme.alignContentCenter]}>
-          <Icon name="user" size={230} color="black" />
-        </View>
+          <Icon name="user-circle" size={200} color="black" />
+        </TouchableOpacity>
       ) : (
-        <Carousel images={data.photos} />
+        <Carousel
+          images={imageFilter(data?.photos)}
+          onPress={() => {
+            navigation.navigate('otherprofile', {data: data});
+          }}
+          disabled={disableButton}
+        />
       )}
       <LinearGradient
         style={[
           Theme.imageMatchingVerticalComponent,
           Theme.alignContentCenter,
         ]}>
-        <Text style={[Theme.textTitle, Theme.white, Theme.textCenter]}>
+        <Text
+          adjustsFontSizeToFit
+          style={[
+            Theme.textBody,
+            Theme.white,
+            Theme.textCenter,
+            Theme.padding5,
+          ]}>
           {trust}% Trust Score
         </Text>
       </LinearGradient>
@@ -69,7 +86,7 @@ const ProfileComponent = ({
           <Text style={[Theme.textCaption, Theme.white]}>{dateTime(time)}</Text>
         </LinearGradient>
       ) : null}
-      {profile.userLikes.includes(data._id) ? (
+      {profile.userLikes.includes(data?._id) ? (
         <LinearGradient
           style={[
             Theme.imageMatchingHorizontalComponent,
@@ -82,14 +99,16 @@ const ProfileComponent = ({
       <LinearGradient
         style={[Theme.width100p, Theme.padding10, Theme.alignContentCenter]}>
         <TouchableOpacity
+          activeOpacity={1}
           onPress={onPressProfile}
           disabled={disableButton ? true : false}>
           <Text style={[Theme.textCaption, Theme.white]}>
-            {data.name} {ageCalc(data.dob)}
+            {namePrivacy(data)} , ({ageCalc(data?.dob)}) , {data?.city} ,{'  '}
+            {data?.country}
           </Text>
-          <Text style={[Theme.textCaption, Theme.white]}>
-            {data.skin} {data.marital} {data.religion}
-          </Text>
+          <Text style={[Theme.textCaption, Theme.white]}>{data?.skin}</Text>
+          <Text style={[Theme.textCaption, Theme.white]}>{data?.marital}</Text>
+          <Text style={[Theme.textCaption, Theme.white]}>{data?.religion}</Text>
           {disableButton ? null : (
             <View
               style={[Theme.width100p, Theme.row, Theme.alignContentCenter]}>
@@ -109,13 +128,14 @@ const ProfileComponent = ({
                   ]}
                   onPress={() => {
                     if (
-                      !profile.userLikes.find(e => data._id === e.likedUser)
+                      !profile.userLikes.find(e => data?._id === e.likedUser)
                         ? true
                         : false
                     ) {
                       axios(token)
-                        .post('/user/add-like', {liked_user: data._id})
+                        .post('/user/add-like', {liked_user: data?._id})
                         .then(() => {
+                          console.log(data?._id);
                           dis(getProfile());
                         })
                         .catch(er => {
@@ -130,7 +150,7 @@ const ProfileComponent = ({
                   }}>
                   <Icon
                     name={
-                      profile.userLikes.find(e => data._id === e.likedUser)
+                      profile.userLikes.find(e => data?._id === e.likedUser)
                         ? 'heart'
                         : 'heart-o'
                     }
@@ -165,8 +185,8 @@ const ProfileComponent = ({
           )}
         </TouchableOpacity>
       </LinearGradient>
-    </View>
+    </TouchableOpacity>
   );
 };
 
-export default memo(ProfileComponent);
+export default ProfileComponent;

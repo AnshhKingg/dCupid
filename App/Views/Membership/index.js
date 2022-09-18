@@ -107,7 +107,7 @@ const Membership = ({navigation}) => {
                   ]}>
                   <Text
                     style={[Theme.textBody, Theme.textBold, Theme.textCenter]}>
-                    399 for 1 month
+                    ₹399 for 1 month
                   </Text>
                   <View style={[Theme.alignContentCenter, Theme.width60p]}>
                     <LinearButton

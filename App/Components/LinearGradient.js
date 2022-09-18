@@ -9,6 +9,7 @@ const LinearGradientWrapper = ({children, style}) => {
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
       colors={[colors.purplelight, colors.purpledark]}>
+      {/* '#ff7043', '#ec407a' */}
       {children}
     </LinearGradient>
   );

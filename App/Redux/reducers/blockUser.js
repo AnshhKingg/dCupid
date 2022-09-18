@@ -1,16 +1,16 @@
-import { Constants } from '../constants/index';
+import {Constants} from '../constants/index';
 
 const initialState = {
-    data: []
+  data: [],
 };
 
 const blockUser = (state = initialState, action) => {
-    switch (action.type) {
-        case Constants.FETCH_BLOCK:
-            return { data: action.payload };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case Constants.FETCH_BLOCK:
+      return {data: action.payload};
+    default:
+      return state;
+  }
 };
 
 export default blockUser;

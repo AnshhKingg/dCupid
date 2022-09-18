@@ -29,14 +29,7 @@ const CustomDateTimeInput = ({title, error, onPress, text}) => {
             ]}>
             {text && text.length > 0 ? text : 'Select'}
           </Text>
-          <Icon
-            name={'chevron-small-down'}
-            size={27}
-            color="grey"
-            onPress={() => {
-              console.log('yoo');
-            }}
-          />
+          <Icon name={'chevron-small-down'} size={27} color="grey" />
         </View>
       </TouchableOpacity>
       {title ? <Text style={Theme.textInputLabelStyle}> {title} </Text> : null}

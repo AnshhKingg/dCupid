@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,23 +8,24 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../Assets/Styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Theme} from '../../Assets/Styles';
 import {
   Header,
   PickerInput,
   LinearButton,
   DropDownButton,
   LinearGradient,
+  Loading,
 } from '../../Components';
 import Toast from 'react-native-toast-message';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import axiosService from '../../service/axios';
-import { setProfile } from '../../Redux/actions/profile';
-import { logout } from '../../Redux/actions/auth';
+import {setProfile} from '../../Redux/actions/profile';
+import {logout} from '../../Redux/actions/auth';
 import fireAuth from '@react-native-firebase/auth';
 
-const ProfessionModal = ({ state, onPress, onPressCancel, array }) => {
+const ProfessionModal = ({state, onPress, onPressCancel, array}) => {
   return (
     <Modal visible={state} animationType="fade" transparent={true}>
       <TouchableOpacity
@@ -103,7 +104,7 @@ const ProfessionModal = ({ state, onPress, onPressCancel, array }) => {
   );
 };
 
-const Register2 = ({ navigation }) => {
+const Register2 = ({navigation}) => {
   const auth = useSelector(state => state.auth);
   const selecterData = useSelector(state => state.masterData.data);
   const dis = useDispatch();
@@ -122,6 +123,8 @@ const Register2 = ({ navigation }) => {
   const [cityItems, setCityItems] = useState([]);
   const [cityError, setCityError] = useState(null);
   const [cityOpen, setCityOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     axiosService(auth.token)
@@ -347,6 +350,7 @@ const Register2 = ({ navigation }) => {
       !religionError &&
       religion.length !== 0
     ) {
+      setLoading(true);
       axiosService(auth.token)
         .post('/register/second', {
           country: country,
@@ -361,11 +365,13 @@ const Register2 = ({ navigation }) => {
           religion: religion,
         })
         .then(resp => {
+          setLoading(false);
           dis(setProfile(resp.data.user));
           console.log(resp.data.user);
           navigation.navigate('dashboard');
         })
         .catch(er => {
+          setLoading(false);
           console.log(er.response.data);
           console.log('Er ran');
           Alert.alert('Something went wrong');
@@ -381,6 +387,7 @@ const Register2 = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={[Theme.height100p]}>
+        <Loading visible={loading} />
         <Header
           title="Registration"
           left="arrowleft"

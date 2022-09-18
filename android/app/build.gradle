@@ -132,11 +132,11 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.dcupid"
+        applicationId "com.derma.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 11
+        versionName "2.1"
         vectorDrawables.useSupportLibrary = true
     }
     splits {
@@ -195,10 +195,10 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
-    implementation 'com.google.firebase:firebase-auth'
+    implementation ('com.google.firebase:firebase-auth'){
+        exclude module: "play-services-safetynet"
+    }
     implementation 'com.google.firebase:firebase-analytics'
-    
-    // implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
 
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"

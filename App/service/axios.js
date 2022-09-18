@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { ip } from '../Components/ipAddress'
-const axiosServ = (token) => {
+import {ip} from '../Components/ipAddress';
+const axiosServ = token => {
   let headers = {
-    'Accept': 'application/json',
-    'Content-Type': `application/json`,
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   };
-
 
   if (token) {
     headers.Authorization = `${token}`;
@@ -13,7 +12,6 @@ const axiosServ = (token) => {
 
   const instance = axios.create({
     baseURL: `${ip}/api/v1`,
-    timeout: 3000,
     headers: headers,
   });
   return instance;

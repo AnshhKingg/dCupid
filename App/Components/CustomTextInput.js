@@ -31,6 +31,7 @@ const CustomTextInput = ({
         multiline={multiline}
         numberOfLines={numberoflines}
         placeholder={placeholder}
+        placeholderTextColor="grey"
         editable={editable}
         maxLength={maxLength}
         keyboardType={keyboardType}

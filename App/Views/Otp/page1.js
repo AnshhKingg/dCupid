@@ -16,14 +16,14 @@ import {
   Loading,
 } from '../../Components';
 import CountryPicker from 'react-native-country-picker-modal';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {login, logout} from '../../Redux/actions/auth';
 import {removeProfile} from '../../Redux/actions/profile';
 import auth from '@react-native-firebase/auth';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import messaging from '@react-native-firebase/messaging';
 
-const Otp = ({navigation}) => {
+const Otp = () => {
   const dis = useDispatch();
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
@@ -36,7 +36,6 @@ const Otp = ({navigation}) => {
   const [otpSent, setOtpSent] = useState(false);
   const timer = useRef(null);
   const [count, setCount] = useState(0);
-  // const state = useSelector(state => state.auth)
 
   // const onAuthStateChanged = user => {
   //   if (user) {
@@ -46,7 +45,6 @@ const Otp = ({navigation}) => {
   //     dis(logout());
   //   }
   // };
-
   useEffect(() => {
     const listener = auth().onAuthStateChanged(async user => {
       if (user) {
@@ -83,8 +81,9 @@ const Otp = ({navigation}) => {
   function signInWithPhoneNumber(phoneNumber) {
     setLoading(true);
     auth()
-      .signInWithPhoneNumber(phoneNumber)
+      .signInWithPhoneNumber(phoneNumber, true)
       .then(resp => {
+        setCount(60);
         setLoading(false);
         console.log('OTP send.');
         setOtpSent(true);
@@ -105,15 +104,14 @@ const Otp = ({navigation}) => {
     setLoading(true);
     try {
       const {user} = await confirmation.confirm(otp);
-      console.log(user.providerData);
-      var token = await auth().currentUser.getIdToken();
+      const token = await auth().currentUser.getIdToken();
       const deviceId = await messaging().getToken();
       dis(login(user.uid, number, token, deviceId));
       setLoading(false);
     } catch (err) {
+      setLoading(false);
       const firebaseerr = err.message.split('] ');
       Alert.alert('Error', firebaseerr[1]);
-      setLoading(false);
     }
   }
 
@@ -211,9 +209,7 @@ const Otp = ({navigation}) => {
                     <LinearButton
                       disabled={otp.length !== 6}
                       title="Submit"
-                      onPress={() => {
-                        confirmCode(`+${countryCode}${mobile}`);
-                      }}
+                      onPress={() => confirmCode(`+${countryCode}${mobile}`)}
                     />
                   </View>
 
@@ -241,7 +237,7 @@ const Otp = ({navigation}) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      setCount(60);
+                      setCount(0);
                       clearInterval(timer.current);
                       setOtpSent(false);
                       setMobile('');

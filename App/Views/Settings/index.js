@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, Alert, Share, Linking} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Theme} from '../../Assets/Styles';
 import {Header, LinearButton} from '../../Components';
@@ -13,9 +13,10 @@ import {useDispatch} from 'react-redux';
 import {logout} from '../../Redux/actions/auth';
 import auth from '@react-native-firebase/auth';
 
-const Component = ({title, icon}) => {
+const Component = ({title, icon, onPress}) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={[
         Theme.width100p,
         Theme.row,
@@ -33,12 +34,24 @@ const Component = ({title, icon}) => {
       <View style={[Theme.width90p, Theme.flexStart]}>
         <Text style={[Theme.textBody]}>{title}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const Settings = ({navigation}) => {
   const dis = useDispatch();
+  const shareLink = () => {
+    Share.share(
+      {
+        message:
+          'Derma Cupid – dating and matchmaking app for people with skin conditions. http://dermacupid.com/',
+        title: 'Derma Cupid',
+      },
+      {
+        dialogTitle: 'Derma Cupid',
+      },
+    );
+  };
   return (
     <>
       <SafeAreaView style={[Theme.height100p, Theme.alignCenter]}>
@@ -51,9 +64,10 @@ const Settings = ({navigation}) => {
         <View style={[Theme.flex1, Theme.width100p]}>
           <ScrollView contentContainerStyle={[Theme.flexGrow]}>
             <View style={[Theme.width100p]}>
-              <Component title="Your contact details" icon="mobile" />
-              <Component title="Blocked profiles" icon="user-times" />
-              <View
+              {/* <Component title="Your contact details" icon="mobile" />
+              <Component title="Blocked profiles" icon="user-times" /> */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('help')}
                 style={[
                   Theme.width100p,
                   Theme.row,
@@ -71,10 +85,17 @@ const Settings = ({navigation}) => {
                 <View style={[Theme.width90p, Theme.flexStart]}>
                   <Text style={[Theme.textBody]}>Help</Text>
                 </View>
-              </View>
-              <Component title="Invite friends" icon="user-friends" />
+              </TouchableOpacity>
+              <Component
+                title="Invite friends"
+                icon="user-friends"
+                onPress={() => shareLink()}
+              />
 
-              <View
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL('https://dermacupid.com/community-guidelines')
+                }
                 style={[
                   Theme.width100p,
                   Theme.row,
@@ -94,13 +115,14 @@ const Settings = ({navigation}) => {
                   />
                 </View>
                 <View style={[Theme.width90p, Theme.flexStart]}>
-                  <Text style={[Theme.textBody]}>
-                    How to get better matches
-                  </Text>
+                  <Text style={[Theme.textBody]}>Community guidelines</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
 
-              <View
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL('https://dermacupid.com/safety-tips')
+                }
                 style={[
                   Theme.width100p,
                   Theme.row,
@@ -118,9 +140,10 @@ const Settings = ({navigation}) => {
                 <View style={[Theme.width90p, Theme.flexStart]}>
                   <Text style={[Theme.textBody]}>Safety Guidelines</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
 
-              <View
+              <TouchableOpacity
+                onPress={() => Linking.openURL('https://dermacupid.com/about')}
                 style={[
                   Theme.width100p,
                   Theme.row,
@@ -138,10 +161,22 @@ const Settings = ({navigation}) => {
                 <View style={[Theme.width90p, Theme.flexStart]}>
                   <Text style={[Theme.textBody]}>About</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
 
-              <Component title="Privacy policy" icon="file-alt" />
-              <Component title="Terms and conditions" icon="check-square" />
+              <Component
+                title="Privacy policy"
+                icon="file-alt"
+                onPress={() =>
+                  Linking.openURL('https://dermacupid.com/privacy-policy')
+                }
+              />
+              <Component
+                title="Terms and conditions"
+                icon="check-square"
+                onPress={() =>
+                  Linking.openURL('https://dermacupid.com/terms-of-use')
+                }
+              />
             </View>
             <View
               style={[
@@ -158,7 +193,9 @@ const Settings = ({navigation}) => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('delete')}
+              onPress={() => {
+                navigation.navigate('delete');
+              }}
               style={[
                 Theme.width60p,
                 Theme.selfAlignCenter,
